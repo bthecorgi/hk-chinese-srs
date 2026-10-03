@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>HK Primary Characters</title>
+  <meta name="description" content="Spaced-repetition trainer for the Hong Kong primary school graded character list (小學分級常用字表), with Cantonese and Mandarin pronunciation.">
+  <meta name="theme-color" content="#b3261e">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="港小字卡">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1 id="title">港小字卡</h1>
+  </header>
+
+  <main id="view" aria-live="polite">
+    <p class="loading">載入中… Loading…</p>
+  </main>
+
+  <nav class="tabbar" aria-label="Sections">
+    <button data-tab="home" class="active"><span class="ico">⌂</span><span>Today</span></button>
+    <button data-tab="levels"><span class="ico">字</span><span>Levels</span></button>
+    <button data-tab="settings"><span class="ico">⚙︎</span><span>Settings</span></button>
+  </nav>
+
+  <dialog id="sheet"></dialog>
+  <div id="toast" role="status"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

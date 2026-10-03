@@ -1,0 +1,17 @@
+{
+  "name": "港小字卡 HK Primary Characters",
+  "short_name": "港小字卡",
+  "description": "Spaced-repetition trainer for the Hong Kong primary school graded character list, with Cantonese and Mandarin pronunciation.",
+  "lang": "zh-Hant-HK",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fbf8f4",
+  "theme_color": "#b3261e",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

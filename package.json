@@ -1,0 +1,19 @@
+{
+  "name": "hk-chinese-srs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Installable iOS-friendly PWA for spaced-repetition training of the Hong Kong primary-school graded character list, with Cantonese and Mandarin pronunciation.",
+  "type": "module",
+  "scripts": {
+    "build:data": "node scripts/build-data.mjs",
+    "build:icons": "node scripts/make-icons.mjs",
+    "serve": "http-server public -p 8080 -c-1",
+    "test": "node --test scripts/*.test.mjs"
+  },
+  "devDependencies": {
+    "@mandel59/mojidata": "1.9.1",
+    "cedict-json": "1.3.20251213",
+    "subtlex-ch-wf": "0.0.0",
+    "to-jyutping": "3.1.1"
+  }
+}
