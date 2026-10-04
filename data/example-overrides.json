@@ -1,78 +1,622 @@
 {
-  "_about": "Hand-checked corrections to the example words, applied by scripts/build-data.mjs. 'fix' overrides fields of a word wherever it appears: p = Pinyin, j = Jyutping, en = English. 'exclude' removes a word from the candidate pool, so the next-best word takes its place.",
+  "_about": "Hand-checked corrections to the example words, applied by scripts/build-data.mjs. 'fix' overrides fields of a word wherever it appears: p = Pinyin, j = Jyutping, en = English. 'regional' gives the Mandarin word where it differs: cn = mainland [word, pinyin], tw = Taiwan where it differs from the mainland form (null hides the automatic CC-CEDICT Taiwan reading). 'exclude' removes a word from the candidate pool, so the next-best word takes its place. 'taiwanChars' maps a character's mainland reading to its standard Taiwan reading, used for words CC-CEDICT doesn't annotate.",
   "fix": {
-    "結果": { "p": "jié guǒ", "en": "result; outcome" },
-    "故事": { "p": "gù shi", "en": "story; tale" },
-    "東西": { "p": "dōng xi", "en": "thing; stuff" },
-    "把手": { "p": "bǎ shou", "en": "handle; knob" },
-    "教會": { "p": "jiào huì", "en": "church" },
-    "口音": { "en": "accent" },
-    "地方": { "p": "dì fang", "en": "place; space; area" },
-    "多少": { "p": "duō shao", "en": "how many; how much" },
-    "重點": { "p": "zhòng diǎn", "en": "key point; focus" },
-    "告訴": { "p": "gào su", "en": "to tell" },
-    "好處": { "p": "hǎo chu", "en": "benefit; advantage" },
-    "妻子": { "p": "qī zi", "en": "wife" },
-    "盛裝": { "p": "shèng zhuāng", "en": "splendid attire; one's Sunday best" },
-    "便宜": { "p": "pián yi", "en": "cheap; inexpensive" },
-    "憎惡": { "p": "zēng wù", "en": "to detest; to abhor" },
-    "鋪蓋": { "p": "pū gai", "en": "bedding; bedroll" },
-    "裁縫": { "p": "cái feng", "en": "tailor; dressmaker" },
-    "跳蚤市場": { "p": "tiào zao shì chǎng" },
-
-    "木頭": { "en": "wood; log" },
-    "酒店": { "en": "hotel" },
-    "黑人": { "en": "black person" },
-    "黃色": { "en": "yellow" },
-    "白色": { "en": "white" },
-    "白兔": { "en": "white rabbit" },
-    "葉子": { "en": "leaf" },
-    "鴨子": { "en": "duck" },
-    "玻璃": { "en": "glass" },
-    "綠茶": { "en": "green tea" },
-    "盒子": { "en": "box; case" },
-    "輪子": { "en": "wheel" },
-    "麻雀": { "en": "sparrow" },
-    "香煙": { "en": "cigarette" },
-    "同志": { "en": "comrade" },
-    "燈泡": { "en": "light bulb" },
-    "炒飯": { "en": "fried rice" },
-    "心靈": { "en": "heart; soul; mind" },
-    "環節": { "en": "link; part; segment" },
-    "玫瑰": { "en": "rose" },
-    "溜冰": { "en": "ice skating; roller skating" },
-    "膝蓋": { "en": "knee" },
-    "革命": { "en": "revolution" },
-    "海龜": { "en": "sea turtle" },
-    "蹄子": { "en": "hoof" },
-    "澄清": { "en": "to clarify; clear (of liquid)" },
-    "幼稚園": { "en": "kindergarten (mainland Mandarin: 幼兒園 yòu ér yuán)" },
-
-    "吃飯": { "j": "hek3 faan6" },
-    "昨晚": { "j": "zok3 maan5" },
-    "這個": { "j": "ze2 go3" },
-    "這種": { "j": "ze2 zung2" },
-    "這邊": { "j": "ze2 bin1" },
-    "這般": { "j": "ze2 bun1" },
-    "乙酸": { "j": "jyut3 syun1" },
-    "乙醇": { "j": "jyut3 seon4" },
-    "笑臉": { "j": "siu3 lim5" },
-    "痰盂": { "j": "taam4 jyu4" },
-    "打斷": { "j": "daa2 dyun6" },
-    "呆子": { "j": "daai1 zi2" },
-    "模擬": { "j": "mou4 ji5" },
-    "虛擬": { "j": "heoi1 ji5" }
+    "結果": {
+      "p": "jié guǒ",
+      "en": "result; outcome"
+    },
+    "故事": {
+      "p": "gù shi",
+      "en": "story; tale"
+    },
+    "東西": {
+      "p": "dōng xi",
+      "en": "thing; stuff"
+    },
+    "把手": {
+      "p": "bǎ shou",
+      "en": "handle; knob"
+    },
+    "教會": {
+      "p": "jiào huì",
+      "en": "church"
+    },
+    "口音": {
+      "en": "accent"
+    },
+    "地方": {
+      "p": "dì fang",
+      "en": "place; space; area"
+    },
+    "多少": {
+      "p": "duō shao",
+      "en": "how many; how much"
+    },
+    "重點": {
+      "p": "zhòng diǎn",
+      "en": "key point; focus"
+    },
+    "告訴": {
+      "p": "gào su",
+      "en": "to tell"
+    },
+    "好處": {
+      "p": "hǎo chu",
+      "en": "benefit; advantage"
+    },
+    "妻子": {
+      "p": "qī zi",
+      "en": "wife"
+    },
+    "盛裝": {
+      "p": "shèng zhuāng",
+      "en": "splendid attire; one's Sunday best"
+    },
+    "便宜": {
+      "p": "pián yi",
+      "en": "cheap; inexpensive"
+    },
+    "憎惡": {
+      "p": "zēng wù",
+      "en": "to detest; to abhor"
+    },
+    "鋪蓋": {
+      "p": "pū gai",
+      "en": "bedding; bedroll"
+    },
+    "裁縫": {
+      "p": "cái feng",
+      "en": "tailor; dressmaker"
+    },
+    "跳蚤市場": {
+      "p": "tiào zao shì chǎng"
+    },
+    "木頭": {
+      "en": "wood; log"
+    },
+    "酒店": {
+      "en": "hotel"
+    },
+    "黑人": {
+      "en": "black person"
+    },
+    "黃色": {
+      "en": "yellow"
+    },
+    "白色": {
+      "en": "white"
+    },
+    "白兔": {
+      "en": "white rabbit"
+    },
+    "葉子": {
+      "en": "leaf"
+    },
+    "鴨子": {
+      "en": "duck"
+    },
+    "玻璃": {
+      "en": "glass"
+    },
+    "綠茶": {
+      "en": "green tea"
+    },
+    "盒子": {
+      "en": "box; case"
+    },
+    "輪子": {
+      "en": "wheel"
+    },
+    "麻雀": {
+      "en": "sparrow"
+    },
+    "香煙": {
+      "en": "cigarette"
+    },
+    "同志": {
+      "en": "comrade"
+    },
+    "燈泡": {
+      "en": "light bulb"
+    },
+    "炒飯": {
+      "en": "fried rice"
+    },
+    "心靈": {
+      "en": "heart; soul; mind"
+    },
+    "環節": {
+      "en": "link; part; segment"
+    },
+    "玫瑰": {
+      "en": "rose"
+    },
+    "溜冰": {
+      "en": "ice skating; roller skating"
+    },
+    "膝蓋": {
+      "en": "knee"
+    },
+    "革命": {
+      "en": "revolution"
+    },
+    "海龜": {
+      "en": "sea turtle"
+    },
+    "蹄子": {
+      "en": "hoof"
+    },
+    "澄清": {
+      "en": "to clarify; clear (of liquid)"
+    },
+    "吃飯": {
+      "j": "hek3 faan6"
+    },
+    "昨晚": {
+      "j": "zok3 maan5"
+    },
+    "這個": {
+      "j": "ze2 go3"
+    },
+    "這種": {
+      "j": "ze2 zung2"
+    },
+    "這邊": {
+      "j": "ze2 bin1"
+    },
+    "這般": {
+      "j": "ze2 bun1"
+    },
+    "乙酸": {
+      "j": "jyut3 syun1"
+    },
+    "乙醇": {
+      "j": "jyut3 seon4"
+    },
+    "笑臉": {
+      "j": "siu3 lim5"
+    },
+    "痰盂": {
+      "j": "taam4 jyu4"
+    },
+    "打斷": {
+      "j": "daa2 dyun6"
+    },
+    "呆子": {
+      "j": "daai1 zi2"
+    },
+    "模擬": {
+      "j": "mou4 ji5"
+    },
+    "虛擬": {
+      "j": "heoi1 ji5"
+    },
+    "侍應": {
+      "en": "waiter; waitress (HK)"
+    },
+    "警署": {
+      "en": "police station (HK)"
+    },
+    "恤衫": {
+      "en": "shirt (HK)"
+    },
+    "腳踏車": {
+      "en": "bicycle (Taiwan; HK says 單車)"
+    },
+    "阿爸": {
+      "j": "aa3 baa1",
+      "en": "dad (Cantonese and dialect)"
+    },
+    "薄餅": {
+      "en": "pizza (HK); thin pancake (Mandarin)"
+    },
+    "窩心": {
+      "en": "heartwarming (HK, Taiwan); upset (mainland)"
+    },
+    "地盤": {
+      "en": "construction site (HK); territory (Mandarin)"
+    },
+    "幼稚園": {
+      "en": "kindergarten"
+    }
+  },
+  "regional": {
+    "侍應": {
+      "cn": [
+        "服務員",
+        "fú wù yuán"
+      ],
+      "tw": [
+        "服務生",
+        "fú wù shēng"
+      ]
+    },
+    "警署": {
+      "cn": [
+        "派出所",
+        "pài chū suǒ"
+      ]
+    },
+    "恤衫": {
+      "cn": [
+        "襯衫",
+        "chèn shān"
+      ]
+    },
+    "腳踏車": {
+      "cn": [
+        "自行車",
+        "zì xíng chē"
+      ],
+      "tw": [
+        "腳踏車",
+        "jiǎo tà chē"
+      ]
+    },
+    "阿爸": {
+      "cn": [
+        "爸爸",
+        "bà ba"
+      ]
+    },
+    "薄餅": {
+      "cn": [
+        "披薩",
+        "pī sà"
+      ]
+    },
+    "窩心": {
+      "cn": [
+        "暖心",
+        "nuǎn xīn"
+      ],
+      "tw": [
+        "窩心",
+        "wō xīn"
+      ]
+    },
+    "地盤": {
+      "cn": [
+        "工地",
+        "gōng dì"
+      ]
+    },
+    "幼稚園": {
+      "cn": [
+        "幼兒園",
+        "yòu ér yuán"
+      ]
+    },
+    "出租車": {
+      "tw": [
+        "計程車",
+        "jì chéng chē"
+      ]
+    },
+    "軟件": {
+      "tw": [
+        "軟體",
+        "ruǎn tǐ"
+      ]
+    },
+    "硬盤": {
+      "tw": [
+        "硬碟",
+        "yìng dié"
+      ]
+    },
+    "網絡": {
+      "tw": [
+        "網路",
+        "wǎng lù"
+      ]
+    },
+    "信息": {
+      "tw": [
+        "資訊",
+        "zī xùn"
+      ]
+    },
+    "打印": {
+      "tw": [
+        "列印",
+        "liè yìn"
+      ]
+    },
+    "屏幕": {
+      "tw": [
+        "螢幕",
+        "yíng mù"
+      ]
+    },
+    "顯示屏": {
+      "tw": [
+        "螢幕",
+        "yíng mù"
+      ]
+    },
+    "土豆": {
+      "tw": [
+        "馬鈴薯",
+        "mǎ líng shǔ"
+      ]
+    },
+    "冰激凌": {
+      "tw": [
+        "冰淇淋",
+        "bīng qí lín"
+      ]
+    },
+    "酸奶": {
+      "tw": [
+        "優格",
+        "yōu gé"
+      ]
+    },
+    "地鐵": {
+      "tw": [
+        "捷運",
+        "jié yùn"
+      ]
+    },
+    "摩托車": {
+      "tw": [
+        "機車",
+        "jī chē"
+      ]
+    },
+    "熊貓": {
+      "tw": [
+        "貓熊",
+        "māo xióng"
+      ]
+    },
+    "數據庫": {
+      "tw": [
+        "資料庫",
+        "zī liào kù"
+      ]
+    },
+    "克隆": {
+      "tw": [
+        "複製",
+        "fù zhì"
+      ]
+    },
+    "塑料": {
+      "tw": [
+        "塑膠",
+        "sù jiāo"
+      ]
+    },
+    "泡沫塑料": {
+      "tw": [
+        "保麗龍",
+        "bǎo lì lóng"
+      ]
+    },
+    "飯盒": {
+      "tw": [
+        "便當盒",
+        "biàn dāng hé"
+      ]
+    },
+    "桑拿": {
+      "tw": [
+        "三溫暖",
+        "sān wēn nuǎn"
+      ]
+    },
+    "模特": {
+      "tw": [
+        "模特兒",
+        "mó tè ér"
+      ]
+    },
+    "納米": {
+      "tw": [
+        "奈米",
+        "nài mǐ"
+      ]
+    },
+    "網吧": {
+      "tw": [
+        "網咖",
+        "wǎng kā"
+      ]
+    },
+    "錄像": {
+      "tw": [
+        "錄影",
+        "lù yǐng"
+      ]
+    },
+    "攝像機": {
+      "tw": [
+        "攝影機",
+        "shè yǐng jī"
+      ]
+    },
+    "導彈": {
+      "tw": [
+        "飛彈",
+        "fēi dàn"
+      ]
+    },
+    "文件夾": {
+      "tw": [
+        "資料夾",
+        "zī liào jiá"
+      ]
+    },
+    "視頻": {
+      "tw": [
+        "影片",
+        "yǐng piàn"
+      ]
+    },
+    "剎車": {
+      "tw": [
+        "煞車",
+        "shā chē"
+      ]
+    },
+    "易拉罐": {
+      "tw": [
+        "易開罐",
+        "yì kāi guàn"
+      ]
+    },
+    "光碟": {
+      "cn": [
+        "光盤",
+        "guāng pán"
+      ],
+      "tw": [
+        "光碟",
+        "guāng dié"
+      ]
+    }
+  },
+  "taiwanChars": {
+    "期": [
+      "qī",
+      "qí"
+    ],
+    "危": [
+      "wēi",
+      "wéi"
+    ],
+    "微": [
+      "wēi",
+      "wéi"
+    ],
+    "髮": [
+      "fà",
+      "fǎ"
+    ],
+    "企": [
+      "qǐ",
+      "qì"
+    ],
+    "究": [
+      "jiū",
+      "jiù"
+    ],
+    "質": [
+      "zhì",
+      "zhí"
+    ],
+    "擁": [
+      "yōng",
+      "yǒng"
+    ],
+    "寂": [
+      "jì",
+      "jí"
+    ],
+    "跡": [
+      "jì",
+      "jī"
+    ],
+    "績": [
+      "jì",
+      "jī"
+    ],
+    "擊": [
+      "jī",
+      "jí"
+    ],
+    "突": [
+      "tū",
+      "tú"
+    ],
+    "惜": [
+      "xī",
+      "xí"
+    ],
+    "息": [
+      "xī",
+      "xí"
+    ],
+    "夕": [
+      "xī",
+      "xì"
+    ],
+    "熄": [
+      "xī",
+      "xí"
+    ],
+    "帆": [
+      "fān",
+      "fán"
+    ],
+    "叔": [
+      "shū",
+      "shú"
+    ],
+    "菌": [
+      "jūn",
+      "jùn"
+    ],
+    "綜": [
+      "zōng",
+      "zòng"
+    ],
+    "暫": [
+      "zàn",
+      "zhàn"
+    ],
+    "樸": [
+      "pǔ",
+      "pú"
+    ],
+    "檔": [
+      "dàng",
+      "dǎng"
+    ],
+    "濤": [
+      "tāo",
+      "táo"
+    ],
+    "擲": [
+      "zhì",
+      "zhí"
+    ],
+    "堤": [
+      "dī",
+      "tí"
+    ],
+    "辱": [
+      "rǔ",
+      "rù"
+    ],
+    "穴": [
+      "xué",
+      "xuè"
+    ],
+    "鞠": [
+      "jū",
+      "jú"
+    ],
+    "儲": [
+      "chǔ",
+      "chú"
+    ],
+    "液": [
+      "yè",
+      "yì"
+    ],
+    "垃": [
+      "lā",
+      "lè"
+    ],
+    "圾": [
+      "jī",
+      "sè"
+    ]
   },
   "exclude": {
-    "窩心": "false friend: 'heartwarming' in Cantonese, 'aggrieved' in mainland Mandarin",
-    "地盤": "false friend: 'construction site' in Cantonese, 'territory' in Mandarin",
-    "薄餅": "false friend: 'pizza' in Cantonese, 'thin pancake' in Mandarin",
-    "侍應": "Hong Kong usage; Mandarin says 服務員",
-    "侍應生": "Hong Kong usage; Mandarin says 服務員",
-    "警署": "Hong Kong usage; Mandarin says 派出所 / 警察局",
-    "恤衫": "Cantonese loanword; Mandarin says 襯衫",
-    "腳踏車": "Taiwan usage; mainland Mandarin says 自行車",
-    "阿爸": "dialect; Mandarin says 爸爸",
     "女娃": "dialect",
     "娃兒": "dialect",
     "耗子": "dialect",
@@ -85,7 +629,6 @@
     "揩油": "slang",
     "鬼混": "slang",
     "雌黃": "obscure (a mineral)",
-
     "他媽的": "not suitable for primary pupils",
     "該死": "not suitable for primary pupils",
     "滾開": "not suitable for primary pupils",

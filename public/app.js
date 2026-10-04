@@ -13,6 +13,7 @@ const DEFAULT_SETTINGS = {
   autoplay: 'yue', // off | yue | cmn | both
   showJyutping: true,
   showPinyin: true,
+  showTaiwan: true,
   toneColors: true,
   serif: false,
   yueVoice: '',
@@ -370,6 +371,19 @@ function renderLevel(v, g) {
     <div class="grid" lang="zh-Hant-HK">${chars.map((x) => `<button class="s-${cardStatus(x.c)}" data-detail="${x.c}" aria-label="${x.c}">${x.c}</button>`).join('')}</div>`;
 }
 
+// An example's 5th element says where Mandarin differs: cn = the mainland word,
+// tw = Taiwan's word or reading where it differs from the mainland form.
+const mandarinWord = (w, alt) => alt?.cn?.[0] || w;
+
+function regionalHtml(w, alt, showTaiwan) {
+  if (!alt) return '';
+  const part = (label, [aw, apy]) => `<span class="rg">${label} ${aw === w ? '' : `<span class="aw" data-say="${esc(aw)}" data-kind="cmn" lang="zh-Hant">${esc(aw)}</span> `}${pinyinHtml(apy)}</span>`;
+  const parts = [];
+  if (alt.cn) parts.push(part('普 Mainland', alt.cn));
+  if (alt.tw && showTaiwan) parts.push(part(alt.cn ? 'Taiwan' : '普 Taiwan', alt.tw));
+  return parts.length ? `<span class="alt-row">${parts.join(' · ')}</span>` : '';
+}
+
 function answerHtml(x, { revealedChar = true } = {}) {
   const st = S();
   const plain = st.toneColors ? '' : ' plain';
@@ -384,10 +398,10 @@ function answerHtml(x, { revealedChar = true } = {}) {
   if (st.showPinyin && x.p.length > 1) alts.push(`普 also ${x.p.slice(1, 3).join(', ')}`);
   // Whole row plays the word (Cantonese first); the romanisations and buttons pick a specific language.
   const rowKind = st.showJyutping ? 'yue' : 'cmn';
-  const examples = x.e.map(([w, jp, py, en]) => `
+  const examples = x.e.map(([w, jp, py, en, alt]) => `
     <li data-say="${esc(w)}" data-kind="${rowKind}"><span class="w" lang="zh-Hant-HK">${[...w].map((ch) => ch === x.c ? `<mark>${ch}</mark>` : ch).join('')}</span>
-      <span class="grow"><span class="r">${st.showJyutping ? `<span data-say="${esc(w)}" data-kind="yue">${jyutHtml(jp)}</span>` : ''}${st.showJyutping && st.showPinyin ? ' · ' : ''}${st.showPinyin ? `<span data-say="${esc(w)}" data-kind="cmn">${pinyinHtml(py)}</span>` : ''}</span><br><span class="e">${esc(en)}</span></span>
-      ${st.showJyutping ? speakBtn(w, 'yue', true) : ''}${st.showPinyin ? speakBtn(w, 'cmn', true) : ''}</li>`).join('');
+      <span class="grow"><span class="r">${st.showJyutping ? `<span data-say="${esc(w)}" data-kind="yue">${jyutHtml(jp)}</span>` : ''}${st.showJyutping && st.showPinyin ? ' · ' : ''}${st.showPinyin ? `<span data-say="${esc(w)}" data-kind="cmn">${pinyinHtml(py)}</span>` : ''}</span><br><span class="e">${esc(en)}</span>${st.showPinyin ? regionalHtml(w, alt, st.showTaiwan) : ''}</span>
+      ${st.showJyutping ? speakBtn(w, 'yue', true) : ''}${st.showPinyin ? speakBtn(mandarinWord(w, alt), 'cmn', true) : ''}</li>`).join('');
   return `
     ${revealedChar ? `<div class="hanzi${st.serif ? ' serif' : ''}" lang="zh-Hant-HK">${x.c}</div>` : ''}
     <div class="answer${plain}">
@@ -504,7 +518,7 @@ function renderStudy(v) {
   } else if (S().front === 'listen') {
     front = `<div class="prompt">Which character is this?</div>
       <div class="row" style="justify-content:center;margin-top:16px">${speakBtn(x.c, 'yue')} ${speakBtn(x.c, 'cmn')}</div>
-      ${x.e[0] ? `<div class="prompt small">as in: ${speakBtn(x.e[0][0], 'yue', true)} ${speakBtn(x.e[0][0], 'cmn', true)}</div>` : ''}`;
+      ${x.e[0] ? `<div class="prompt small">as in: ${speakBtn(x.e[0][0], 'yue', true)} ${speakBtn(mandarinWord(x.e[0][0], x.e[0][4]), 'cmn', true)}</div>` : ''}`;
   } else if (S().front === 'meaning') {
     front = `<div class="prompt">Write the character for</div>
       <div class="prompt"><span class="meaning">${esc(x.d)}</span></div>
@@ -615,6 +629,7 @@ function renderSettings(v) {
     <div class="card"><h2>Display</h2>
       <div class="field"><label for="showJyutping">Show Cantonese (Jyutping)</label>${toggle('showJyutping', st.showJyutping)}</div>
       <div class="field"><label for="showPinyin">Show Mandarin (Pinyin)</label>${toggle('showPinyin', st.showPinyin)}</div>
+      <div class="field"><label for="showTaiwan">Show Taiwan Mandarin<small>Where Taiwan uses a different word or pronunciation</small></label>${toggle('showTaiwan', st.showTaiwan)}</div>
       <div class="field"><label for="toneColors">Colour tones</label>${toggle('toneColors', st.toneColors)}</div>
       <div class="field"><label for="serif">Kai/Song style characters<small>Closer to textbook print</small></label>${toggle('serif', st.serif)}</div>
     </div>
@@ -644,7 +659,7 @@ function renderSettings(v) {
   for (const id of ['front', 'autoplay', 'yueVoice', 'cmnVoice']) {
     $(`#${id}`).onchange = (e) => { st[id] = e.target.value; save(); };
   }
-  for (const id of ['showJyutping', 'showPinyin', 'toneColors', 'serif']) {
+  for (const id of ['showJyutping', 'showPinyin', 'showTaiwan', 'toneColors', 'serif']) {
     $(`#${id}`).onchange = (e) => { st[id] = e.target.checked; save(); };
   }
   $('#rate').oninput = (e) => { st.rate = Number(e.target.value); $('label[for=rate] small').textContent = `${st.rate.toFixed(2)}×`; };

@@ -5,7 +5,9 @@ import {
   AGAIN, HARD, GOOD, EASY, MIN, DAY, LEARN_STEPS, MIN_EASE,
 } from '../public/srs.js';
 import fs from 'node:fs';
-import { numberedToMarked, splitBlocks, applyFix } from './build-data.mjs';
+import {
+  numberedToMarked, splitBlocks, applyFix, addRegional, taiwanReadingOf, splitTaiwanPr,
+} from './build-data.mjs';
 
 const NOW = new Date(2026, 9, 3, 15, 0, 0).getTime(); // 3 Oct 2026, 15:00 local
 const fixed = () => 0.5; // no fuzz
@@ -98,4 +100,40 @@ test('example overrides file is consistent', () => {
     if (fix.p) assert.equal(fix.p.split(' ').length, [...w].length, `${w}: one Pinyin syllable per character`);
     if (fix.j) assert.equal(fix.j.split(' ').length, [...w].length, `${w}: one Jyutping syllable per character`);
   }
+  for (const [w, r] of Object.entries(o.regional)) {
+    assert.ok(!(w in o.exclude), `${w} has regional notes but is excluded`);
+    for (const k of ['cn', 'tw']) {
+      if (!r[k]) continue;
+      const [aw, py] = r[k];
+      assert.equal(py.split(' ').length, [...aw].length, `${w}.${k}: one Pinyin syllable per character`);
+    }
+  }
+  for (const [c, [from, to]] of Object.entries(o.taiwanChars)) {
+    assert.ok(from !== to && !from.includes(' ') && !to.includes(' '), `${c}: bad Taiwan reading`);
+  }
+});
+
+test('regional notes: hand-checked entries win, Taiwan readings fill in', () => {
+  const ex = ['侍應', 'si6 jing3', 'shì yìng', 'waiter'];
+  const r = { cn: ['服務員', 'fú wù yuán'], tw: ['服務生', 'fú wù shēng'] };
+  assert.deepEqual(addRegional(ex, r, null), [...ex, r]);
+  const lj = ['垃圾', 'laap6 saap3', 'lā jī', 'trash'];
+  assert.deepEqual(addRegional(lj, undefined, 'lè sè'), [...lj, { tw: ['垃圾', 'lè sè'] }]);
+  assert.deepEqual(addRegional(lj, { tw: null }, 'lè sè'), lj);
+  assert.equal(addRegional(lj, undefined, 'lā jī'), lj);
+});
+
+test('Taiwan readings come from the word note, else the character table', () => {
+  const notes = new Map([['垃圾|lā jī', 'lè sè']]);
+  const chars = { 期: ['qī', 'qí'] };
+  assert.equal(taiwanReadingOf('垃圾', 'lā jī', notes, chars), 'lè sè');
+  assert.equal(taiwanReadingOf('星期', 'xīng qī', notes, chars), 'xīng qí');
+  assert.equal(taiwanReadingOf('期待', 'qí dài', notes, chars), null);
+  assert.equal(taiwanReadingOf('今天', 'jīn tiān', notes, chars), null);
+});
+
+test('CC-CEDICT Taiwan pronunciation notes are split out of glosses', () => {
+  assert.deepEqual(splitTaiwanPr('Taiwan pr. [le4 se4]'), { gloss: '', tw: 'le4 se4' });
+  assert.deepEqual(splitTaiwanPr('mint (plant); Taiwan pr. [bo4he2]'), { gloss: 'mint (plant)', tw: 'bo4 he2' });
+  assert.deepEqual(splitTaiwanPr('snail'), { gloss: 'snail', tw: null });
 });
