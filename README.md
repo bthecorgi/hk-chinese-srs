@@ -27,7 +27,7 @@ The P1 and P2 sub-blocks are probably core and supplementary lists. If you have 
 - **Train by level:** switch P1–P6 on or off. New characters come in curriculum order, P1 first. You set the number of new cards per day.
 - Three card types: **Read** (see the character, recall the sound and meaning), **Listen** (hear it, recall the character) and **Write** (see the meaning and reading, write the character).
 - Cantonese and Mandarin playback through the device's built-in voices (Web Speech API), with optional auto-play when you reveal the answer. On iOS, download the *Sinji (Cantonese, Hong Kong)* voice under Settings → Accessibility → Read & Speak → Voices → Chinese (called Spoken Content before iOS 26) for the best Cantonese.
-- Up to 3 common example words per character, each with Jyutping, Pinyin, English and audio.
+- Up to 3 common example words per character, each with Jyutping, Pinyin, English and audio. Where Mandarin differs, the example also shows the mainland word (侍應 → 服務員) and, optionally, Taiwan's word or pronunciation (出租車 → 計程車, 垃圾 → lè sè). The Taiwan notes can be turned off in Settings.
 - Tone-coloured readings, plus the simplified form and stroke count.
 - Browse each level as a grid coloured by progress. Search by 字, Jyutping or Pinyin (with or without tones), or English.
 - Progress is stored on the device in `localStorage`. You can export and import JSON backups through the share sheet on iOS. Works offline once loaded (service worker).
@@ -64,7 +64,7 @@ Each record in `chars.json` has these fields:
 - `j`: Jyutping readings, most common first
 - `p`: Pinyin readings
 - `d`: English gloss
-- `e`: example words, each `[word, jyutping, pinyin, english]`
+- `e`: example words, each `[word, jyutping, pinyin, english]`, plus an optional `{ cn: [word, pinyin], tw: [word, pinyin] }` where mainland or Taiwan Mandarin differs
 - `sc`: simplified form
 - `v`: variant form listed in the source
 
@@ -74,5 +74,6 @@ Each record in `chars.json` has these fields:
 - Cantonese readings: [LSHK 粵拼表](https://github.com/lshk-org/jyutping-table) (CC BY 4.0) and [to-jyutping](https://github.com/CanCLID/to-jyutping), which picks the main reading and handles words in context.
 - Mandarin readings, English glosses, stroke counts and simplified forms: Unicode [Unihan](https://www.unicode.org/charts/unihan.html) (Unicode licence), via `@mandel59/mojidata`.
 - Example words: [CC-CEDICT](https://cc-cedict.org/) (CC BY-SA 4.0), ranked by [SUBTLEX-CH](https://www.ugent.be/pp/experimentele-psychologie/en/research/documents/subtlexch) word frequency.
+- Example word corrections: `data/example-overrides.json` is a hand-checked list applied at build time. `fix` corrects the Pinyin, Jyutping or English of a word (CC-CEDICT often lists one written word under several readings, e.g. 結果 jiē guǒ "to bear fruit" vs jié guǒ "result", and the build can't tell which is meant). `exclude` drops words that mean something different in Cantonese and Mandarin (窩心, 薄餅), Hong Kong-only or dialect words that Mandarin doesn't use (侍應, 警署, 阿爸), and words not suitable for primary pupils. The next-ranked word replaces anything excluded. `regional` gives the mainland (`cn`) and Taiwan (`tw`) Mandarin forms for words that differ, such as Hong Kong words (侍應, 恤衫, 地盤) and mainland/Taiwan pairs (軟件/軟體, 地鐵/捷運). Taiwan pronunciations come from CC-CEDICT's "Taiwan pr." notes on words, plus the hand-checked `taiwanChars` table (期 qí, 危 wéi, 髮 fǎ, …) for words it doesn't annotate.
 
 Readings come from automatic sources, so check any doubtful polyphonic characters (e.g. 長, 行, 重) against a dictionary.

@@ -7,6 +7,7 @@
 //   cedict-json (CC-CEDICT)                example words with pinyin + English
 //   subtlex-ch-wf (SUBTLEX-CH)             word frequency, used to pick common example words
 //   to-jyutping                            context-aware Jyutping for characters and words
+//   data/example-overrides.json            hand-checked fixes and exclusions for example words
 //
 // Usage: npm install && npm run build:data
 
@@ -135,19 +136,37 @@ function parseLshk(tsv) {
   return m;
 }
 
+// "mint (plant); Taiwan pr. [bo4 he2]" -> taiwan reading, gloss without the note
+const TAIWAN_PR = /(?:^|[;,]?\s*)Taiwan pr\. \[([^\]]+)\]?/;
+export function splitTaiwanPr(gloss) {
+  const m = gloss.match(TAIWAN_PR);
+  if (!m) return { gloss, tw: null };
+  return { gloss: gloss.replace(TAIWAN_PR, '').trim(), tw: m[1].replace(/([1-5])(?=[a-z])/g, '$1 ') };
+}
+
 const BAD_GLOSS = /^(variant of|old variant of|surname |see |used in |abbr\. for |\(old\)|archaic variant|Japanese variant)/i;
 const isHan = (ch) => /\p{Script=Han}/u.test(ch);
 
-function buildWordIndex(cedict, freq, inList) {
+function buildWordIndex(cedict, freq, inList, exclude = new Set()) {
   // traditional word -> best entry
   const words = new Map();
+  // "word|marked pinyin" -> Taiwan reading, kept for every entry so a hand-fixed
+  // reading still finds its own Taiwan note
+  const taiwanPr = new Map();
   for (const e of cedict) {
     const w = e.traditional;
     const chars = [...w];
-    if (chars.length < 2 || chars.length > 4 || !chars.every(isHan)) continue;
+    if (chars.length > 4 || !chars.every(isHan)) continue;
+    if (exclude.has(w)) continue;
     if (/^[A-Z]/.test(e.pinyin)) continue; // proper nouns
-    const english = e.english.filter((g) => !BAD_GLOSS.test(g) && !/^CL:/.test(g));
-    if (!english.length) continue;
+    let tw = null;
+    const english = e.english.map((g) => {
+      const r = splitTaiwanPr(g);
+      tw ??= r.tw;
+      return r.gloss;
+    }).filter((g) => g && !BAD_GLOSS.test(g) && !/^CL:/.test(g));
+    if (tw && chars.length > 1) taiwanPr.set(`${w}|${numberedToMarked(e.pinyin.toLowerCase())}`, numberedToMarked(tw.toLowerCase()));
+    if (chars.length < 2 || !english.length) continue;
     const f = freq.get(e.simplified) || 0;
     if (f < 5) continue;
     const prev = words.get(w);
@@ -162,7 +181,46 @@ function buildWordIndex(cedict, freq, inList) {
       byChar.get(ch).push(entry);
     }
   }
-  return byChar;
+  return { byChar, taiwanPr };
+}
+
+// Taiwan reading of a word: CC-CEDICT's note on the word if it has one, otherwise
+// the hand-checked character table (星期 xīng qī -> xīng qí, since 期 is qí in
+// Taiwan). CC-CEDICT's own notes on single characters are not used: each covers
+// only one sense of the character, so applying them to words gives wrong readings.
+export function taiwanReadingOf(w, py, taiwanPr, charTable) {
+  if (taiwanPr.has(`${w}|${py}`)) return taiwanPr.get(`${w}|${py}`);
+  const syl = py.split(' ');
+  const chars = [...w];
+  if (syl.length !== chars.length) return null;
+  const tw = syl.map((s, i) => (charTable[chars[i]]?.[0] === s ? charTable[chars[i]][1] : s)).join(' ');
+  return tw === py ? null : tw;
+}
+
+// CC-CEDICT often has several entries for one written word (結果 jiē guǒ "to bear
+// fruit" vs jié guǒ "result"), and frequency can't tell them apart, so some
+// examples get the wrong reading. Fixes are checked by hand in the overrides file.
+export function applyFix(example, fix) {
+  if (!fix) return example;
+  const [w, jp, py, en] = example;
+  return [w, fix.j ?? jp, fix.p ?? py, fix.en ?? en];
+}
+
+// Where Mandarin differs from the example word, a 5th element records it:
+// { cn: [word, pinyin] } when mainland Mandarin uses another word, and
+// { tw: [word, pinyin] } when Taiwan differs from the mainland form (another word,
+// or the same word said differently). Hand-checked entries win; Taiwan readings
+// otherwise come from CC-CEDICT's "Taiwan pr." notes.
+export function addRegional(example, regional, taiwanReading) {
+  const [w, , py] = example;
+  const alt = {};
+  if (regional?.cn) alt.cn = regional.cn;
+  if (regional && 'tw' in regional) {
+    if (regional.tw) alt.tw = regional.tw;
+  } else if (!alt.cn && taiwanReading && taiwanReading !== py) {
+    alt.tw = [w, taiwanReading];
+  }
+  return Object.keys(alt).length ? [...example.slice(0, 4), alt] : example;
 }
 
 function trimGloss(english) {
@@ -190,7 +248,8 @@ async function main() {
   blocks.forEach((b, i) => b.forEach((ch) => grade.set(ch, BLOCK_GRADE[i])));
   const inList = (ch) => grade.has(ch);
 
-  const byChar = buildWordIndex(cedict, freq, inList);
+  const overrides = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'example-overrides.json'), 'utf8'));
+  const { byChar, taiwanPr } = buildWordIndex(cedict, freq, inList, new Set(Object.keys(overrides.exclude)));
   const missing = [];
 
   const out = list.map(({ c, variant }) => {
@@ -212,7 +271,11 @@ async function main() {
       })
       .sort((a, b) => b.score - a.score)
       .slice(0, 3)
-      .map(({ e }) => [e.w, ToJyutping.getJyutpingText(e.w), numberedToMarked(e.pinyin), trimGloss(e.english)]);
+      .map(({ e }) => applyFix(
+        [e.w, ToJyutping.getJyutpingText(e.w), numberedToMarked(e.pinyin), trimGloss(e.english)],
+        overrides.fix[e.w],
+      ))
+      .map((ex) => addRegional(ex, overrides.regional[ex[0]], taiwanReadingOf(ex[0], ex[2], taiwanPr, overrides.taiwanChars)));
 
     const simp = (unihan.simplified.get(c) || [])
       .map((u) => String.fromCodePoint(parseInt(u.replace('U+', ''), 16)))
@@ -230,6 +293,9 @@ async function main() {
   });
 
   if (missing.length) console.warn(`missing readings for: ${missing.join('')}`);
+  const used = new Set(out.flatMap((r) => r.e.map((x) => x[0])));
+  const unused = [...Object.keys(overrides.fix), ...Object.keys(overrides.regional)].filter((w) => !used.has(w));
+  if (unused.length) console.warn(`example overrides not used by any character: ${unused.join(' ')}`);
 
   const payload = {
     source: '香港課程發展議會《小學中國語文科（小一至小六課程綱要）》(1990) 小學分級常用字表',
