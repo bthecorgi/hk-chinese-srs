@@ -1,5 +1,5 @@
 // Offline cache. Bump VERSION whenever any shell file or the data changes.
-const VERSION = 'v9';
+const VERSION = 'v10';
 const CACHE = `hk-srs-${VERSION}`;
 const SHELL = [
   './',
@@ -9,6 +9,7 @@ const SHELL = [
   'srs.js',
   'manifest.webmanifest',
   'data/chars.json',
+  'data/sentences.json',
   'icons/apple-touch-icon.png',
   'icons/icon-192.png',
   'icons/icon-512.png',

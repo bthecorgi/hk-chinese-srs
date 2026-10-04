@@ -14,6 +14,8 @@ const DEFAULT_SETTINGS = {
   showJyutping: true,
   showPinyin: true,
   showTaiwan: true,
+  showSentences: true,
+  sentRegion: 'hk', // hk | cn | tw
   toneColors: true,
   serif: false,
   yueVoice: '',
@@ -24,6 +26,7 @@ const DEFAULT_SETTINGS = {
 // ---------- state ----------
 
 let DATA = null; // { chars: [...] }
+let SENT = {}; // example word -> [hk, english, cn, tw, diff], see scripts/build-sentences.mjs
 let BY_CHAR = new Map();
 let store = loadStore();
 let route = { name: 'home' };
@@ -386,6 +389,41 @@ function regionalHtml(w, alt, showTaiwan) {
   return parts.length ? `<span class="alt-row">${parts.join(' · ')}</span>` : '';
 }
 
+// Example sentences: one per example word, in Hong Kong, mainland or Taiwan
+// written Chinese. All three are rendered and CSS shows the chosen region, so
+// switching doesn't re-render the card.
+const REGIONS = [['hk', '港', 'Hong Kong', 'zh-Hant-HK'], ['cn', '陸', 'Mainland', 'zh-Hans-CN'], ['tw', '台', 'Taiwan', 'zh-Hant-TW']];
+
+function sentenceHtml(w) {
+  const s = SENT[w];
+  if (!s) return '';
+  const [hk, en, cn, tw, diff] = s;
+  const text = { hk, cn, tw: tw ?? hk };
+  const differs = { hk: false, cn: !!(diff & 1), tw: !!(diff & 2) };
+  const lines = REGIONS.map(([r, zh, , lang]) => {
+    const plain = text[r].replace(/[⟦⟧]/g, '');
+    const html = esc(text[r]).replace('⟦', '<b>').replace('⟧', '</b>');
+    return `<span class="sl sl-${r}" lang="${lang}" data-say="${esc(plain)}" data-kind="${r === 'hk' && S().showJyutping ? 'yue' : 'cmn'}">${html}${differs[r] ? `<span class="wd" title="Wording differs from Hong Kong">${zh}用詞</span>` : ''}</span>`;
+  }).join('');
+  return `<div class="sent">${lines}<span class="se">${esc(en)}</span></div>`;
+}
+
+function regionTabsHtml() {
+  const cur = S().sentRegion;
+  return `<div class="sent-tabs" role="group" aria-label="Example sentence region"><span class="lbl">例句</span>${REGIONS.map(([r, zh, en]) =>
+    `<button data-region="${r}" aria-pressed="${r === cur}" title="${en}">${zh} <small>${en}</small></button>`).join('')}</div>`;
+}
+
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-region]');
+  if (!b) return;
+  e.stopPropagation();
+  S().sentRegion = b.dataset.region;
+  save();
+  document.querySelectorAll('.examples').forEach((el) => { el.dataset.region = b.dataset.region; });
+  document.querySelectorAll('[data-region]').forEach((el) => el.setAttribute('aria-pressed', el.dataset.region === b.dataset.region));
+});
+
 function answerHtml(x, { revealedChar = true } = {}) {
   const st = S();
   const plain = st.toneColors ? '' : ' plain';
@@ -400,10 +438,11 @@ function answerHtml(x, { revealedChar = true } = {}) {
   if (st.showPinyin && x.p.length > 1) alts.push(`普 also ${x.p.slice(1, 3).join(', ')}`);
   // Whole row plays the word (Cantonese first); the romanisations and buttons pick a specific language.
   const rowKind = st.showJyutping ? 'yue' : 'cmn';
+  const sentences = st.showSentences && x.e.some(([w]) => SENT[w]);
   const examples = x.e.map(([w, jp, py, en, alt]) => `
     <li data-say="${esc(w)}" data-kind="${rowKind}"><span class="w" lang="zh-Hant-HK">${[...w].map((ch) => ch === x.c ? `<mark>${ch}</mark>` : ch).join('')}</span>
       <span class="grow"><span class="r">${st.showJyutping ? `<span data-say="${esc(w)}" data-kind="yue">${jyutHtml(jp)}</span>` : ''}${st.showJyutping && st.showPinyin ? ' · ' : ''}${st.showPinyin ? `<span data-say="${esc(w)}" data-kind="cmn">${pinyinHtml(py)}</span>` : ''}</span><br><span class="e">${esc(en)}</span>${st.showPinyin ? regionalHtml(w, alt, st.showTaiwan) : ''}</span>
-      ${st.showJyutping ? speakBtn(w, 'yue', true) : ''}${st.showPinyin ? speakBtn(mandarinWord(w, alt), 'cmn', true) : ''}</li>`).join('');
+      ${st.showJyutping ? speakBtn(w, 'yue', true) : ''}${st.showPinyin ? speakBtn(mandarinWord(w, alt), 'cmn', true) : ''}${sentences ? sentenceHtml(w) : ''}</li>`).join('');
   return `
     ${revealedChar ? `<div class="hanzi${st.serif ? ' serif' : ''}" lang="zh-Hant-HK">${x.c}</div>` : ''}
     <div class="answer${plain}">
@@ -411,7 +450,7 @@ function answerHtml(x, { revealedChar = true } = {}) {
       ${alts.length ? `<div class="alt">${esc(alts.join(' · '))}</div>` : ''}
       <div class="def">${esc(x.d)}</div>
       <div class="meta">P${x.g} · ${x.s} strokes${x.sc ? ` · simplified <span lang="zh-Hans">${x.sc}</span>` : ''}${x.v ? ` · variant <span lang="zh-Hant">${x.v}</span>` : ''}</div>
-      ${examples ? `<ul class="examples">${examples}</ul>` : ''}
+      ${examples ? `${sentences ? regionTabsHtml() : ''}<ul class="examples" data-region="${st.sentRegion}">${examples}</ul>` : ''}
     </div>`;
 }
 
@@ -649,6 +688,7 @@ function renderSettings(v) {
       <div class="field"><label for="showJyutping">Show Cantonese (Jyutping)</label>${toggle('showJyutping', st.showJyutping)}</div>
       <div class="field"><label for="showPinyin">Show Mandarin (Pinyin)</label>${toggle('showPinyin', st.showPinyin)}</div>
       <div class="field"><label for="showTaiwan">Show Taiwan Mandarin<small>Where Taiwan uses a different word or pronunciation</small></label>${toggle('showTaiwan', st.showTaiwan)}</div>
+      <div class="field"><label for="showSentences">Show example sentences<small>Switch between Hong Kong 港, mainland 陸 and Taiwan 台 written Chinese on the card</small></label>${toggle('showSentences', st.showSentences)}</div>
       <div class="field"><label for="toneColors">Colour tones</label>${toggle('toneColors', st.toneColors)}</div>
       <div class="field"><label for="serif">Kai/Song style characters<small>Closer to textbook print</small></label>${toggle('serif', st.serif)}</div>
     </div>
@@ -678,7 +718,7 @@ function renderSettings(v) {
   for (const id of ['front', 'autoplay', 'yueVoice', 'cmnVoice']) {
     $(`#${id}`).onchange = (e) => { st[id] = e.target.value; save(); };
   }
-  for (const id of ['showJyutping', 'showPinyin', 'showTaiwan', 'toneColors', 'serif']) {
+  for (const id of ['showJyutping', 'showPinyin', 'showTaiwan', 'showSentences', 'toneColors', 'serif']) {
     $(`#${id}`).onchange = (e) => { st[id] = e.target.checked; save(); };
   }
   $('#rate').oninput = (e) => { st.rate = Number(e.target.value); $('label[for=rate] small').textContent = `${st.rate.toFixed(2)}×`; };
@@ -746,6 +786,11 @@ async function boot() {
   }
   BY_CHAR = new Map(DATA.chars.map((x) => [x.c, x]));
   render();
+  // Sentences are optional extras: load them after the first render, and re-render once they arrive.
+  fetch('data/sentences.json').then((r) => (r.ok ? r.json() : {})).then((s) => {
+    SENT = s;
+    if (route.name !== 'study' || session?.revealed) render();
+  }).catch(() => {});
   navigator.storage?.persist?.();
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     navigator.serviceWorker.register('sw.js').catch(() => {});
