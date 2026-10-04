@@ -1,0 +1,250 @@
+地球|我們要保護地球。|We must protect the Earth.
+地點|請告訴我見面的地點。|Please tell me where we're meeting.
+現在|現在是下午三點。|It's three in the afternoon now.
+實在|這道題實在太難了。|This question is really too hard.
+多麼|今天的天空多麼藍啊！|How blue the sky is today!
+大多數|大多數同學都喜歡上美術課。|Most students like art lessons.
+好像|天陰陰的，好像要下雨了。|It's overcast; it looks like it's going to rain.
+好好|你要好好休息。|You should get a good rest.
+不好|對不起，是我不好。|Sorry, it was my fault.
+她們|她們是我的好姐妹。|They are my close girlfriends.
+數字|請把這些數字加起來。|Please add these numbers together.
+看守|小狗在門口看守着房子。|The dog guards the house at the door.
+遵守|我們要遵守交通規則。|We must obey the traffic rules.
+保守|爺爺的想法比較保守。|Grandpa's ideas are rather conservative.
+年輕|我的老師很年輕。|My teacher is very young.
+去年|我去年搬了家。|I moved house last year.
+幫忙|謝謝你幫忙。|Thanks for your help.
+匆忙|他匆忙地跑出門口。|He rushed out of the door.
+忙碌|媽媽每天都很忙碌。|Mum is busy every day.
+早上|我早上七點起床。|I get up at seven in the morning.
+早就|我早就做完功課了。|I finished my homework long ago.
+早晨|早晨的空氣很清新。|The morning air is very fresh.
+沒有|我沒有帶雨傘。|I didn't bring an umbrella.
+還有|我們還有十分鐘。|We still have ten minutes.
+耳朵|兔子的耳朵很長。|Rabbits have long ears.
+花朵|園子裏開滿了美麗的花朵。|The garden is full of beautiful flowers.
+雲朵|天上飄着白色的雲朵。|White clouds are floating in the sky.
+下次|下次記得早點來。|Remember to come earlier next time.
+每次|他每次考試都很緊張。|He gets nervous before every exam.
+游泳池|我們一起去游泳池游泳。|Let's go swimming at the pool together.
+電池|遙控器的電池沒電了。|The remote control's batteries have run out.
+水池|水池裏有很多金魚。|There are lots of goldfish in the pond.
+玉米|我最喜歡吃玉米。|I love eating corn.
+米飯|我午餐吃了一碗米飯。|I had a bowl of rice for lunch.
+大米|媽媽去超級市場買大米。|Mum went to the supermarket to buy rice.|妈妈去超市买大米。|媽媽去超市買米。
+羊毛|這件毛衣是用羊毛做的。|This sweater is made of wool.
+羊肉|冬天吃羊肉可以暖身。|Eating mutton in winter keeps you warm.
+老師|陳老師教我們中文。|Miss Chan teaches us Chinese.
+老婆|他很愛他的老婆。|He loves his wife very much.
+老天|老天，終於停雨了！|Heavens, the rain has finally stopped!
+雞肉|我喜歡吃雞肉。|I like eating chicken.
+肉體|運動可以鍛煉肉體和意志。|Exercise trains both body and mind.
+出色|她的表演非常出色。|Her performance was outstanding.
+角色|他在話劇中扮演一個重要的角色。|He plays an important role in the play.
+紅色|我最喜歡紅色。|My favourite colour is red.
+進行|比賽正在進行中。|The match is in progress.
+行動|我們馬上行動吧！|Let's take action right away!
+不行|上課時玩手機是不行的。|Playing with your phone in class is not allowed.
+衣服|媽媽在洗衣服。|Mum is washing clothes.
+上衣|他穿着一件藍色的上衣。|He is wearing a blue top.
+睡衣|我換上睡衣準備睡覺。|I changed into my pyjamas, ready for bed.
+東西|我去商店買東西。|I'm going to the shop to buy some things.
+西裝|爸爸穿西裝上班。|Dad wears a suit to work.
+西服|新郎穿着一套黑色西服。|The groom wears a black suit.
+位置|請把書放回原來的位置。|Please put the books back where they were.
+位子|這個位子有人坐嗎？|Is anyone sitting in this seat?
+你們|你們好！|Hello, everyone!
+你好|你好，我叫小明。|Hello, my name is Siu Ming.
+迷你|她買了一部迷你相機。|She bought a mini camera.
+動作|他的動作很快。|His movements are very quick.
+作為|作為班長，他要幫助同學。|As class monitor, he has to help his classmates.
+記住|請記住我的電話號碼。|Please remember my phone number.
+抓住|他抓住了那隻小貓。|He caught the kitten.
+冷靜|遇到危險時要保持冷靜。|Stay calm when you are in danger.
+冷酷|故事中的國王非常冷酷。|The king in the story is very cold-hearted.
+冷水|天氣太熱了，我想喝冷水。|It's so hot that I want to drink cold water.
+吹牛|他很喜歡吹牛。|He loves to brag.
+吹風|生病了就不要出去吹風。|Don't go out in the wind when you're ill.
+風吹草動|小鹿聽到一點風吹草動就跑了。|The fawn ran off at the slightest sound.
+坐下|請大家坐下。|Please sit down, everyone.
+坐牢|做壞事的人要坐牢。|People who commit crimes go to prison.
+乘坐|我們乘坐飛機去北京。|We took a plane to Beijing.
+完成|我已經完成了作業。|I've finished my assignment.
+完美|世界上沒有完美的人。|Nobody in the world is perfect.
+弟弟|我的弟弟今年五歲。|My younger brother is five this year.
+兄弟|他們兩兄弟感情很好。|The two brothers are very close.|他们兄弟俩感情很好。|他們兩兄弟感情很好。
+老弟|老弟，好久不見！|Hey buddy, long time no see!
+快樂|祝你新年快樂！|Happy New Year!
+快要|快要考試了，我要努力溫習。|Exams are coming soon, so I must revise hard.|快要考试了，我要努力复习。|快要考試了，我要努力複習。
+愉快|祝你有一個愉快的假期。|Have a pleasant holiday.
+我們|我們是好朋友。|We are good friends.
+自我|請你做一個簡單的自我介紹。|Please introduce yourself briefly.
+我方|比賽中我方領先兩分。|Our side is leading by two points.
+把握|我們要把握這個機會。|We must seize this opportunity.
+把門|他在足球隊裏負責把門。|He keeps goal for the football team.
+把手|門的把手壞了。|The door handle is broken.
+找到|我終於找到了我的鉛筆。|I finally found my pencil.
+尋找|他們在森林裏尋找走失的小狗。|They are searching the forest for the lost dog.
+找回|她找回了丟失的錢包。|She got her lost wallet back.
+進步|你的中文進步了很多。|Your Chinese has improved a lot.
+進一步|我們需要進一步了解這個問題。|We need to understand this problem further.
+地步|房間髒到了不能住人的地步。|The room got so dirty it wasn't fit to live in.
+每個|每個人都有自己的夢想。|Everyone has their own dream.
+每天|我每天都吃早餐。|I eat breakfast every day.
+從沒|我從沒見過這麼大的魚。|I have never seen such a big fish.
+沒什麼|沒什麼，不用客氣。|It's nothing, don't mention it.
+男孩|那個男孩跑得很快。|That boy runs very fast.
+看見|我看見一隻小鳥在樹上。|I saw a little bird in the tree.
+見到|很高興見到你。|Nice to meet you.
+拿走|誰拿走了我的書？|Who took my book?
+走開|走開，別打擾我！|Go away, don't bother me!
+逃走|小偷從後門逃走了。|The thief escaped through the back door.
+身體|多做運動，身體才會健康。|Exercise more to stay healthy.
+身邊|媽媽一直在我身邊。|Mum has always been by my side.
+開車|爸爸開車送我上學。|Dad drives me to school.
+停車|這裏不准停車。|No parking here.
+那麼|你那麼喜歡畫畫，就參加美術班吧。|Since you like drawing so much, join the art class.
+那個|那個人是誰？|Who is that person?
+那些|那些書是我的。|Those books are mine.
+這些|這些蘋果很甜。|These apples are very sweet.
+一些|我想買一些水果。|I want to buy some fruit.
+事情|我有一件事情想問你。|There's something I want to ask you.
+故事|奶奶每晚給我講故事。|Grandma tells me a story every night.
+事實上|事實上，他早就知道了。|In fact, he knew long ago.
+起來|快起來，要遲到了！|Get up quickly, you'll be late!
+兔子|兔子愛吃紅蘿蔔。|Rabbits love carrots.|兔子爱吃胡萝卜。|兔子愛吃紅蘿蔔。
+白兔|一隻白兔在草地上跳。|A white rabbit is hopping on the grass.
+守株待兔|做事不能守株待兔，要主動努力。|Don't just wait for luck; work hard for it.
+這兒|請把東西放在這兒。|Please put the things here.
+那兒|你在那兒等我。|Wait for me there.
+兩者|蘋果和橙，兩者我都喜歡。|Apples and oranges – I like both.|苹果和橙子，两者我都喜欢。|蘋果和柳丁，兩者我都喜歡。
+兩邊|馬路兩邊種滿了樹。|Trees are planted along both sides of the road.
+兩下子|他打籃球真有兩下子。|He's really quite good at basketball.
+看到|我看到天上有一架飛機。|I saw a plane in the sky.
+得到|他得到了老師的稱讚。|He was praised by the teacher.
+和平|我們希望世界和平。|We hope for world peace.
+和解|兩個好朋友終於和解了。|The two good friends finally made up.
+和諧|我們的家庭很和諧。|Our family lives in harmony.
+妹妹|我的妹妹很可愛。|My little sister is very cute.
+姐妹|她們兩姐妹長得很像。|The two sisters look very alike.|她们姐妹俩长得很像。|她們兩姐妹長得很像。
+姊妹|她們是一對好姊妹。|They are a close pair of sisters.
+姐姐|姐姐教我做功課。|My older sister helps me with my homework.
+酒店|我們住在海邊的一家酒店。|We stayed at a hotel by the sea.||我們住在海邊的一家飯店。
+飯店|這家飯店的菜很好吃。|The food at this restaurant is delicious.
+商店|這條街上有很多商店。|There are many shops on this street.
+害怕|妹妹害怕打雷。|My little sister is afraid of thunder.
+可怕|那部電影很可怕。|That film is very scary.
+恐怕|恐怕今天要下雨了。|I'm afraid it's going to rain today.
+房間|我的房間很整齊。|My room is very tidy.
+廚房|媽媽在廚房做飯。|Mum is cooking in the kitchen.
+拉丁|他會跳拉丁舞。|He can do Latin dance.
+拉開|請拉開窗簾。|Please open the curtains.
+沙拉|我午餐吃了一碗蔬菜沙拉。|I had a bowl of vegetable salad for lunch.
+拍照|我們在海邊拍照。|We took photos at the beach.
+拍攝|這部電影是在香港拍攝的。|This film was shot in Hong Kong.
+開拍|新電影下個月開拍。|The new film starts shooting next month.
+明星|她是一位有名的電影明星。|She is a famous film star.
+舒服|這張床很舒服。|This bed is very comfortable.
+服務|這家餐廳的服務很好。|The service at this restaurant is very good.
+樹林|小鳥在樹林裏唱歌。|Birds are singing in the woods.
+森林|森林裏住着很多動物。|Many animals live in the forest.
+叢林|老虎生活在叢林中。|Tigers live in the jungle.
+如果|如果明天下雨，我們就不去了。|If it rains tomorrow, we won't go.
+結果|比賽的結果怎樣？|What was the result of the match?
+後果|不聽話的後果很嚴重。|The consequences of not listening are serious.
+房東|房東每個月來收租。|The landlord comes to collect the rent every month.
+東方|太陽從東方升起來。|The sun rises in the east.
+樹枝|小鳥站在樹枝上。|A little bird is standing on a branch.
+枝葉|這棵樹的枝葉很茂盛。|This tree has lush leaves and branches.
+枝條|春天，柳樹長出了新的枝條。|In spring, the willow grows new twigs.
+杯子|請給我一個杯子。|Please give me a cup.
+乾杯|為我們的友誼乾杯！|A toast to our friendship!
+紙杯|我們用紙杯喝水。|We drink water from paper cups.
+愛河|他們很快就墮入了愛河。|They soon fell in love.|他们很快就坠入了爱河。|他們很快就墜入了愛河。
+河水|河水很清。|The river water is very clear.
+河邊|我們在河邊散步。|We took a walk by the river.
+爬山|星期日我們去爬山。|We are going hiking on Sunday.
+爬行|嬰兒在地上爬行。|The baby is crawling on the floor.
+爬蟲|蛇是一種爬蟲。|A snake is a kind of reptile.
+爸爸|爸爸是一位醫生。|My dad is a doctor.
+阿爸|阿爸每天送我上學。|Dad takes me to school every day.|爸爸每天送我上学。|爸爸每天送我上學。
+禮物|這是我送給你的禮物。|This is a present for you.
+動物|我最喜歡的動物是熊貓。|My favourite animal is the panda.
+食物|我們不要浪費食物。|We shouldn't waste food.
+熱狗|我在球場買了一個熱狗。|I bought a hot dog at the stadium.
+走狗|故事裏的壞人有很多走狗。|The villain in the story has many lackeys.
+小狗|我家有一隻小狗。|We have a puppy at home.
+玩笑|別把這件事當玩笑。|Don't treat this as a joke.
+開玩笑|我只是開玩笑而已。|I was only joking.
+好玩|這個遊戲很好玩。|This game is a lot of fun.
+是的|是的，我明白了。|Yes, I understand.
+真的|你說的是真的嗎？|Is what you said true?
+別的|你還想吃別的東西嗎？|Do you want to eat anything else?
+知道|我知道答案。|I know the answer.
+不知|我不知怎樣回答。|I don't know how to answer.
+通知|學校通知明天放假。|The school announced that tomorrow is a holiday.
+空氣|郊外的空氣很新鮮。|The air in the countryside is very fresh.
+有空|你明天有空嗎？|Are you free tomorrow?
+花園|花園裏開滿了鮮花。|The garden is full of flowers.
+花樣|這條裙子的花樣很漂亮。|The pattern on this dress is very pretty.
+花生|我喜歡吃花生醬。|I like peanut butter.
+最近|你最近好嗎？|How have you been recently?
+接近|考試的日子越來越接近了。|The exam date is getting closer and closer.
+附近|我家附近有一個公園。|There's a park near my home.
+長官|士兵向長官敬禮。|The soldier saluted his commanding officer.
+長大|我長大後想做老師。|I want to be a teacher when I grow up.
+隊長|他是籃球隊的隊長。|He is the captain of the basketball team.
+開門|圖書館早上九點開門。|The library opens at nine in the morning.
+出門|出門前記得關燈。|Remember to switch off the lights before you go out.
+下雨|下雨了，快回家吧。|It's raining, let's hurry home.
+雨水|雨水從屋頂流下來。|Rainwater runs down from the roof.
+大雨|昨晚下了一場大雨。|There was heavy rain last night.
+青少年|這本書適合青少年閱讀。|This book is suitable for teenagers.
+青年|他是一位有理想的青年。|He is a young man with ideals.
+青春|青春是美好的。|Youth is a wonderful thing.
+漂亮|你的裙子很漂亮。|Your dress is very pretty.
+天亮|天亮了，小鳥開始唱歌。|It's daybreak, and the birds start singing.
+相信|我相信你一定能做到。|I believe you can do it.
+自信|她說話時充滿自信。|She speaks with great confidence.
+信息|這本書給我們很多有用的信息。|This book gives us a lot of useful information.||這本書給我們很多有用的資訊。
+隨便|請隨便坐。|Please sit wherever you like.
+方便|住在地鐵站附近很方便。|Living near an MTR station is very convenient.|住在地铁站附近很方便。|住在捷運站附近很方便。
+順便|你去超級市場時，順便幫我買牛奶。|When you go to the supermarket, pick up some milk for me.|你去超市时，顺便帮我买牛奶。|你去超市時，順便幫我買牛奶。
+之前|睡覺之前要刷牙。|Brush your teeth before going to bed.
+面前|一隻小狗跑到我面前。|A puppy ran up to me.
+哈哈|他聽了笑話，哈哈大笑。|He roared with laughter at the joke.
+哈羅|哈羅，你好嗎？|Hello, how are you?
+哈利路亞|教堂裏的人唱起了哈利路亞。|The people in the church sang hallelujah.
+娃娃|這個娃娃很可愛。|This baby is very cute.
+洋娃娃|妹妹抱着她的洋娃娃睡覺。|My little sister sleeps hugging her doll.
+地下室|爺爺把舊東西放在地下室。|Grandpa keeps old things in the basement.
+室友|我的室友來自上海。|My roommate comes from Shanghai.
+客氣|你太客氣了。|You're too kind.
+客人|今晚家裏有客人。|We have guests at home tonight.
+客房|酒店的客房很乾淨。|The hotel rooms are very clean.||飯店的客房很乾淨。
+屋子|屋子裏很暖和。|It's warm inside the house.
+小屋|山上有一間小屋。|There's a small hut on the hill.
+房屋|颱風吹倒了很多房屋。|The typhoon blew down many houses.
+最後|他是最後一個到的。|He was the last to arrive.
+然後|我先做功課，然後看電視。|I do my homework first, then watch TV.
+以後|以後我會小心的。|I'll be careful from now on.
+手指|我的手指被刀割傷了。|I cut my finger with a knife.
+指紋|警察在門上找到指紋。|The police found fingerprints on the door.
+指甲|你的指甲太長了，要剪了。|Your nails are too long; they need cutting.
+事故|那裏發生了交通事故。|There was a traffic accident there.
+故意|對不起，我不是故意的。|Sorry, I didn't do it on purpose.
+就是|這就是我的家。|This is my home.
+昨晚|昨晚我很早就睡了。|I went to bed early last night.
+昨日|昨日的天氣很好。|The weather was very good yesterday.
+星期|一個星期有七天。|There are seven days in a week.
+星球|地球是我們居住的星球。|The Earth is the planet we live on.
+春天|春天到了，花都開了。|Spring has come and the flowers are blooming.
+青春期|哥哥到了青春期，長高了很多。|My older brother has reached puberty and grown a lot taller.
+洗澡|我每天晚上洗澡。|I take a bath every evening.
+清洗|我們要清洗這些碗碟。|We need to wash these dishes.
+洗手間|請問洗手間在哪裏？|Excuse me, where is the toilet?
+甚至|他忙得甚至沒有時間吃飯。|He was so busy he didn't even have time to eat.
+甚至於|他太累了，甚至於站着也能睡着。|He was so tired he could even fall asleep standing up.
+更有甚者|有人亂拋垃圾，更有甚者在牆上亂畫。|Some people litter, and some even scribble on walls.
+看看|讓我看看你的畫。|Let me have a look at your drawing.
