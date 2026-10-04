@@ -110,7 +110,7 @@
 有趣|這本書很有趣。|This book is very interesting.
 樂趣|閱讀給我帶來很多樂趣。|Reading gives me a lot of pleasure.
 踏板|騎單車時要踩踏板。|Push the pedals when you ride a bike.|骑自行车时要踩踏板。|騎腳踏車時要踩踏板。
-腳踏車|台灣人把單車叫做腳踏車。|In Taiwan, people call a bike a "jiǎotàchē".|我每天骑自行车上学。|我每天騎腳踏車上學。
+腳踏車|我每天騎腳踏車上學。|I ride my bike to school every day.|我每天骑自行车上学。
 踢踏舞|她會跳踢踏舞。|She can tap dance.
 輪子|這部車有四個輪子。|This car has four wheels.
 輪流|我們輪流打掃課室。|We take turns cleaning the classroom.|我们轮流打扫教室。|我們輪流打掃教室。
