@@ -213,9 +213,31 @@ body.studying { padding-bottom: 0; }
 .examples .alt-row .aw { font-family: var(--cjk); font-size: 15px; color: var(--text); }
 .examples .grow { flex: 1; min-width: 0; }
 .examples li { flex-wrap: wrap; }
-.examples .sent { flex-basis: 100%; padding-left: calc(2.6em * 22 / 15 + 10px); margin-top: -2px; font-size: 15px; line-height: 1.45; }
+/* The whole sentence block, indent included, is one tap target that plays the sentence. */
+.examples .sent {
+  flex-basis: 100%; display: flex; align-items: center; gap: 10px;
+  margin: 0 -2px -5px; padding: 6px 2px 6px calc(2.6em * 22 / 15 + 12px); border-radius: 10px;
+  font-size: 15px; line-height: 1.45; cursor: pointer; touch-action: manipulation; transition: background-color .12s ease;
+}
+.examples .sent:active { background: var(--surface-2); transition-duration: .05s; }
+.examples li[data-say]:active:has(.sent:active) { background: none; }
+.examples .st { flex: 1; min-width: 0; }
+.examples .sbtns { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: none; }
+.examples .sbtns button {
+  border: 1px solid var(--line); background: var(--surface-2); color: var(--accent);
+  display: inline-grid; place-items: center; transition: transform .12s ease, background-color .12s ease;
+}
+.examples .play { width: 38px; height: 38px; border-radius: 50%; padding: 0 0 0 2px; }
+.examples .cmp { border-radius: 999px; padding: 2px 7px; font-family: var(--cjk); font-size: 12px; }
+.examples .sbtns button:active { transform: scale(.88); transition-duration: .05s; }
+.examples .sent.playing:not([data-playing]) .play, .examples .sent[data-playing] .cmp { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .examples .sl { display: none; font-family: var(--cjk); }
 .examples[data-region="hk"] .sl-hk, .examples[data-region="cn"] .sl-cn, .examples[data-region="tw"] .sl-tw { display: inline; }
+/* While comparing, show the line being spoken with its region marker. */
+.examples .sl .rl { display: none; }
+.examples .sent[data-playing] .sl { display: none; }
+.examples .sent[data-playing="hk"] .sl-hk, .examples .sent[data-playing="cn"] .sl-cn, .examples .sent[data-playing="tw"] .sl-tw { display: inline; }
+.examples .sent[data-playing] .rl { display: inline-block; font-size: 12px; line-height: 1.5; padding: 0 5px; margin-right: 6px; border-radius: 6px; background: var(--accent); color: var(--accent-ink); vertical-align: 1px; }
 .examples .sl b { font-weight: 600; color: var(--accent); }
 .examples .sl .wd { font-family: inherit; font-size: 11px; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 0 4px; margin-left: 6px; vertical-align: 1px; white-space: nowrap; }
 .examples .se { display: block; font-size: 12px; color: var(--muted); }

@@ -108,26 +108,48 @@ const speech = {
   list(kind) {
     return this.voices.filter((v) => {
       const l = this.norm(v);
-      return kind === 'yue'
-        ? l.startsWith('zh-hk') || l.startsWith('yue')
-        : (l.startsWith('zh-cn') || l.startsWith('zh-tw') || l.startsWith('cmn') || l === 'zh');
+      if (kind === 'yue') return l.startsWith('zh-hk') || l.startsWith('yue');
+      if (kind === 'tw') return l.startsWith('zh-tw');
+      return l.startsWith('zh-cn') || l.startsWith('zh-tw') || l.startsWith('cmn') || l === 'zh';
     });
   },
+  // kind: yue = Cantonese, cmn = Mandarin (mainland voice by default), tw = Taiwan Mandarin.
   pick(kind) {
+    if (kind === 'tw') {
+      const list = this.list('tw');
+      const v = list.find((x) => x.voiceURI === S().cmnVoice) || list[0];
+      if (v || !this.voices.length) return v || null;
+      if (!this.warnedTw) { this.warnedTw = true; toast('No Taiwan Mandarin voice on this device, so using the default Mandarin voice.'); }
+      return this.pick('cmn');
+    }
     const wanted = kind === 'yue' ? S().yueVoice : S().cmnVoice;
     const list = this.list(kind);
     return list.find((v) => v.voiceURI === wanted)
       || (kind === 'cmn' && list.find((v) => this.norm(v).startsWith('zh-cn')))
       || list[0] || null;
   },
-  say(text, kind, { queue = false } = {}) {
+  // onEnd callbacks of utterances that haven't finished; a cancel runs them so play indicators clear.
+  pending: new Set(),
+  say(text, kind, { queue = false, onStart, onEnd } = {}) {
     if (!('speechSynthesis' in window)) { toast('Speech is not supported in this browser.'); return; }
-    if (!queue) speechSynthesis.cancel();
+    if (!queue) {
+      speechSynthesis.cancel();
+      this.pending.forEach((f) => f());
+      this.pending.clear();
+    }
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = kind === 'yue' ? 'zh-HK' : 'zh-CN';
+    u.lang = { yue: 'zh-HK', tw: 'zh-TW' }[kind] || 'zh-CN';
     const v = this.pick(kind);
     if (v) u.voice = v;
     u.rate = S().rate;
+    if (onStart) u.onstart = onStart;
+    if (onEnd) {
+      // Held in the set so Safari doesn't garbage-collect the utterance and drop its events.
+      const done = () => { if (this.pending.delete(done)) onEnd(); };
+      done.u = u;
+      this.pending.add(done);
+      u.onend = u.onerror = done;
+    }
     speechSynthesis.speak(u);
   },
   auto(text) {
@@ -149,6 +171,14 @@ if ('speechSynthesis' in window) {
 const selecting = () => !(window.getSelection()?.isCollapsed ?? true);
 
 document.addEventListener('click', (e) => {
+  // The whole sentence block is one tap target, ahead of the row's word.
+  const sent = e.target.closest('[data-sent]');
+  if (sent) {
+    if (selecting() && !e.target.closest('button')) return;
+    e.stopPropagation();
+    playSentence(sent, !!e.target.closest('[data-compare]'));
+    return;
+  }
   const b = e.target.closest('[data-say]');
   if (!b) return;
   if (selecting() && !b.matches('button.speak')) return;
@@ -386,10 +416,10 @@ const mandarinWord = (w, alt) => alt?.cn?.[0] || w;
 
 function regionalHtml(w, alt, showTaiwan) {
   if (!alt) return '';
-  const part = (label, [aw, apy]) => `<span class="rg">${label} ${aw === w ? '' : `<span class="aw" data-say="${esc(aw)}" data-kind="cmn" lang="zh-Hant">${esc(aw)}</span> `}${pinyinHtml(apy)}</span>`;
+  const part = (label, [aw, apy], kind) => `<span class="rg">${label} ${aw === w ? '' : `<span class="aw" data-say="${esc(aw)}" data-kind="${kind}" lang="zh-Hant">${esc(aw)}</span> `}${pinyinHtml(apy)}</span>`;
   const parts = [];
-  if (alt.cn) parts.push(part('普 Mainland', alt.cn));
-  if (alt.tw && showTaiwan) parts.push(part(alt.cn ? 'Taiwan' : '普 Taiwan', alt.tw));
+  if (alt.cn) parts.push(part('普 Mainland', alt.cn, 'cmn'));
+  if (alt.tw && showTaiwan) parts.push(part(alt.cn ? 'Taiwan' : '普 Taiwan', alt.tw, 'tw'));
   return parts.length ? `<span class="alt-row">${parts.join(' · ')}</span>` : '';
 }
 
@@ -398,7 +428,11 @@ function regionalHtml(w, alt, showTaiwan) {
 // switching doesn't re-render the card.
 const REGIONS = [['hk', '港', 'Hong Kong', 'zh-Hant-HK'], ['cn', '陸', 'Mainland', 'zh-Hans-CN'], ['tw', '台', 'Taiwan', 'zh-Hant-TW']];
 
-function sentenceHtml(w) {
+// The voice for a region's sentence. Hong Kong falls back to Mandarin for learners who hide Jyutping.
+const regionKind = (r) => (r === 'tw' ? 'tw' : r === 'hk' && S().showJyutping ? 'yue' : 'cmn');
+const PLAY_ICON = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z" fill="currentColor"/></svg>';
+
+function sentenceHtml(w, alt) {
   const s = SENT[w];
   if (!s) return '';
   const [hk, en, cn, tw, diff] = s;
@@ -407,9 +441,32 @@ function sentenceHtml(w) {
   const lines = REGIONS.map(([r, zh, , lang]) => {
     const plain = text[r].replace(/[⟦⟧]/g, '');
     const html = esc(text[r]).replace('⟦', '<b>').replace('⟧', '</b>');
-    return `<span class="sl sl-${r}" lang="${lang}" data-say="${esc(plain)}" data-kind="${r === 'hk' && S().showJyutping ? 'yue' : 'cmn'}">${html}${differs[r] ? `<span class="wd" title="Wording differs from Hong Kong">${zh}用詞</span>` : ''}</span>`;
+    return `<span class="sl sl-${r}" lang="${lang}" data-text="${esc(plain)}"><span class="rl" aria-hidden="true">${zh}</span>${html}${differs[r] ? `<span class="wd" title="Wording differs from Hong Kong">${zh}用詞</span>` : ''}</span>`;
   }).join('');
-  return `<div class="sent">${lines}<span class="se">${esc(en)}</span></div>`;
+  // Offer the three-way comparison only where the wording or the word's reading actually differs.
+  const compare = differs.cn || differs.tw || alt?.cn || alt?.tw;
+  return `<div class="sent" data-sent data-differs-cn="${differs.cn}"><span class="st">${lines}<span class="se">${esc(en)}</span></span>
+    <span class="sbtns"><button class="play" aria-label="Play sentence">${PLAY_ICON}</button>${compare ? '<button class="cmp" data-compare aria-label="Compare Hong Kong, mainland and Taiwan">三地</button>' : ''}</span></div>`;
+}
+
+// Plays the sentence in the selected region, or with compare each region in turn,
+// switching the shown line to whichever is being spoken.
+function playSentence(el, compare) {
+  const line = (r) => $(`.sl-${r}`, el).dataset.text;
+  const clear = () => { el.classList.remove('playing'); delete el.dataset.playing; };
+  if (!compare) {
+    const r = el.closest('.examples').dataset.region;
+    speech.say(line(r), regionKind(r), { onStart: () => el.classList.add('playing'), onEnd: clear });
+    return;
+  }
+  // Hong Kong read in Mandarin sounds like the mainland line unless the wording differs.
+  const steps = REGIONS.map(([r]) => r).filter((r) => r !== 'hk' || regionKind('hk') === 'yue' || el.dataset.differsCn === 'true');
+  el.classList.add('playing');
+  steps.forEach((r, i) => speech.say(line(r), regionKind(r), {
+    queue: i > 0,
+    onStart: () => { el.dataset.playing = r; },
+    onEnd: i === steps.length - 1 ? clear : undefined,
+  }));
 }
 
 function regionTabsHtml() {
@@ -446,7 +503,7 @@ function answerHtml(x, { revealedChar = true } = {}) {
   const examples = x.e.map(([w, jp, py, en, alt]) => `
     <li data-say="${esc(w)}" data-kind="${rowKind}"><span class="w" lang="zh-Hant-HK">${[...w].map((ch) => ch === x.c ? `<mark>${ch}</mark>` : ch).join('')}</span>
       <span class="grow"><span class="r">${st.showJyutping ? `<span data-say="${esc(w)}" data-kind="yue">${jyutHtml(jp)}</span>` : ''}${st.showJyutping && st.showPinyin ? ' · ' : ''}${st.showPinyin ? `<span data-say="${esc(w)}" data-kind="cmn">${pinyinHtml(py)}</span>` : ''}</span><br><span class="e">${esc(en)}</span>${st.showPinyin ? regionalHtml(w, alt, st.showTaiwan) : ''}</span>
-      ${st.showJyutping ? speakBtn(w, 'yue', true) : ''}${st.showPinyin ? speakBtn(mandarinWord(w, alt), 'cmn', true) : ''}${sentences ? sentenceHtml(w) : ''}</li>`).join('');
+      ${st.showJyutping ? speakBtn(w, 'yue', true) : ''}${st.showPinyin ? speakBtn(mandarinWord(w, alt), 'cmn', true) : ''}${sentences ? sentenceHtml(w, alt) : ''}</li>`).join('');
   return `
     ${revealedChar ? `<div class="hanzi${st.serif ? ' serif' : ''}" lang="zh-Hant-HK">${x.c}</div>` : ''}
     <div class="answer${plain}">
