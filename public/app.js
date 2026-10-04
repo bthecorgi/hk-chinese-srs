@@ -382,9 +382,11 @@ function answerHtml(x, { revealedChar = true } = {}) {
   const alts = [];
   if (st.showJyutping && x.j.length > 1) alts.push(`粵 also ${x.j.slice(1, 4).join(', ')}`);
   if (st.showPinyin && x.p.length > 1) alts.push(`普 also ${x.p.slice(1, 3).join(', ')}`);
+  // Whole row plays the word (Cantonese first); the romanisations and buttons pick a specific language.
+  const rowKind = st.showJyutping ? 'yue' : 'cmn';
   const examples = x.e.map(([w, jp, py, en]) => `
-    <li><span class="w" lang="zh-Hant-HK">${[...w].map((ch) => ch === x.c ? `<mark>${ch}</mark>` : ch).join('')}</span>
-      <span class="grow"><span class="r">${st.showJyutping ? jyutHtml(jp) : ''}${st.showJyutping && st.showPinyin ? ' · ' : ''}${st.showPinyin ? pinyinHtml(py) : ''}</span><br><span class="e">${esc(en)}</span></span>
+    <li data-say="${esc(w)}" data-kind="${rowKind}"><span class="w" lang="zh-Hant-HK">${[...w].map((ch) => ch === x.c ? `<mark>${ch}</mark>` : ch).join('')}</span>
+      <span class="grow"><span class="r">${st.showJyutping ? `<span data-say="${esc(w)}" data-kind="yue">${jyutHtml(jp)}</span>` : ''}${st.showJyutping && st.showPinyin ? ' · ' : ''}${st.showPinyin ? `<span data-say="${esc(w)}" data-kind="cmn">${pinyinHtml(py)}</span>` : ''}</span><br><span class="e">${esc(en)}</span></span>
       ${st.showJyutping ? speakBtn(w, 'yue', true) : ''}${st.showPinyin ? speakBtn(w, 'cmn', true) : ''}</li>`).join('');
   return `
     ${revealedChar ? `<div class="hanzi${st.serif ? ' serif' : ''}" lang="zh-Hant-HK">${x.c}</div>` : ''}
