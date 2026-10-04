@@ -8,6 +8,8 @@ import fs from 'node:fs';
 import {
   numberedToMarked, splitBlocks, applyFix, addRegional, taiwanReadingOf, splitTaiwanPr,
 } from './build-data.mjs';
+import { createRequire } from 'node:module';
+import { parseLine, makeConverters, mark, applySwaps } from './build-sentences.mjs';
 
 const NOW = new Date(2026, 9, 3, 15, 0, 0).getTime(); // 3 Oct 2026, 15:00 local
 const fixed = () => 0.5; // no fuzz
@@ -136,4 +138,31 @@ test('CC-CEDICT Taiwan pronunciation notes are split out of glosses', () => {
   assert.deepEqual(splitTaiwanPr('Taiwan pr. [le4 se4]'), { gloss: '', tw: 'le4 se4' });
   assert.deepEqual(splitTaiwanPr('mint (plant); Taiwan pr. [bo4he2]'), { gloss: 'mint (plant)', tw: 'bo4 he2' });
   assert.deepEqual(splitTaiwanPr('snail'), { gloss: 'snail', tw: null });
+});
+
+test('sentence lines parse with optional mainland and Taiwan versions', () => {
+  assert.deepEqual(parseLine('一個|我有一個妹妹。|I have a sister.'),
+    { w: '一個', hk: '我有一個妹妹。', en: 'I have a sister.', cn: null, tw: null });
+  assert.deepEqual(parseLine('酒店|住酒店。|Stay at a hotel.||住飯店。').tw, '住飯店。');
+});
+
+test('Hong Kong sentences convert to mainland and Taiwan forms', () => {
+  const conv = makeConverters(createRequire(import.meta.url)('opencc-js'));
+  assert.equal(conv.cn('你叫甚麼名字？'), '你叫什么名字？');
+  assert.equal(conv.tw('你叫甚麼名字？'), '你叫什麼名字？');
+  assert.equal(conv.cn('小狗跟着牠的主人，接著跑了。'), '小狗跟着它的主人，接着跑了。');
+  assert.equal(conv.cn('他是著名的作家。'), '他是著名的作家。');
+  assert.equal(conv.tw('孩子們在公園裏玩着。'), '孩子們在公園裡玩著。');
+});
+
+test('regional word swaps skip the example word itself', () => {
+  assert.equal(applySwaps('我坐巴士做功課。', '我', 1), '我坐公交車做作業。');
+  assert.equal(applySwaps('我坐巴士做功課。', '我', 2), '我坐公車做功課。');
+  assert.equal(applySwaps('我做完功課。', '功課', 1), '我做完功課。');
+  assert.equal(applySwaps('古代的士兵', '古代', 1), '古代的士兵');
+});
+
+test('the example word is marked once in its sentence', () => {
+  assert.equal(mark('一起去，一起玩', ['一起']), '⟦一起⟧去，一起玩');
+  assert.equal(mark('沒有這個詞', ['一起']), '沒有這個詞');
 });

@@ -5,9 +5,10 @@
 //
 // The Hong Kong sentence is standard written Chinese as used in Hong Kong, in
 // traditional characters with Hong Kong vocabulary. The mainland and Taiwan
-// sentences are only written out where the wording differs (巴士 → 公交车 / 公車);
-// otherwise they are converted from the Hong Kong one with OpenCC, which also
-// handles character-form differences (裏 → 里 / 裡, 着 → 着 / 著). A mainland
+// sentences are only written out where the wording differs; otherwise they are
+// converted from the Hong Kong one with OpenCC, which handles character-form
+// differences (裏 → 里 / 裡, 着 → 着 / 著), after swapping in common regional
+// words from SWAPS (巴士 → 公交車 / 公車). A mainland
 // sentence may be written in traditional or simplified characters.
 //
 // Output: { word: [hk, english, cn, tw, diff] }, where tw is null when it is
@@ -32,6 +33,30 @@ const HINTS = process.argv.includes('--hints');
 // Cantonese colloquial characters that don't belong in standard written Chinese.
 const COLLOQUIAL = /[嘅咗佢嘢冇啲喺睇唔哋嚟噉咁乜嘥攞揸]/;
 
+// Everyday words that Hong Kong writes differently from the mainland and Taiwan,
+// as [Hong Kong, mainland, Taiwan], all in traditional characters. They are swapped
+// into the converted sentences, so most sentences need no hand-written versions.
+// A swap is skipped when it overlaps the example word itself.
+export const SWAPS = [
+  ['功課', '作業', '功課'], ['課室', '教室', '教室'], ['溫習', '複習', '複習'],
+  ['巴士', '公交車', '公車'], ['單車', '自行車', '腳踏車'], ['地鐵', '地鐵', '捷運'],
+  ['超級市場', '超市', '超市'], ['雪糕', '冰淇淋', '冰淇淋'], ['雪櫃', '冰箱', '冰箱'],
+  ['街市', '菜市場', '市場'], ['手袋', '手提包', '手提包'], ['膠袋', '塑料袋', '塑膠袋'],
+  ['薄餅', '披薩', '披薩'], ['電郵', '電子郵件', '電子郵件'], ['軟件', '軟件', '軟體'],
+  ['網上', '網上', '網路上'], ['計劃', '計劃', '計畫'],
+  ['部車', '輛車', '輛車'], ['部電腦', '台電腦', '台電腦'], ['部手機', '部手機', '支手機'],
+];
+
+export function applySwaps(text, word, col) {
+  let out = text;
+  for (const row of SWAPS) {
+    const [hk] = row;
+    if (hk === row[col] || word.includes(hk) || hk.includes(word)) continue;
+    out = out.split(hk).join(row[col]);
+  }
+  return out;
+}
+
 export function parseLine(line) {
   const [w, hk, en, cn, tw] = line.split('|').map((s) => s.trim());
   return { w, hk, en, cn: cn || null, tw: tw || null };
@@ -42,10 +67,12 @@ export function makeConverters(OpenCC) {
   const hk2cn = OpenCC.Converter({ from: 'hk', to: 'cn' });
   const hk2tw = OpenCC.Converter({ from: 'hk', to: 'tw' });
   // OpenCC keeps the Hong Kong 甚麼, but the mainland and Taiwan write 什么 / 什麼;
-  // the mainland also writes 它 for animals where Hong Kong and Taiwan write 牠.
+  // the mainland also writes 它 for animals where Hong Kong and Taiwan write 牠, and
+  // 着 for the particle 著 (接著 → 接着), keeping 著 only in words like 著名 and 显著.
   return {
     hk: (s) => toHK(s),
-    cn: (s) => hk2cn(s).replace(/甚么/g, '什么').replace(/牠/g, '它'),
+    cn: (s) => hk2cn(s).replace(/甚么/g, '什么').replace(/牠/g, '它')
+      .replace(/(?<![显土卓])著(?![名作称述])/g, '着'),
     tw: (s) => hk2tw(s).replace(/甚麼/g, '什麼'),
   };
 }
@@ -82,8 +109,8 @@ function main() {
       const alt = examples.get(s.w) || {};
 
       const hk = conv.hk(s.hk);
-      const cn = conv.cn(s.cn ?? s.hk);
-      const tw = conv.tw(s.tw ?? s.hk);
+      const cn = conv.cn(s.cn ?? applySwaps(s.hk, s.w, 1));
+      const tw = conv.tw(s.tw ?? applySwaps(s.hk, s.w, 2));
       if (!hk.includes(conv.hk(s.w))) errors.push(`${at}: Hong Kong sentence doesn't contain ${s.w}`);
       const cnWord = conv.cn(alt.cn?.[0] ?? s.w);
       if (!s.cn && !cn.includes(cnWord) && !cn.includes(conv.cn(s.w))) errors.push(`${at}: mainland sentence doesn't contain ${cnWord}`);
@@ -98,7 +125,7 @@ function main() {
       // OpenCC's Taiwan phrase table knows some vocabulary differences (软件 → 軟體).
       if (HINTS && !s.tw && cn2twp(cn) !== cn2tw(cn)) notes.push(`${at}: Taiwan may say ${cn2twp(cn)}`);
 
-      const diff = (s.cn && cn !== conv.cn(s.hk) ? 1 : 0) | (s.tw && tw !== conv.tw(s.hk) ? 2 : 0);
+      const diff = (cn !== conv.cn(s.hk) ? 1 : 0) | (tw !== conv.tw(s.hk) ? 2 : 0);
       const twOut = tw === hk ? null : tw;
       out[s.w] = [mark(hk, [conv.hk(s.w)]), s.en, mark(cn, [cnWord, conv.cn(s.w)]),
         twOut && mark(twOut, [twWord, conv.tw(s.w)]), diff];
