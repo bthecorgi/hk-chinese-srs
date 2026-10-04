@@ -184,7 +184,9 @@ function nextCard(now = Date.now()) {
   if (reviews.length) return reviews[0][0];
   if (fresh) return fresh;
 
-  const ahead = learning.find(([, c]) => c.due <= now + LEARN_AHEAD);
+  // Nothing else to do: study learning cards a little early, but never the card just
+  // answered — showing it again straight away defeats the point of Again/Hard.
+  const ahead = learning.find(([k, c]) => c.due <= now + LEARN_AHEAD && k !== session?.last);
   return ahead ? ahead[0] : null;
 }
 
@@ -487,6 +489,7 @@ function startStudy() {
 function renderStudy(v) {
   setTitle('Study 溫習', 'home');
   if (!session) session = { current: null, revealed: false, sinceNew: 0, done: 0, undo: null };
+  clearTimeout(session.wait);
   if (!session.current) {
     session.current = nextCard();
     session.revealed = false;
@@ -499,6 +502,21 @@ function renderStudy(v) {
       <span>${session.done} done</span>
       ${session.undo ? '<button class="btn" id="undo" style="padding:4px 10px">↶ Undo</button>' : ''}
     </div>`;
+
+  const waiting = !session.current && Object.values(store.cards)
+    .filter((k) => (k.state === 'learning' || k.state === 'relearning') && k.due <= Date.now() + LEARN_AHEAD)
+    .sort((a, b) => a.due - b.due)[0];
+  if (waiting) {
+    // Only the card just answered is left; come back to it when it's actually due.
+    const ms = Math.max(0, waiting.due - Date.now());
+    session.wait = setTimeout(() => { if (route.name === 'study') render(); }, ms + 500);
+    v.innerHTML = `<div class="study">${head}<div class="done"><div class="big">⏳</div>
+      <h2>Next card in ${formatDelay(ms)}</h2><p class="muted">The card you just answered will come back when it's due. Keep this screen open, or come back later.</p>
+      <button class="btn primary" id="home">Back to Today</button></div></div>`;
+    $('#home').onclick = () => go('home');
+    bindUndo();
+    return;
+  }
 
   if (!session.current) {
     v.innerHTML = `<div class="study">${head}<div class="done"><div class="big">🎉</div>
@@ -586,6 +604,7 @@ function rate(r) {
   store.cards[c] = schedule(card, r, Date.now());
   save();
   session.done++;
+  session.last = c;
   session.current = null;
   render();
 }
