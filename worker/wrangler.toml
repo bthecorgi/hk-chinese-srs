@@ -1,0 +1,18 @@
+# Push server for daily study reminders. See "Daily reminders" in README.md to deploy it.
+name = "hk-srs-push"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+[triggers]
+crons = ["*/15 * * * *"]
+
+[[kv_namespaces]]
+binding = "SUBS"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
+[vars]
+# Only this site may register for reminders. Set it to wherever public/ is hosted.
+ALLOWED_ORIGIN = "https://bthecorgi.github.io"
+# Contact for push services, as a mailto: or https: URL.
+VAPID_SUBJECT = "https://bthecorgi.github.io/hk-chinese-srs/"
+# VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY are secrets: `npx wrangler secret put VAPID_PUBLIC_KEY` etc.

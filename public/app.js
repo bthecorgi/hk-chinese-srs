@@ -2,6 +2,9 @@ import {
   newCard, schedule, previewIntervals, dayKey, isMature, formatDelay,
   AGAIN, HARD, GOOD, EASY, LEARN_AHEAD, DAY,
 } from './srs.js';
+import {
+  DEFAULT_REMINDER_MIN, SMART_MIN_DAYS, SMART_LEAD, recordStudyTime, reminderMinute, reminderPlan, toHHMM,
+} from './reminders.js';
 
 const STORE_KEY = 'hk-srs-v1';
 const LEVELS = [1, 2, 3, 4, 5, 6];
@@ -21,6 +24,9 @@ const DEFAULT_SETTINGS = {
   yueVoice: '',
   cmnVoice: '',
   rate: 0.8,
+  remind: false,
+  remindMode: 'smart', // smart | fixed
+  remindTime: toHHMM(DEFAULT_REMINDER_MIN),
 };
 
 // ---------- state ----------
@@ -38,6 +44,7 @@ function loadStore() {
   return {
     cards: s.cards || {},
     days: s.days || {},
+    studyTimes: s.studyTimes || {}, // study day -> minute of day the first card was answered
     settings: { ...DEFAULT_SETTINGS, ...(s.settings || {}) },
   };
 }
@@ -295,6 +302,7 @@ function renderHome(v) {
   const mature = Object.values(store.cards).filter(isMature).length;
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   const standalone = navigator.standalone || matchMedia('(display-mode: standalone)').matches;
+  if (S().remind) reminders.badge(total);
   const levelsText = S().levels.length ? S().levels.map((g) => `P${g}`).join(', ') : 'none selected';
 
   v.innerHTML = `
@@ -702,7 +710,9 @@ function rate(r) {
   if (card.state === 'new') { day.new++; session.sinceNew = 0; } else session.sinceNew++;
   day.rev++;
   store.cards[c] = schedule(card, r, Date.now());
+  store.studyTimes = recordStudyTime(store.studyTimes, Date.now());
   save();
+  reminders.syncSoon();
   session.done++;
   session.last = c;
   session.current = null;
@@ -715,6 +725,159 @@ document.addEventListener('keydown', (e) => {
   else if (session.revealed && ['1', '2', '3', '4'].includes(e.key)) rate(Number(e.key));
   else if (session.revealed && e.key === ' ') { e.preventDefault(); rate(GOOD); }
 });
+
+// ---------- reminders ----------
+
+// Daily study reminders are Web Push notifications from the push server in worker/,
+// whose URL is set in config.json. iOS only allows push for apps added to the Home Screen.
+const PUSH_KEY = 'hk-srs-push'; // what was last sent to the push server, to skip identical updates
+
+const unb64url = (s) => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), (ch) => ch.charCodeAt(0));
+const timeLabel = (m) => new Date(2000, 0, 1, Math.floor(m / 60), m % 60).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+
+const reminders = {
+  server: '',
+  supported: () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window,
+  minute: () => reminderMinute(S(), store.studyTimes),
+  async post(path, body, opts = {}) {
+    const res = await fetch(`${this.server}${path}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), ...opts,
+    });
+    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `server error ${res.status}`);
+  },
+  async subscription(create = false) {
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.getSubscription();
+    if (sub || !create) return sub;
+    const res = await fetch(`${this.server}/config`);
+    if (!res.ok) throw new Error('could not reach the reminder server');
+    const { publicKey } = await res.json();
+    return reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: unb64url(publicKey) });
+  },
+  // Must run from a tap: iOS only shows the permission prompt in response to one.
+  async enable() {
+    const perm = await Notification.requestPermission();
+    if (perm !== 'granted') {
+      throw new Error(perm === 'denied' ? 'notifications are blocked for this app. Allow them in your device settings.' : 'notifications were not allowed.');
+    }
+    await this.subscription(true);
+    S().remind = true;
+    save();
+    await this.sync();
+  },
+  async disable() {
+    S().remind = false;
+    save();
+    this.badge(0);
+    const sub = await this.subscription().catch(() => null);
+    localStorage.removeItem(PUSH_KEY);
+    if (!sub) return;
+    await this.post('/unsubscribe', { endpoint: sub.endpoint }).catch(() => {});
+    await sub.unsubscribe().catch(() => {});
+  },
+  // Sends the subscription, reminder time and upcoming due counts to the push server, if they changed.
+  async sync({ keepalive = false } = {}) {
+    clearTimeout(this.timer);
+    if (!S().remind || !this.server || !this.supported() || Notification.permission !== 'granted' || !DATA) return;
+    try {
+      // Safari can drop an expired subscription; permission is already granted, so quietly make a new one.
+      const sub = await this.subscription(true);
+      const minute = this.minute();
+      const plan = reminderPlan({
+        cards: store.cards, newPerDay: S().newPerDay, newToday: today().new, newAvailable: newQueue().length, minute, now: Date.now(),
+      });
+      const body = { subscription: sub.toJSON(), tz: Intl.DateTimeFormat().resolvedOptions().timeZone, minute, plan };
+      let last = {};
+      try { last = JSON.parse(localStorage.getItem(PUSH_KEY)) || {}; } catch { /* none yet */ }
+      const sig = JSON.stringify(body);
+      if (last.sig === sig) return;
+      if (last.endpoint && last.endpoint !== sub.endpoint) body.old = last.endpoint;
+      await this.post('/subscribe', body, { keepalive });
+      localStorage.setItem(PUSH_KEY, JSON.stringify({ sig, endpoint: sub.endpoint }));
+    } catch (e) {
+      console.warn('Reminder sync failed', e);
+    }
+  },
+  syncSoon() {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => this.sync(), 15000);
+  },
+  async test() {
+    const sub = await this.subscription();
+    if (!sub) throw new Error('reminders are not set up on this device.');
+    await this.sync();
+    await this.post('/test', { endpoint: sub.endpoint });
+  },
+  badge(n) {
+    if (window.Notification?.permission !== 'granted') return;
+    try { (n ? navigator.setAppBadge?.(n) : navigator.clearAppBadge?.())?.catch(() => {}); } catch { /* unsupported */ }
+  },
+};
+
+// Leaving the app is when progress has changed most; send it while the page can still make requests.
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') reminders.sync({ keepalive: true }); });
+
+function reminderCardHtml() {
+  const st = S();
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const standalone = navigator.standalone || matchMedia('(display-mode: standalone)').matches;
+  let body;
+  if (!reminders.server) {
+    body = '<p class="small muted">Reminders need the push server in <code>worker/</code>. Deploy it and put its URL in <code>config.json</code> (see README).</p>';
+  } else if (isIOS && !standalone) {
+    body = '<p class="small muted">To get reminders on iPhone or iPad, add this app to your Home Screen (Share → Add to Home Screen) and open it from there. Needs iOS 16.4 or later.</p>';
+  } else if (!reminders.supported()) {
+    body = '<p class="small muted">This browser does not support notifications.</p>';
+  } else {
+    const blocked = Notification.permission === 'denied';
+    const m = reminders.minute();
+    const days = Object.keys(store.studyTimes).length;
+    const when = st.remindMode === 'fixed'
+      ? `Every day at ${timeLabel(m)}.`
+      : days >= SMART_MIN_DAYS
+        ? `Around ${timeLabel(m)}, ${SMART_LEAD} minutes before you usually start studying. It adjusts as your habits change.`
+        : `${timeLabel(m)} for now. After ${SMART_MIN_DAYS} days of study it moves to just before the time you usually study.`;
+    body = `
+      <div class="field"><label for="remind">Daily study reminder<small>${blocked ? 'Notifications are blocked for this app. Allow them in your device settings first.' : 'Only sent when cards are waiting, so not on days you have already finished.'}</small></label>${toggle('remind', st.remind && !blocked)}</div>
+      ${st.remind && !blocked ? `
+      <div class="field"><label for="remindMode">Time<small>${esc(when)}</small></label>
+        <select id="remindMode">
+          <option value="smart" ${st.remindMode === 'smart' ? 'selected' : ''}>Smart</option>
+          <option value="fixed" ${st.remindMode === 'fixed' ? 'selected' : ''}>Fixed time</option>
+        </select></div>
+      ${st.remindMode === 'fixed' ? `<div class="field"><label for="remindTime">Remind me at</label><input id="remindTime" type="time" step="900" value="${esc(st.remindTime)}"></div>` : ''}
+      <div class="btn-row"><button class="btn" id="remindTest">Send a test notification</button></div>` : ''}`;
+  }
+  return `<div class="card"><h2>Reminders 提醒</h2>${body}</div>`;
+}
+
+function bindReminderCard() {
+  const sw = $('#remind');
+  if (!sw) return;
+  sw.onchange = async () => {
+    sw.disabled = true;
+    try {
+      if (sw.checked) { await reminders.enable(); toast(`Reminder set for around ${timeLabel(reminders.minute())}`); } else await reminders.disable();
+    } catch (e) {
+      S().remind = false;
+      save();
+      toast(`Could not turn on reminders: ${e.message}`);
+    }
+    render();
+  };
+  const mode = $('#remindMode');
+  if (mode) mode.onchange = () => { S().remindMode = mode.value; save(); reminders.sync(); render(); };
+  const time = $('#remindTime');
+  if (time) time.onchange = () => { if (time.value) { S().remindTime = time.value; save(); reminders.sync(); render(); } };
+  const test = $('#remindTest');
+  if (test) {
+    test.onclick = async () => {
+      test.disabled = true;
+      try { await reminders.test(); toast('Test notification sent'); } catch (e) { toast(`Test failed: ${e.message}`); }
+      test.disabled = false;
+    };
+  }
+}
 
 // ---------- settings ----------
 
@@ -745,6 +908,7 @@ function renderSettings(v) {
           <option value="off" ${st.autoplay === 'off' ? 'selected' : ''}>Off</option>
         </select></div>
     </div>
+    ${reminderCardHtml()}
     <div class="card"><h2>Display</h2>
       <div class="field"><label for="showJyutping">Show Cantonese (Jyutping)</label>${toggle('showJyutping', st.showJyutping)}</div>
       <div class="field"><label for="showPinyin">Show Mandarin (Pinyin)</label>${toggle('showPinyin', st.showPinyin)}</div>
@@ -775,7 +939,8 @@ function renderSettings(v) {
     </div>`;
 
   const num = $('#newPerDay');
-  num.onchange = () => { st.newPerDay = Math.max(0, Math.min(200, parseInt(num.value, 10) || 0)); num.value = st.newPerDay; save(); };
+  num.onchange = () => { st.newPerDay = Math.max(0, Math.min(200, parseInt(num.value, 10) || 0)); num.value = st.newPerDay; save(); reminders.syncSoon(); };
+  bindReminderCard();
   for (const id of ['front', 'autoplay', 'yueVoice', 'cmnVoice']) {
     $(`#${id}`).onchange = (e) => { st[id] = e.target.value; save(); };
   }
@@ -790,7 +955,9 @@ function renderSettings(v) {
     if (!confirm('Delete all progress on this device? This cannot be undone.')) return;
     store.cards = {};
     store.days = {};
+    store.studyTimes = {};
     save();
+    reminders.sync();
     toast('Progress reset');
     render();
   };
@@ -819,8 +986,11 @@ async function importBackup(e) {
     const data = JSON.parse(await f.text());
     if (data.app !== 'hk-srs' || typeof data.cards !== 'object') throw new Error('not a backup file');
     if (!confirm(`Replace current progress with this backup (${Object.keys(data.cards).length} cards)?`)) return;
-    store = { cards: data.cards, days: data.days || {}, settings: { ...DEFAULT_SETTINGS, ...(data.settings || {}) } };
+    // Keep this device's reminder switch: a backup from another device has no push subscription here.
+    const settings = { ...DEFAULT_SETTINGS, ...(data.settings || {}), remind: S().remind };
+    store = { cards: data.cards, days: data.days || {}, studyTimes: data.studyTimes || {}, settings };
     save();
+    reminders.sync();
     toast('Backup restored');
     render();
   } catch (err) {
@@ -846,6 +1016,9 @@ async function boot() {
     return;
   }
   BY_CHAR = new Map(DATA.chars.map((x) => [x.c, x]));
+  try {
+    reminders.server = ((await (await fetch('config.json')).json()).pushServer || '').replace(/\/+$/, '');
+  } catch { /* no push server configured */ }
   render();
   // Sentences are optional extras: load them after the first render, and re-render once they arrive.
   fetch('data/sentences.json').then((r) => (r.ok ? r.json() : {})).then((s) => {
@@ -855,6 +1028,7 @@ async function boot() {
   navigator.storage?.persist?.();
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     navigator.serviceWorker.register('sw.js').catch(() => {});
+    reminders.sync();
     // When an updated service worker takes over, reload once so the new version shows.
     if (navigator.serviceWorker.controller) {
       let reloaded = false;

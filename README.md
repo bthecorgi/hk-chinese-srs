@@ -31,6 +31,7 @@ The P1 and P2 sub-blocks are probably core and supplementary lists. If you have 
 - An example sentence for every example word, in three versions of standard written Chinese: **Hong Kong 港**, **mainland 陸** and **Taiwan 台**. A switch above the examples changes all sentences on the card at once (the choice is remembered), and a 陸用詞 / 台用詞 tag marks sentences where that region uses different words, not just different characters (巴士 → 公交车 / 公車, 功課 → 作业). Tap a sentence to hear it: Hong Kong in Cantonese, mainland and Taiwan in Mandarin. You can turn sentences off in Settings.
 - Tone-coloured readings, plus the simplified form and stroke count.
 - Browse each level as a grid coloured by progress. Search by 字, Jyutping or Pinyin (with or without tones), or English.
+- **Daily study reminders** (Settings → Reminders) as push notifications, sent only on days when cards are waiting. By default the time is **Smart**: 30 minutes before the time you usually start studying (the median of your last 14 study days), because reminders tied to an existing habit get opened more than fixed ones. Until you have 3 days of history it uses 19:00, the after-dinner homework slot. You can switch to a fixed time instead. Needs the push server below. On iPhone/iPad it needs iOS 16.4+ and the app added to the Home Screen.
 - Progress is stored on the device in `localStorage`. You can export and import JSON backups through the share sheet on iOS. Works offline once loaded (service worker).
 
 ## Run locally
@@ -46,6 +47,26 @@ You need to host `public/` over **HTTPS**. The workflow `.github/workflows/pages
 
 Open the URL in Safari, tap **Share → Add to Home Screen**, and launch it from the home screen icon.
 
+## Daily reminders (push server)
+
+Progress never leaves the device, so iOS can't schedule a reminder from the page alone. `worker/` is a small [Cloudflare Worker](https://developers.cloudflare.com/workers/) (free tier is plenty) that sends Web Push notifications. The app sends it the push subscription, time zone and reminder time, plus how many cards will be due at each reminder over the next 14 days. A cron trigger every 15 minutes sends each reminder once per study day, up to 3 hours late, and skips days when nothing is due. If the app hasn't been opened in 14 days, reminders stop until it's opened again.
+
+One-time setup:
+
+```sh
+cd worker
+npx wrangler login
+npx wrangler kv namespace create SUBS        # put the id it prints into wrangler.toml
+node ../scripts/vapid-keys.mjs               # prints a new key pair
+npx wrangler secret put VAPID_PUBLIC_KEY     # paste each key when asked
+npx wrangler secret put VAPID_PRIVATE_KEY
+npx wrangler deploy                          # prints https://hk-srs-push.<you>.workers.dev
+```
+
+Then set `pushServer` in `public/config.json` to that URL, bump `VERSION` in `public/sw.js` and push. If the app isn't hosted at `https://bthecorgi.github.io`, change `ALLOWED_ORIGIN` in `worker/wrangler.toml`. Keep the same VAPID keys from then on: new keys invalidate every existing subscription.
+
+The worker shares `public/reminders.js` with the app (notification text), so redeploy it with `npx wrangler deploy` after changing that file.
+
 ## Rebuilding the data
 
 ```sh
@@ -53,7 +74,7 @@ npm install          # data packages: Unihan (mojidata), CC-CEDICT, SUBTLEX-CH, 
 npm run build:data   # writes public/data/chars.json (downloads the LSHK table into data/cache/)
 npm run build:sentences  # writes public/data/sentences.json from data/sentences/
 npm run build:icons  # optional; needs Playwright + a CJK font
-npm test             # scheduler + build helper tests
+npm test             # scheduler, reminder, push server + build helper tests
 ```
 
 After changing any file in `public/`, bump `VERSION` in `public/sw.js` so installed apps pick up the update.
