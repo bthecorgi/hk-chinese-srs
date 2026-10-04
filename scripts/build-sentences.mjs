@@ -26,6 +26,9 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'data', 'sentences');
 const OUT = path.join(ROOT, 'public', 'data', 'sentences.json');
 
+// --hints also lists OpenCC's guesses at Taiwan wording; most are false alarms.
+const HINTS = process.argv.includes('--hints');
+
 // Cantonese colloquial characters that don't belong in standard written Chinese.
 const COLLOQUIAL = /[嘅咗佢嘢冇啲喺睇唔哋嚟噉咁乜嘥攞揸]/;
 
@@ -82,15 +85,17 @@ function main() {
       const tw = conv.tw(s.tw ?? s.hk);
       if (!hk.includes(conv.hk(s.w))) errors.push(`${at}: Hong Kong sentence doesn't contain ${s.w}`);
       const cnWord = conv.cn(alt.cn?.[0] ?? s.w);
-      if (!cn.includes(cnWord) && !cn.includes(conv.cn(s.w))) errors.push(`${at}: mainland sentence doesn't contain ${cnWord}`);
+      if (!s.cn && !cn.includes(cnWord) && !cn.includes(conv.cn(s.w))) errors.push(`${at}: mainland sentence doesn't contain ${cnWord}`);
       const twWord = conv.tw(alt.tw?.[0] ?? alt.cn?.[0] ?? s.w);
-      if (!tw.includes(twWord) && !tw.includes(conv.tw(s.w))) errors.push(`${at}: Taiwan sentence doesn't contain ${twWord}`);
+      if (!s.tw && !tw.includes(twWord) && !tw.includes(conv.tw(s.w))) errors.push(`${at}: Taiwan sentence doesn't contain ${twWord}`);
+      // A hand-written mainland or Taiwan sentence may use that region's own word
+      // instead (酒店 → 飯店 in Taiwan), so only the converted ones are checked above.
       for (const [label, text] of [['Hong Kong', s.hk], ['mainland', s.cn], ['Taiwan', s.tw]]) {
         if (text && COLLOQUIAL.test(text)) errors.push(`${at}: ${label} sentence has colloquial Cantonese: ${text}`);
       }
       if (alt.cn && !s.cn) notes.push(`${at}: ${s.w} is ${alt.cn[0]} on the mainland, but no mainland sentence is given`);
       // OpenCC's Taiwan phrase table knows some vocabulary differences (软件 → 軟體).
-      if (!s.tw && cn2twp(cn) !== cn2tw(cn)) notes.push(`${at}: Taiwan may say ${cn2twp(cn)}`);
+      if (HINTS && !s.tw && cn2twp(cn) !== cn2tw(cn)) notes.push(`${at}: Taiwan may say ${cn2twp(cn)}`);
 
       const diff = (s.cn && cn !== conv.cn(s.hk) ? 1 : 0) | (s.tw && tw !== conv.tw(s.hk) ? 2 : 0);
       const twOut = tw === hk ? null : tw;
