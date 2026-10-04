@@ -374,18 +374,19 @@ function answerHtml(x, { revealedChar = true } = {}) {
   const st = S();
   const plain = st.toneColors ? '' : ' plain';
   const readings = [];
-  if (st.showJyutping) {
-    readings.push(`<span class="reading"><span><span class="lbl">粵 Jyutping</span><br><span class="val">${jyutHtml(x.j[0])}</span></span>${speakBtn(x.c, 'yue')}</span>`);
-  }
-  if (st.showPinyin) {
-    readings.push(`<span class="reading"><span><span class="lbl">普 Pinyin</span><br><span class="val">${pinyinHtml(x.p[0])}</span></span>${speakBtn(x.c, 'cmn')}</span>`);
-  }
+  // The whole pill is the play button; the 粵/普 circle inside is just a visual cue.
+  const readingBtn = (kind, label, valHtml) =>
+    `<button class="reading" data-say="${esc(x.c)}" data-kind="${kind}" aria-label="Play ${kind === 'yue' ? 'Cantonese' : 'Mandarin'}"><span><span class="lbl">${label}</span><br><span class="val">${valHtml}</span></span><span class="speak" aria-hidden="true">${kind === 'yue' ? '粵' : '普'}</span></button>`;
+  if (st.showJyutping) readings.push(readingBtn('yue', '粵 Jyutping', jyutHtml(x.j[0])));
+  if (st.showPinyin) readings.push(readingBtn('cmn', '普 Pinyin', pinyinHtml(x.p[0])));
   const alts = [];
   if (st.showJyutping && x.j.length > 1) alts.push(`粵 also ${x.j.slice(1, 4).join(', ')}`);
   if (st.showPinyin && x.p.length > 1) alts.push(`普 also ${x.p.slice(1, 3).join(', ')}`);
+  // Whole row plays the word (Cantonese first); the romanisations and buttons pick a specific language.
+  const rowKind = st.showJyutping ? 'yue' : 'cmn';
   const examples = x.e.map(([w, jp, py, en]) => `
-    <li><span class="w" lang="zh-Hant-HK">${[...w].map((ch) => ch === x.c ? `<mark>${ch}</mark>` : ch).join('')}</span>
-      <span class="grow"><span class="r">${st.showJyutping ? jyutHtml(jp) : ''}${st.showJyutping && st.showPinyin ? ' · ' : ''}${st.showPinyin ? pinyinHtml(py) : ''}</span><br><span class="e">${esc(en)}</span></span>
+    <li data-say="${esc(w)}" data-kind="${rowKind}"><span class="w" lang="zh-Hant-HK">${[...w].map((ch) => ch === x.c ? `<mark>${ch}</mark>` : ch).join('')}</span>
+      <span class="grow"><span class="r">${st.showJyutping ? `<span data-say="${esc(w)}" data-kind="yue">${jyutHtml(jp)}</span>` : ''}${st.showJyutping && st.showPinyin ? ' · ' : ''}${st.showPinyin ? `<span data-say="${esc(w)}" data-kind="cmn">${pinyinHtml(py)}</span>` : ''}</span><br><span class="e">${esc(en)}</span></span>
       ${st.showJyutping ? speakBtn(w, 'yue', true) : ''}${st.showPinyin ? speakBtn(w, 'cmn', true) : ''}</li>`).join('');
   return `
     ${revealedChar ? `<div class="hanzi${st.serif ? ' serif' : ''}" lang="zh-Hant-HK">${x.c}</div>` : ''}
