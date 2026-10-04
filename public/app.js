@@ -508,7 +508,12 @@ function renderStudy(v) {
     <div class="actions">${actions}</div></div>`;
 
   const reveal = $('#reveal');
-  if (reveal) reveal.onclick = doReveal;
+  if (reveal) {
+    reveal.onclick = doReveal;
+    const flash = $('.flash', v);
+    flash.classList.add('tap');
+    flash.onclick = (e) => { if (!e.target.closest('button')) doReveal(); };
+  }
   v.querySelectorAll('[data-rate]').forEach((b) => { b.onclick = () => rate(Number(b.dataset.rate)); });
   bindUndo();
 }
@@ -597,7 +602,7 @@ function renderSettings(v) {
       <div class="field"><label for="yueVoice">Cantonese voice</label><select id="yueVoice">${voiceOpts('yue', st.yueVoice)}</select>${speakBtn('廣東話', 'yue')}</div>
       <div class="field"><label for="cmnVoice">Mandarin voice</label><select id="cmnVoice">${voiceOpts('cmn', st.cmnVoice)}</select>${speakBtn('普通話', 'cmn')}</div>
       <div class="field"><label for="rate">Speed <small>${st.rate.toFixed(2)}×</small></label><input id="rate" type="range" min="0.5" max="1.2" step="0.05" value="${st.rate}"></div>
-      ${noYue ? `<p class="small muted">No Cantonese voice found on this device. On iPhone/iPad: <b>Settings → Accessibility → Spoken Content → Voices → Chinese</b>, download <b>Sinji (Cantonese, Hong Kong)</b>, then reopen the app.</p>` : '<p class="small muted">Tip: on iPhone/iPad, enhanced voices can be downloaded in Settings → Accessibility → Spoken Content → Voices → Chinese.</p>'}
+      ${noYue ? `<p class="small muted">No Cantonese voice found on this device. On iPhone/iPad: <b>Settings → Accessibility → Read &amp; Speak → Voices → Chinese</b> (older iOS: Spoken Content), download <b>Sinji (Cantonese, Hong Kong)</b>, then reopen the app.</p>` : '<p class="small muted">Tip: on iPhone/iPad, enhanced voices can be downloaded in Settings → Accessibility → Read &amp; Speak → Voices → Chinese (older iOS: Spoken Content). Or search Settings for “Voices”.</p>'}
     </div>
     <div class="card"><h2>Progress backup</h2>
       <p class="small muted">Progress is stored on this device only. Export a backup now and then, especially before deleting the app.</p>
@@ -672,6 +677,9 @@ async function importBackup(e) {
 
 // ---------- boot ----------
 
+// iOS Safari only shows :active (press) styles when a touch listener is registered.
+document.addEventListener('touchstart', () => {}, { passive: true });
+
 document.querySelectorAll('.tabbar button').forEach((b) => { b.onclick = () => go(b.dataset.tab); });
 
 async function boot() {
@@ -687,6 +695,15 @@ async function boot() {
   navigator.storage?.persist?.();
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     navigator.serviceWorker.register('sw.js').catch(() => {});
+    // When an updated service worker takes over, reload once so the new version shows.
+    if (navigator.serviceWorker.controller) {
+      let reloaded = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (reloaded || route.name === 'study') return;
+        reloaded = true;
+        location.reload();
+      });
+    }
   }
 }
 

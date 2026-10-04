@@ -26,7 +26,7 @@ The P1 and P2 sub-blocks are probably core and supplementary lists. If you have 
 - SRS scheduling in the SM-2 family, like Anki: learning steps of 1 min and 10 min, then Again / Hard / Good / Easy with an interval preview on each button, and lapses go to relearning. The study day rolls over at 04:00.
 - **Train by level:** switch P1–P6 on or off. New characters come in curriculum order, P1 first. You set the number of new cards per day.
 - Three card types: **Read** (see the character, recall the sound and meaning), **Listen** (hear it, recall the character) and **Write** (see the meaning and reading, write the character).
-- Cantonese and Mandarin playback through the device's built-in voices (Web Speech API), with optional auto-play when you reveal the answer. On iOS, download the *Sinji (Cantonese, Hong Kong)* voice under Settings → Accessibility → Spoken Content → Voices → Chinese for the best Cantonese.
+- Cantonese and Mandarin playback through the device's built-in voices (Web Speech API), with optional auto-play when you reveal the answer. On iOS, download the *Sinji (Cantonese, Hong Kong)* voice under Settings → Accessibility → Read & Speak → Voices → Chinese (called Spoken Content before iOS 26) for the best Cantonese.
 - Up to 3 common example words per character, each with Jyutping, Pinyin, English and audio.
 - Tone-coloured readings, plus the simplified form and stroke count.
 - Browse each level as a grid coloured by progress. Search by 字, Jyutping or Pinyin (with or without tones), or English.

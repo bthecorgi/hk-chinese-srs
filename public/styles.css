@@ -249,3 +249,32 @@ dialog#sheet::backdrop { background: rgba(0,0,0,.4); }
   opacity: 0; pointer-events: none; transition: .25s; z-index: 20; max-width: 90vw;
 }
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Press feedback: elements sink slightly on touch-down and spring back on release. */
+.btn, .tabbar button, .grid button, .results button, .ratings button, .speak,
+.sheet-close, .topbar .back, .toggle span, .reading, .flash {
+  transition: transform .12s ease, filter .12s ease, background-color .12s ease, opacity .12s ease;
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+.btn:active:not(:disabled), .grid button:active, .results button:active, .ratings button:active,
+.sheet-close:active { transform: scale(.95); filter: brightness(.92); transition-duration: .05s; }
+.speak:active { transform: scale(.88); filter: brightness(.9); transition-duration: .05s; }
+.tabbar button:active { transform: scale(.88); opacity: .7; transition-duration: .05s; }
+.topbar .back:active { opacity: .5; transition-duration: .05s; }
+.toggle:active span::after { width: 30px; }
+.toggle:active input:checked + span::after { transform: translateX(16px); }
+.flash.tap { cursor: pointer; }
+.flash.tap:active { transform: scale(.985); transition-duration: .05s; }
+/* A brief pop when the answer is revealed or a new card appears. */
+.flash { animation: card-in .22s ease-out; }
+@keyframes card-in { from { transform: scale(.97); opacity: .4; } to { transform: none; opacity: 1; } }
+@media (hover: hover) {
+  .btn:hover:not(:disabled), .grid button:hover, .results button:hover { filter: brightness(.97); }
+  .ratings button:hover, .speak:hover { filter: brightness(1.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn:active:not(:disabled), .grid button:active, .results button:active, .ratings button:active,
+  .sheet-close:active, .speak:active, .tabbar button:active, .flash.tap:active { transform: none; }
+  .flash { animation: none; }
+}
