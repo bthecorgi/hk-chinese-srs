@@ -246,8 +246,9 @@ body.studying { padding-bottom: 0; }
 dialog#sheet {
   border: 0; padding: 0; width: min(560px, 100vw); max-width: 100vw; max-height: 88dvh;
   margin: auto auto 0; border-radius: 20px 20px 0 0; background: var(--bg); color: var(--text);
-  overflow-y: auto; overscroll-behavior: contain;
+  overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none;
 }
+dialog#sheet::-webkit-scrollbar { display: none; }
 dialog#sheet::backdrop { background: rgba(0,0,0,.4); }
 .sheet-body { padding: 14px 16px calc(18px + env(safe-area-inset-bottom)); text-align: center; overflow-y: auto; }
 .sheet-close { float: right; border: 0; background: var(--surface-2); border-radius: 50%; width: 32px; height: 32px; }
