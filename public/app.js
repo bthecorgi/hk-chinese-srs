@@ -19,6 +19,9 @@ const DEFAULT_SETTINGS = {
   cmnVoice: '',
   rate: 0.8,
 };
+const CARD_STATES = new Set(['new', 'learning', 'relearning', 'review']);
+const isNum = (n) => typeof n === 'number' && Number.isFinite(n);
+const isObj = (o) => o && typeof o === 'object' && !Array.isArray(o);
 
 // ---------- state ----------
 
@@ -31,11 +34,34 @@ let session = null;
 function loadStore() {
   let s = {};
   try { s = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch { /* corrupt or unavailable */ }
-  return {
-    cards: s.cards || {},
-    days: s.days || {},
-    settings: { ...DEFAULT_SETTINGS, ...(s.settings || {}) },
-  };
+  return cleanStore(s);
+}
+
+// Keep only well-typed fields so a hand-edited or malicious backup can't inject markup.
+function cleanStore(s) {
+  const cards = {};
+  for (const [c, card] of Object.entries(isObj(s.cards) ? s.cards : {})) {
+    if (!isObj(card) || !CARD_STATES.has(card.state)) continue;
+    const base = newCard();
+    const clean = { state: card.state };
+    for (const k of Object.keys(base)) if (k !== 'state') clean[k] = isNum(card[k]) ? card[k] : base[k];
+    cards[c] = clean;
+  }
+  const days = {};
+  for (const [k, d] of Object.entries(isObj(s.days) ? s.days : {})) {
+    if (isObj(d)) days[k] = { new: isNum(d.new) ? d.new : 0, rev: isNum(d.rev) ? d.rev : 0 };
+  }
+  const settings = { ...DEFAULT_SETTINGS };
+  const src = isObj(s.settings) ? s.settings : {};
+  for (const [k, def] of Object.entries(DEFAULT_SETTINGS)) {
+    const val = src[k];
+    if (k === 'levels') {
+      if (Array.isArray(val)) settings.levels = LEVELS.filter((g) => val.includes(g));
+    } else if (typeof def === 'number' ? isNum(val) : typeof val === typeof def) {
+      settings[k] = val;
+    }
+  }
+  return { cards, days, settings };
 }
 
 function save() {
@@ -657,9 +683,10 @@ async function importBackup(e) {
   if (!f) return;
   try {
     const data = JSON.parse(await f.text());
-    if (data.app !== 'hk-srs' || typeof data.cards !== 'object') throw new Error('not a backup file');
-    if (!confirm(`Replace current progress with this backup (${Object.keys(data.cards).length} cards)?`)) return;
-    store = { cards: data.cards, days: data.days || {}, settings: { ...DEFAULT_SETTINGS, ...(data.settings || {}) } };
+    if (data.app !== 'hk-srs' || !isObj(data.cards)) throw new Error('not a backup file');
+    const clean = cleanStore(data);
+    if (!confirm(`Replace current progress with this backup (${Object.keys(clean.cards).length} cards)?`)) return;
+    store = clean;
     save();
     toast('Backup restored');
     render();
