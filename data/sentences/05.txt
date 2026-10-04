@@ -1,0 +1,250 @@
+年級|我今年讀三年級。|I'm in Primary 3 this year.|我今年上三年级。
+高級|這是一家高級餐廳。|This is an upmarket restaurant.
+超級|這部電影超級好看！|This film is super good!
+火堆|我們圍着火堆唱歌。|We sang around the bonfire.
+垃圾堆|小狗在垃圾堆裏找食物。|The dog is looking for food in the rubbish heap.
+堆滿|他的書桌上堆滿了書。|His desk is piled high with books.
+牽掛|媽媽很牽掛在外國讀書的哥哥。|Mum worries about my older brother studying abroad.
+掛念|奶奶很掛念我們。|Grandma misses us very much.
+掛彩|他踢足球時掛彩了。|He got hurt playing football.
+幹掉|英雄幹掉了怪獸。|The hero got rid of the monster.
+關掉|離開課室前請關掉電燈。|Please switch off the lights before leaving the classroom.|离开教室前请关掉电灯。|離開教室前請關掉電燈。
+去掉|請去掉這個多餘的字。|Please take out this extra word.
+深入|我們要深入了解這個問題。|We need to understand this problem in depth.
+深深|我深深地愛着我的家人。|I love my family deeply.
+深刻|這本書給我留下了深刻的印象。|This book left a deep impression on me.
+乾淨|請把手洗乾淨。|Please wash your hands clean.
+淨化|樹木可以淨化空氣。|Trees can purify the air.
+潔淨|醫院的病房很潔淨。|The hospital wards are very clean.
+造成|大雨造成了水浸。|The heavy rain caused flooding.|大雨造成了水灾。|大雨造成了淹水。
+製造|這部車是在日本製造的。|This car was made in Japan.
+創造|我們要用雙手創造美好的未來。|We should create a better future with our own hands.
+勝利|我們終於取得了勝利。|We finally won.
+勝過|事實勝過雄辯。|Facts speak louder than words.
+獲勝|紅隊獲勝了。|The red team won.
+帽子|天氣熱，出門要戴帽子。|It's hot, so wear a hat when you go out.
+禮帽|魔術師從禮帽裏變出一隻兔子。|The magician pulled a rabbit out of his top hat.
+衣帽間|請把外套放在衣帽間。|Please leave your coat in the cloakroom.
+轉換|請把這些米轉換成厘米。|Please convert these metres into centimetres.|请把这些米换算成厘米。|請把這些公尺換算成公分。
+更換|電池沒電了，要更換新的。|The battery is flat and needs replacing.
+晴天|今天是晴天。|It's a sunny day today.
+晴朗|天氣晴朗，我們去郊遊吧。|The weather is fine – let's go on an outing.
+雨過天晴|雨過天晴，天上出現了彩虹。|After the rain the sky cleared and a rainbow appeared.
+棉花|這件衣服是用棉花做的。|This garment is made of cotton.
+石棉|石棉對人體有害。|Asbestos is harmful to people.
+棉布|夏天穿棉布衣服很舒服。|Cotton clothes are comfortable in summer.
+痛苦|他的病令他很痛苦。|His illness causes him a lot of pain.
+頭痛|我頭痛，想休息一下。|I have a headache and want to rest.
+痛快|我們玩得很痛快。|We had a great time.
+等等|我喜歡吃蘋果、香蕉、橙等等。|I like apples, bananas, oranges and so on.|我喜欢吃苹果、香蕉、橙子等等。|我喜歡吃蘋果、香蕉、柳丁等等。
+等待|我們在門口等待老師。|We're waiting for the teacher at the door.
+等候|請在這裏等候。|Please wait here.
+結束|比賽結束了。|The match is over.
+結婚|我的姑姐下個月結婚。|My aunt is getting married next month.|我的姑姑下个月结婚。|我的姑姑下個月結婚。
+煮飯|媽媽在廚房煮飯。|Mum is cooking in the kitchen.
+煮沸|喝水前要先把水煮沸。|Boil water before drinking it.
+搬家|我們下個月搬家。|We are moving house next month.
+搬走|請把這些箱子搬走。|Please carry these boxes away.
+搬動|這張桌子太重，我搬動不了。|This table is too heavy for me to move.
+搖滾|哥哥喜歡聽搖滾音樂。|My older brother likes rock music.
+動搖|無論遇到甚麼困難，他的決心也沒有動搖。|Whatever difficulties he faced, his determination never wavered.
+搖頭|他搖頭說不知道。|He shook his head and said he didn't know.
+萬歲|勝利萬歲！|Long live victory!
+歲月|歲月不等人。|Time waits for no one.
+歲數|爺爺的歲數很大了。|Grandpa is very old.
+應該|我們應該互相幫助。|We should help each other.
+活該|他不聽勸告，跌倒了也是活該。|He ignored the warning, so it serves him right that he fell.
+飯碗|請把飯碗拿好。|Hold your rice bowl properly.
+洗碗機|我家有一部洗碗機。|We have a dishwasher at home.|我家有一台洗碗机。|我家有一台洗碗機。
+茶碗|爺爺用茶碗喝茶。|Grandpa drinks tea from a tea bowl.
+手腳|天氣太冷，我的手腳都凍僵了。|It's so cold that my hands and feet are numb.
+腳下|小心腳下，地很滑。|Watch your step, the floor is slippery.
+腳步|我聽到門外有腳步聲。|I heard footsteps outside the door.
+事實|這是事實，不是故事。|This is a fact, not a story.
+充滿|她的生活充滿了快樂。|Her life is full of joy.
+滿意|老師對我的作文很滿意。|The teacher is very pleased with my composition.
+滿足|他很容易滿足。|He is easily satisfied.
+碟子|請把碟子放在桌上。|Please put the dishes on the table.
+飛碟|他說他看見過飛碟。|He says he has seen a flying saucer.
+光碟|這張光碟裏有很多兒歌。|This disc has lots of children's songs on it.|这张光盘里有很多儿歌。
+算是|這次考試算是不錯了。|This exam went fairly well, all things considered.
+就算|就算下雨，我也要去。|Even if it rains, I'm still going.
+認為|我認為你說得對。|I think you're right.
+認識|很高興認識你。|Nice to meet you.
+認真|她做事很認真。|She does things very conscientiously.
+年輕人|年輕人要多做運動。|Young people should exercise more.
+鼻子|大象的鼻子很長。|Elephants have long trunks.
+鼻涕|他感冒了，一直流鼻涕。|He has a cold and his nose keeps running.
+哭鼻子|別哭鼻子了，我們一起想辦法。|Stop snivelling, let's find a way together.
+齊全|這家文具店的貨品很齊全。|This stationery shop has a full range of goods.
+一齊|我們一齊唱歌。|We sang together.
+整齊|同學們排好整齊的隊伍。|The students lined up neatly.
+成熟|樹上的蘋果成熟了。|The apples on the tree are ripe.
+熟人|他在這裏有很多熟人。|He knows lots of people here.
+眼熟|這個人很眼熟。|This person looks familiar.
+罷了|我只是開個玩笑罷了。|I was only joking, that's all.
+罷工|工人罷工了。|The workers went on strike.
+罷手|他不找到答案是不會罷手的。|He won't give up until he finds the answer.
+稻草|農夫把稻草堆在田邊。|The farmer piled straw at the edge of the field.
+稻草人|田裏站着一個稻草人。|There's a scarecrow in the field.
+稻田|稻田裏一片金黃。|The rice paddies are all golden.
+天橋|我們走天橋過馬路。|We use the footbridge to cross the road.
+橋頭|我在橋頭等你。|I'll wait for you at the end of the bridge.
+橋牌|爺爺喜歡打橋牌。|Grandpa likes playing bridge.
+燃燒|木柴在火爐裏燃燒。|The firewood is burning in the stove.
+火燒|那間舊屋被火燒毀了。|That old house was burnt down.
+發燒|他發燒了，要看醫生。|He has a fever and needs to see a doctor.
+燕尾服|指揮家穿着燕尾服。|The conductor is wearing tails.
+燕子|春天，燕子飛回來了。|In spring, the swallows fly back.
+燕麥|我早餐吃燕麥片。|I eat oatmeal for breakfast.
+不錯|你的畫畫得很不錯。|Your drawing is very good.
+錯過|快點，不然就錯過火車了。|Hurry up, or we'll miss the train.
+錯誤|請改正你的錯誤。|Please correct your mistakes.
+反應|他的反應很快。|He reacts very quickly.
+多久|你等了多久？|How long have you been waiting?
+好久|好久不見！|Long time no see!
+不久|不久，天就黑了。|Soon it got dark.
+千萬|你千萬要小心。|You must be very careful.
+千年|這座古城有千年歷史。|This ancient city has a thousand years of history.
+土地|這片土地很肥沃。|This land is very fertile.
+土豆|媽媽用土豆煮了一鍋湯。|Mum made a pot of soup with potatoes.||媽媽用馬鈴薯煮了一鍋湯。
+國土|我們要保衞國土。|We must defend our country's land.
+油井|沙漠中有很多油井。|There are many oil wells in the desert.
+井井有條|她把房間收拾得井井有條。|She keeps her room neat and tidy.
+落井下石|朋友有困難時，我們不應落井下石。|We shouldn't kick a friend when they're down.
+內心|他內心十分高興。|He was very happy inside.
+之內|請在一小時之內完成。|Please finish within an hour.
+丈夫|她的丈夫是一位醫生。|Her husband is a doctor.
+夫人|校長夫人也來了。|The principal's wife came too.
+功夫|他會打中國功夫。|He can do Chinese kung fu.
+英尺|這棵樹有三十英尺高。|This tree is thirty feet tall.
+尺寸|這雙鞋的尺寸不合適。|These shoes are the wrong size.
+得寸進尺|你不要得寸進尺。|Give you an inch and you'll take a mile.
+文明|我們要做一個文明的市民。|We should be civilised citizens.
+文章|這篇文章寫得很好。|This essay is very well written.
+神父|神父在教堂裏講道。|The priest is preaching in the church.
+國王|國王有三個兒子。|The king had three sons.
+女王|女王住在城堡裏。|The queen lives in a castle.
+王子|王子和公主結婚了。|The prince and princess got married.
+立刻|聽到鐘聲，大家立刻回到課室。|When the bell rang, everyone went straight back to the classroom.|听到铃声，大家立刻回到教室。|聽到鐘聲，大家立刻回到教室。
+立場|我明白你的立場。|I understand your position.
+成立|我們成立了一個環保小組。|We set up an environmental group.
+主意|這是一個好主意。|That's a good idea.
+主人|小狗跟着牠的主人。|The dog follows its owner.
+主要|我主要的興趣是看書。|My main interest is reading.
+老兄|老兄，你好嗎？|How are you, mate?
+弟兄|他們像弟兄一樣親密。|They are as close as brothers.
+手冊|請先閱讀學生手冊。|Please read the student handbook first.
+註冊|我要註冊一個新帳戶。|I need to register a new account.|我要注册一个新账户。|我要註冊一個新帳號。
+小冊子|老師派了一本小冊子給我們。|The teacher gave us a booklet.|老师发给我们一本小册子。|老師發給我們一本小冊子。
+北方|北方的冬天很冷。|Winters in the north are very cold.
+北部|新界北部有很多農田。|There is a lot of farmland in the north of the New Territories.|这个省的北部有很多农田。|這個縣的北部有很多農田。
+北邊|學校在公園的北邊。|The school is north of the park.
+古怪|他的脾氣很古怪。|He has a strange temper.
+古老|這是一座古老的廟宇。|This is an ancient temple.
+古人|古人用毛筆寫字。|People in ancient times wrote with brushes.
+奶奶|奶奶每天帶我去公園。|Grandma takes me to the park every day.
+牛奶|我每天早上喝一杯牛奶。|I drink a glass of milk every morning.
+奶油|蛋糕上有很多奶油。|There's lots of cream on the cake.
+它們|這些花很美，它們是媽媽種的。|These flowers are lovely; Mum planted them.
+其它|你還有其它問題嗎？|Do you have any other questions?
+吉它|哥哥會彈吉它。|My older brother can play the guitar.
+巧合|我們同一天生日，真是巧合！|We have the same birthday – what a coincidence!
+巧克力|我喜歡吃巧克力。|I like eating chocolate.
+碰巧|我碰巧在街上遇見老師。|I happened to meet my teacher in the street.
+城市|香港是一個繁華的城市。|Hong Kong is a bustling city.
+市場|媽媽去市場買菜。|Mum goes to the market to buy groceries.
+市長|市長參觀了我們的學校。|The mayor visited our school.
+公平|老師對每個學生都很公平。|The teacher is fair to every student.
+水平|她的英文水平很高。|Her English is very good.||她的英文水準很高。
+幼兒園|妹妹在讀幼兒園。|My little sister is at kindergarten.|妹妹在上幼儿园。|妹妹在讀幼兒園。
+幼稚|你的想法太幼稚了。|Your ideas are too childish.
+年幼|他年幼時已經很喜歡畫畫。|He loved drawing even when he was little.
+必須|我們必須準時上學。|We must get to school on time.
+必要|沒有必要擔心。|There's no need to worry.
+不必|你不必等我。|You don't have to wait for me.
+人民|政府要為人民服務。|The government should serve the people.
+公民|我們要做一個好公民。|We should be good citizens.
+居民|這裏的居民很友善。|The residents here are very friendly.
+果汁|我想喝一杯果汁。|I'd like a glass of fruit juice.
+橙汁|早餐我喝了一杯橙汁。|I had a glass of orange juice for breakfast.|早餐我喝了一杯橙汁。|早餐我喝了一杯柳橙汁。
+肉汁|這塊牛排的肉汁很多。|This steak is very juicy.
+自由|小鳥在天空中自由地飛翔。|The birds fly freely in the sky.
+理由|你遲到的理由是甚麼？|What's your reason for being late?
+由於|由於下雨，運動會取消了。|Sports day was cancelled because of the rain.
+乒乓球|我們在學校打乒乓球。|We play table tennis at school.
+乒乓|廚房裏傳來乒乓的聲音。|A clattering sound came from the kitchen.
+休息|你累了，休息一下吧。|You're tired, have a rest.
+退休|爺爺已經退休了。|Grandpa has already retired.
+休假|爸爸下星期休假。|Dad is on holiday next week.
+身份|請說明你的身份。|Please state who you are.||請說明你的身分。
+份子|大家一起出份子買禮物。|Everyone chipped in to buy the present.
+身份證|入境時要出示身份證。|Show your ID card when entering.||入境時要出示身分證。
+危險|在馬路上玩耍很危險。|Playing in the road is dangerous.
+危機|地球正面對環境危機。|The Earth is facing an environmental crisis.
+危害|吸煙危害健康。|Smoking harms your health.
+合作|我們要互相合作。|We must cooperate with each other.
+合同|他們簽了一份合同。|They signed a contract.|他们签了一份合同。|他們簽了一份合約。
+合法|這樣做是合法的。|Doing this is legal.
+因為|因為下雨，所以我們留在家。|We stayed at home because it was raining.
+原因|你知道他哭的原因嗎？|Do you know why he is crying?
+因此|他很努力，因此成績很好。|He works hard, and as a result his grades are good.
+晚安|媽媽，晚安！|Good night, Mum!
+帆船|海上有很多帆船。|There are many sailing boats on the sea.
+一帆風順|祝你一帆風順！|I wish you smooth sailing!
+帆布|這個袋是用帆布做的。|This bag is made of canvas.
+成為|我希望成為一名科學家。|I hope to become a scientist.
+收到|我收到了你的信。|I received your letter.
+收拾|請收拾好你的書包。|Please pack your schoolbag.
+收回|他收回了剛才說的話。|He took back what he had just said.
+殺死|貓殺死了一隻老鼠。|The cat killed a mouse.
+死去|那棵老樹已經死去了。|That old tree has died.
+死亡|交通意外造成兩人死亡。|The traffic accident killed two people.
+灰色|今天的天空是灰色的。|The sky is grey today.
+骨灰|他的骨灰撒在大海裏。|His ashes were scattered at sea.
+灰塵|書架上有很多灰塵。|The bookshelf is covered in dust.
+百萬|這座城市有幾百萬人。|This city has several million people.
+百分|我數學考了一百分。|I got full marks in maths.
+百分之百|我百分之百相信你。|I believe you a hundred per cent.
+考慮|讓我考慮一下。|Let me think about it.
+考試|明天有中文考試。|We have a Chinese exam tomorrow.
+思考|遇到問題要先思考。|Think first when you meet a problem.
+流血|他的膝蓋流血了。|His knee is bleeding.
+吸血鬼|這個故事講的是吸血鬼。|This story is about vampires.
+血液|心臟把血液送到全身。|The heart pumps blood around the body.
+伸出|他伸出手來和我握手。|He held out his hand to shake mine.
+伸手|他伸手去拿書。|He reached out for the book.
+伸張|法官伸張了正義。|The judge upheld justice.
+同伴|小狗在找牠的同伴。|The puppy is looking for its companions.
+舞伴|她是我的舞伴。|She is my dance partner.
+伙伴|他是我的好伙伴。|He is my good companion.
+但是|我想去，但是沒有時間。|I want to go, but I don't have time.
+但願|但願明天天晴。|I hope it's sunny tomorrow.
+不但|他不但聰明，而且很勤力。|He's not only clever but also hard-working.|他不但聪明，而且很勤奋。|他不但聰明，而且很勤奮。
+伯爵|伯爵住在一座大城堡裏。|The count lives in a big castle.
+伯母|伯母，你好！|Hello, Auntie!
+伯父|伯父送了我一本書。|My uncle gave me a book.
+順利|祝你考試順利！|Good luck in your exams!
+別人|我們要尊重別人。|We should respect others.
+特別|今天是一個特別的日子。|Today is a special day.
+助手|他是醫生的助手。|He is the doctor's assistant.
+助理|她在公司做助理。|She works as an assistant at the company.
+吵架|弟弟和妹妹又吵架了。|My little brother and sister are quarrelling again.
+爭吵|他們為了一件小事爭吵起來。|They quarrelled over a small matter.
+吵鬧|街上很吵鬧。|The street is very noisy.
+吱聲|大家都不敢吱聲。|Nobody dared make a sound.
+咯吱|舊木門咯吱咯吱地響。|The old wooden door creaked.
+呼吸|請深呼吸。|Please take a deep breath.
+吸引|這本書很吸引我。|This book really appeals to me.
+強壯|爸爸的身體很強壯。|Dad is very strong.
+壯觀|瀑布非常壯觀。|The waterfall is magnificent.
+健壯|小牛長得很健壯。|The calf has grown strong and healthy.
+希望|我希望你快點好起來。|I hope you get better soon.
+哈希|電腦用哈希值來檢查文件。|Computers use hash values to check files.||電腦用雜湊值來檢查檔案。
+希冀|他希冀有一天能成為作家。|He hopes one day to become a writer.
+程序|請按照程序辦事。|Please follow the procedure.
+秩序|請大家保持秩序。|Please keep order, everyone.
+順序|請按順序排隊。|Please line up in order.
+玩弄|你不要玩弄小動物。|Don't toy with small animals.
+弄清|我們要先弄清楚事實。|We must get the facts clear first.
+形象|他在大家心中的形象很好。|Everyone has a good impression of him.

@@ -41,10 +41,11 @@ export function makeConverters(OpenCC) {
   const toHK = OpenCC.Converter({ from: 't', to: 'hk' });
   const hk2cn = OpenCC.Converter({ from: 'hk', to: 'cn' });
   const hk2tw = OpenCC.Converter({ from: 'hk', to: 'tw' });
-  // OpenCC keeps the Hong Kong 甚麼, but the mainland and Taiwan write 什么 / 什麼.
+  // OpenCC keeps the Hong Kong 甚麼, but the mainland and Taiwan write 什么 / 什麼;
+  // the mainland also writes 它 for animals where Hong Kong and Taiwan write 牠.
   return {
     hk: (s) => toHK(s),
-    cn: (s) => hk2cn(s).replace(/甚么/g, '什么'),
+    cn: (s) => hk2cn(s).replace(/甚么/g, '什么').replace(/牠/g, '它'),
     tw: (s) => hk2tw(s).replace(/甚麼/g, '什麼'),
   };
 }
