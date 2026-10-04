@@ -188,7 +188,10 @@ body.studying { padding-bottom: 0; }
 .reading {
   display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line);
   background: var(--surface-2); border-radius: 999px; padding: 6px 8px 6px 14px;
+  text-align: left; line-height: inherit;
 }
+.reading:active { transform: scale(.96); filter: brightness(.94); transition-duration: .05s; }
+.reading:active .speak { transform: scale(.9); }
 .reading .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
 .reading .val { font-size: 22px; font-weight: 600; }
 .speak {
@@ -275,6 +278,7 @@ dialog#sheet::backdrop { background: rgba(0,0,0,.4); }
 }
 @media (prefers-reduced-motion: reduce) {
   .btn:active:not(:disabled), .grid button:active, .results button:active, .ratings button:active,
-  .sheet-close:active, .speak:active, .tabbar button:active, .flash.tap:active { transform: none; }
+  .sheet-close:active, .speak:active, .tabbar button:active, .flash.tap:active,
+  .reading:active, .reading:active .speak { transform: none; }
   .flash { animation: none; }
 }
