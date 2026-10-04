@@ -74,5 +74,6 @@ Each record in `chars.json` has these fields:
 - Cantonese readings: [LSHK 粵拼表](https://github.com/lshk-org/jyutping-table) (CC BY 4.0) and [to-jyutping](https://github.com/CanCLID/to-jyutping), which picks the main reading and handles words in context.
 - Mandarin readings, English glosses, stroke counts and simplified forms: Unicode [Unihan](https://www.unicode.org/charts/unihan.html) (Unicode licence), via `@mandel59/mojidata`.
 - Example words: [CC-CEDICT](https://cc-cedict.org/) (CC BY-SA 4.0), ranked by [SUBTLEX-CH](https://www.ugent.be/pp/experimentele-psychologie/en/research/documents/subtlexch) word frequency.
+- Example word corrections: `data/example-overrides.json` is a hand-checked list applied at build time. `fix` corrects the Pinyin, Jyutping or English of a word (CC-CEDICT often lists one written word under several readings, e.g. 結果 jiē guǒ "to bear fruit" vs jié guǒ "result", and the build can't tell which is meant). `exclude` drops words that mean something different in Cantonese and Mandarin (窩心, 薄餅), Hong Kong-only or dialect words that Mandarin doesn't use (侍應, 警署, 阿爸), and words not suitable for primary pupils. The next-ranked word replaces anything excluded.
 
 Readings come from automatic sources, so check any doubtful polyphonic characters (e.g. 長, 行, 重) against a dictionary.

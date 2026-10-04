@@ -4,7 +4,8 @@ import {
   newCard, schedule, previewIntervals, dayStart, dayKey,
   AGAIN, HARD, GOOD, EASY, MIN, DAY, LEARN_STEPS, MIN_EASE,
 } from '../public/srs.js';
-import { numberedToMarked, splitBlocks } from './build-data.mjs';
+import fs from 'node:fs';
+import { numberedToMarked, splitBlocks, applyFix } from './build-data.mjs';
 
 const NOW = new Date(2026, 9, 3, 15, 0, 0).getTime(); // 3 Oct 2026, 15:00 local
 const fixed = () => 0.5; // no fuzz
@@ -80,4 +81,21 @@ test('grade blocks split on stroke-count resets', () => {
   const strokes = { 一: 1, 人: 2, 大: 3, 乙: 1, 千: 3, 書: 10, 丈: 3 };
   const blocks = splitBlocks([...'一人大書乙千書丈'], (c) => strokes[c]);
   assert.deepEqual(blocks.map((b) => b.join('')), ['一人大書', '乙千書', '丈']);
+});
+
+test('example fixes override only the fields they set', () => {
+  const ex = ['結果', 'git3 gwo2', 'jiē guǒ', 'to bear fruit'];
+  assert.deepEqual(applyFix(ex, { p: 'jié guǒ', en: 'result' }), ['結果', 'git3 gwo2', 'jié guǒ', 'result']);
+  assert.deepEqual(applyFix(ex, { j: 'git3 gwo2' }), ex);
+  assert.equal(applyFix(ex, undefined), ex);
+});
+
+test('example overrides file is consistent', () => {
+  const o = JSON.parse(fs.readFileSync(new URL('../data/example-overrides.json', import.meta.url), 'utf8'));
+  for (const [w, fix] of Object.entries(o.fix)) {
+    assert.ok(!(w in o.exclude), `${w} is both fixed and excluded`);
+    assert.ok(Object.keys(fix).every((k) => ['p', 'j', 'en'].includes(k)), `${w}: unknown field`);
+    if (fix.p) assert.equal(fix.p.split(' ').length, [...w].length, `${w}: one Pinyin syllable per character`);
+    if (fix.j) assert.equal(fix.j.split(' ').length, [...w].length, `${w}: one Jyutping syllable per character`);
+  }
 });
