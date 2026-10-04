@@ -145,9 +145,13 @@ if ('speechSynthesis' in window) {
   });
 }
 
+// True while the user has text selected, so a tap that finishes a selection doesn't also play or reveal.
+const selecting = () => !(window.getSelection()?.isCollapsed ?? true);
+
 document.addEventListener('click', (e) => {
   const b = e.target.closest('[data-say]');
   if (!b) return;
+  if (selecting() && !b.matches('button.speak')) return;
   e.stopPropagation();
   speech.say(b.dataset.say, b.dataset.kind);
 });
@@ -603,7 +607,7 @@ function renderStudy(v) {
     reveal.onclick = doReveal;
     const flash = $('.flash', v);
     flash.classList.add('tap');
-    flash.onclick = (e) => { if (!e.target.closest('button')) doReveal(); };
+    flash.onclick = (e) => { if (!e.target.closest('button') && !selecting()) doReveal(); };
   }
   v.querySelectorAll('[data-rate]').forEach((b) => { b.onclick = () => rate(Number(b.dataset.rate)); });
   bindUndo();
