@@ -441,8 +441,27 @@ function showDetail(c) {
       render();
     };
   });
-  if (!sheet.open) sheet.showModal();
+  if (!sheet.open) {
+    lockScroll();
+    sheet.showModal();
+  }
 }
+
+// Freeze the page behind the sheet. iOS Safari ignores overflow:hidden for touch
+// scrolling, so pin the body in place and restore the scroll position on close.
+let lockedY = null;
+function lockScroll() {
+  if (lockedY !== null) return;
+  lockedY = window.scrollY;
+  Object.assign(document.body.style, { position: 'fixed', top: `-${lockedY}px`, left: '0', right: '0', overflow: 'hidden' });
+}
+function unlockScroll() {
+  if (lockedY === null) return;
+  Object.assign(document.body.style, { position: '', top: '', left: '', right: '', overflow: '' });
+  window.scrollTo(0, lockedY);
+  lockedY = null;
+}
+$('#sheet').addEventListener('close', unlockScroll);
 
 // ---------- study ----------
 
