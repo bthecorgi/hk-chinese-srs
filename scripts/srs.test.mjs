@@ -9,7 +9,9 @@ import {
   numberedToMarked, splitBlocks, applyFix, addRegional, taiwanReadingOf, splitTaiwanPr,
 } from './build-data.mjs';
 import { createRequire } from 'node:module';
-import { parseLine, makeConverters, mark, applySwaps } from './build-sentences.mjs';
+import {
+  parseLine, makeConverters, mark, applySwaps, regionalSwaps, taiwanReadingWords,
+} from './build-sentences.mjs';
 
 const NOW = new Date(2026, 9, 3, 15, 0, 0).getTime(); // 3 Oct 2026, 15:00 local
 const fixed = () => 0.5; // no fuzz
@@ -134,6 +136,13 @@ test('Taiwan readings come from the word note, else the character table', () => 
   assert.equal(taiwanReadingOf('今天', 'jīn tiān', notes, chars), null);
 });
 
+test('Taiwan keeps the full tone where the mainland reading is neutral', () => {
+  const chars = { 息: ['xī', 'xí'], 髮: ['fà', 'fǎ'], 叔: ['shū', 'shú'] };
+  assert.equal(taiwanReadingOf('消息', 'xiāo xi', new Map(), chars), 'xiāo xí');
+  assert.equal(taiwanReadingOf('頭髮', 'tóu fa', new Map(), chars), 'tóu fǎ');
+  assert.equal(taiwanReadingOf('叔叔', 'shū shu', new Map(), chars), 'shú shu');
+});
+
 test('CC-CEDICT Taiwan pronunciation notes are split out of glosses', () => {
   assert.deepEqual(splitTaiwanPr('Taiwan pr. [le4 se4]'), { gloss: '', tw: 'le4 se4' });
   assert.deepEqual(splitTaiwanPr('mint (plant); Taiwan pr. [bo4he2]'), { gloss: 'mint (plant)', tw: 'bo4 he2' });
@@ -160,6 +169,30 @@ test('regional word swaps skip the example word itself', () => {
   assert.equal(applySwaps('我坐巴士做功課。', '我', 2), '我坐公車做功課。');
   assert.equal(applySwaps('我做完功課。', '功課', 1), '我做完功課。');
   assert.equal(applySwaps('古代的士兵', '古代', 1), '古代的士兵');
+});
+
+test('hand-checked regional words are swapped into other sentences too', () => {
+  const extra = regionalSwaps({
+    熊貓: { tw: ['貓熊', 'māo xióng'] },
+    塑料: { tw: ['塑膠', 'sù jiāo'] },
+    泡沫塑料: { tw: ['保麗龍', 'bǎo lì lóng'] },
+    恤衫: { cn: ['襯衫', 'chèn shān'] },
+    模特: { tw: ['模特兒', 'mó tè ér'] },
+    星期: { tw: ['星期', 'xīng qí'] },
+  });
+  assert.deepEqual(extra.map(([w]) => w), ['泡沫塑料', '熊貓', '塑料', '恤衫', '模特']);
+  assert.equal(applySwaps('熊貓愛吃竹子。', '竹子', 2, extra), '貓熊愛吃竹子。');
+  assert.equal(applySwaps('少用泡沫塑料。', '少', 2, extra), '少用保麗龍。');
+  // With no Taiwan word given, Taiwan uses the mainland one.
+  assert.equal(applySwaps('他穿恤衫。', '他', 2, extra), '他穿襯衫。');
+  assert.equal(applySwaps('她是模特兒。', '她', 2, extra), '她是模特兒。');
+});
+
+test('words Taiwan says differently are found by longest match', () => {
+  const dict = new Map([['今天', false], ['星期', 'xīng qí'], ['星期一', 'xīng qí yī'], ['垃圾', 'lè sè'], ['垃圾桶', 'lè sè tǒng']]);
+  assert.deepEqual(taiwanReadingWords('今天是星期一。', dict), [['星期一', 'xīng qí yī']]);
+  assert.deepEqual(taiwanReadingWords('垃圾放進垃圾桶，垃圾', dict), [['垃圾', 'lè sè'], ['垃圾桶', 'lè sè tǒng']]);
+  assert.deepEqual(taiwanReadingWords('今天很好', dict), []);
 });
 
 test('the example word is marked once in its sentence', () => {

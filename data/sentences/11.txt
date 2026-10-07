@@ -24,7 +24,7 @@
 燈泡|燈泡壞了，要換一個新的。|The light bulb has gone and needs replacing.
 政治|爸爸喜歡看政治新聞。|Dad likes watching political news.
 治療|醫生正在為病人治療。|The doctor is treating the patient.
-波特|這部舊數據機的速度是九千六百波特。|This old modem runs at 9,600 baud.
+波特|這部舊數據機的速度是九千六百波特。|This old modem runs at 9,600 baud.|這台舊調制解調器的速度是九千六百波特。|這台舊數據機的速度是九千六百波特。
 波比|體育老師叫我們做十個波比跳。|The PE teacher made us do ten burpees.
 波動|股票價格波動很大。|Share prices fluctuate a lot.
 沿著|我們沿著海邊散步。|We walked along the seafront.

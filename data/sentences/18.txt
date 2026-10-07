@@ -70,7 +70,7 @@
 貿易|香港是一個貿易中心。|Hong Kong is a trading centre.
 貿然|不要貿然作決定。|Don't make decisions hastily.
 農貿市場|媽媽去農貿市場買菜。|Mum went to the market to buy vegetables.
-超過|這座大廈超過一百米高。|This building is over a hundred metres tall.
+超過|這座大廈超過一百米高。|This building is over a hundred metres tall.||這座大廈超過一百公尺高。
 超人|超人會飛。|Superman can fly.
 越來越|天氣越來越冷了。|The weather is getting colder and colder.
 超越|他超越了自己的紀錄。|He beat his own record.

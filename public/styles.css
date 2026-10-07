@@ -240,6 +240,7 @@ body.studying { padding-bottom: 0; }
 .examples .sent[data-playing] .rl { display: inline-block; font-size: 12px; line-height: 1.5; padding: 0 5px; margin-right: 6px; border-radius: 6px; background: var(--accent); color: var(--accent-ink); vertical-align: 1px; }
 .examples .sl b { font-weight: 600; color: var(--accent); }
 .examples .sl .wd { font-family: inherit; font-size: 11px; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 0 4px; margin-left: 6px; vertical-align: 1px; white-space: nowrap; }
+.examples .sl .rd { display: block; width: fit-content; margin: 2px 0 0; white-space: normal; font-family: system-ui, sans-serif; }
 .examples .se { display: block; font-size: 12px; color: var(--muted); }
 .sent-tabs { display: flex; align-items: center; gap: 6px; margin: 14px 0 -4px; }
 .sent-tabs .lbl { font-size: 12px; color: var(--muted); margin-right: 2px; }

@@ -175,7 +175,7 @@
 可能|他可能生病了。|He might be ill.
 可是|我想出去玩，可是下雨了。|I wanted to go out and play, but it rained.
 四處|小狗在公園裏四處亂跑。|The puppy ran all over the park.
-四十|這條路有四十米長。|This road is forty metres long.
+四十|這條路有四十米長。|This road is forty metres long.||這條路有四十公尺長。
 十四|我住在十四樓。|I live on the fourteenth floor.
 外面|外面正在下雨。|It is raining outside.
 另外|我買了一本書，另外還買了一枝筆。|I bought a book, and also a pen.
