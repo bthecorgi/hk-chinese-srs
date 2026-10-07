@@ -182,6 +182,12 @@ if ('speechSynthesis' in window) {
   });
 }
 
+// Haptic tick on taps. Capture phase so handlers that stopPropagation still get it. No-op where
+// navigator.vibrate is missing (iOS Safari/PWA).
+document.addEventListener('click', (e) => {
+  if (e.target.closest('button, a, summary, [data-say], [data-sent], [data-open], .flash')) navigator.vibrate?.(10);
+}, true);
+
 // True while the user has text selected, so a tap that finishes a selection doesn't also play or reveal.
 const selecting = () => !(window.getSelection()?.isCollapsed ?? true);
 
