@@ -105,13 +105,27 @@ const speech = {
     this.voices = speechSynthesis.getVoices();
   },
   norm: (v) => v.lang.replace('_', '-').toLowerCase(),
+  // Apple ships each voice in up to three sizes under the same name (Meijia, Tingting…);
+  // only the voiceURI (com.apple.voice.premium.zh-TW.Meijia) or a name suffix tells them apart.
+  quality(v) {
+    const id = `${v.voiceURI} ${v.name}`.toLowerCase();
+    if (id.includes('premium')) return 3;
+    if (id.includes('enhanced')) return 2;
+    if (id.includes('compact')) return 0;
+    return 1;
+  },
+  qualityLabel(v) {
+    const label = ['Compact', '', 'Enhanced', 'Premium'][this.quality(v)];
+    return v.name.toLowerCase().includes(label.toLowerCase()) ? '' : label;
+  },
+  // Best-sounding voices first, so "Automatic" and list[0] pick a downloaded premium voice over the compact one.
   list(kind) {
     return this.voices.filter((v) => {
       const l = this.norm(v);
       if (kind === 'yue') return l.startsWith('zh-hk') || l.startsWith('yue');
       if (kind === 'tw') return l.startsWith('zh-tw');
       return l.startsWith('zh-cn') || l.startsWith('zh-tw') || l.startsWith('cmn') || l === 'zh';
-    });
+    }).sort((a, b) => this.quality(b) - this.quality(a));
   },
   // kind: yue = Cantonese, cmn = Mandarin (mainland voice by default), tw = Taiwan Mandarin.
   pick(kind) {
@@ -140,7 +154,8 @@ const speech = {
     const u = new SpeechSynthesisUtterance(text);
     u.lang = { yue: 'zh-HK', tw: 'zh-TW' }[kind] || 'zh-CN';
     const v = this.pick(kind);
-    if (v) u.voice = v;
+    // Safari can ignore u.voice when u.lang disagrees with it (e.g. Meijia, a zh-TW voice, chosen for Mandarin).
+    if (v) { u.voice = v; u.lang = v.lang; }
     u.rate = S().rate;
     if (onStart) u.onstart = onStart;
     if (onEnd) {
@@ -727,7 +742,7 @@ function renderSettings(v) {
   const voiceOpts = (kind, current) => {
     const list = speech.list(kind);
     if (!list.length) return '<option value="">System default</option>';
-    return `<option value="">Automatic</option>${list.map((vo) => `<option value="${esc(vo.voiceURI)}" ${vo.voiceURI === current ? 'selected' : ''}>${esc(vo.name)} (${esc(vo.lang)})</option>`).join('')}`;
+    return `<option value="">Automatic</option>${list.map((vo) => `<option value="${esc(vo.voiceURI)}" ${vo.voiceURI === current ? 'selected' : ''}>${esc(vo.name)}${speech.qualityLabel(vo) ? ` · ${speech.qualityLabel(vo)}` : ''} (${esc(vo.lang)})</option>`).join('')}`;
   };
   const noYue = 'speechSynthesis' in window && speech.voices.length && !speech.list('yue').length;
   v.innerHTML = `
