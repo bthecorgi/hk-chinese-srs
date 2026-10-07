@@ -91,7 +91,7 @@
 獨自|她獨自一人去旅行。|She went travelling on her own.
 獨立|孩子長大後要學會獨立。|Children should learn to be independent as they grow up.
 積極|她上課時很積極。|She's very active in class.
-面積|這個房間的面積是二十平方米。|This room is twenty square metres.
+面積|這個房間的面積是二十平方米。|This room is twenty square metres.||這個房間的面積是二十平方公尺。
 建築師|爸爸是一位建築師。|Dad is an architect.
 建築物|這座建築物很高。|This building is very tall.
 輸入|請輸入你的密碼。|Please enter your password.

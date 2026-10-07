@@ -26,7 +26,7 @@ const DEFAULT_SETTINGS = {
 // ---------- state ----------
 
 let DATA = null; // { chars: [...] }
-let SENT = {}; // example word -> [hk, english, cn, tw, diff], see scripts/build-sentences.mjs
+let SENT = {}; // example word -> [hk, english, cn, tw, diff, twReadings?], see scripts/build-sentences.mjs
 let BY_CHAR = new Map();
 let store = loadStore();
 let route = { name: 'home' };
@@ -435,16 +435,19 @@ const PLAY_ICON = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="
 function sentenceHtml(w, alt) {
   const s = SENT[w];
   if (!s) return '';
-  const [hk, en, cn, tw, diff] = s;
+  const [hk, en, cn, tw, diff, twReadings = []] = s;
   const text = { hk, cn, tw: tw ?? hk };
   const differs = { hk: false, cn: !!(diff & 1), tw: !!(diff & 2) };
+  // Words Taiwan says differently (星期 xīng qí), noted on the Taiwan line.
+  const readingNote = twReadings.length && S().showPinyin
+    ? `<span class="wd rd" title="Taiwan pronounces these differently">台讀音 ${twReadings.map(([w, py]) => `${esc(w)} ${pinyinHtml(py)}`).join('、')}</span>` : '';
   const lines = REGIONS.map(([r, zh, , lang]) => {
     const plain = text[r].replace(/[⟦⟧]/g, '');
     const html = esc(text[r]).replace('⟦', '<b>').replace('⟧', '</b>');
-    return `<span class="sl sl-${r}" lang="${lang}" data-text="${esc(plain)}"><span class="rl" aria-hidden="true">${zh}</span>${html}${differs[r] ? `<span class="wd" title="Wording differs from Hong Kong">${zh}用詞</span>` : ''}</span>`;
+    return `<span class="sl sl-${r}" lang="${lang}" data-text="${esc(plain)}"><span class="rl" aria-hidden="true">${zh}</span>${html}${differs[r] ? `<span class="wd" title="Wording differs from Hong Kong">${zh}用詞</span>` : ''}${r === 'tw' ? readingNote : ''}</span>`;
   }).join('');
-  // Offer the three-way comparison only where the wording or the word's reading actually differs.
-  const compare = differs.cn || differs.tw || alt?.cn || alt?.tw;
+  // Offer the three-way comparison only where the wording or a reading actually differs.
+  const compare = differs.cn || differs.tw || twReadings.length || alt?.cn || alt?.tw;
   return `<div class="sent" data-sent data-differs-cn="${differs.cn}"><span class="st">${lines}<span class="se">${esc(en)}</span></span>
     <span class="sbtns"><button class="play" aria-label="Play sentence">${PLAY_ICON}</button>${compare ? '<button class="cmp" data-compare aria-label="Compare Hong Kong, mainland and Taiwan">三地</button>' : ''}</span></div>`;
 }

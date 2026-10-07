@@ -94,7 +94,7 @@
 炸彈|警察拆除了炸彈。|The police defused the bomb.
 中彈|士兵中彈受傷了。|The soldier was shot and wounded.
 影響|天氣會影響我們的心情。|The weather affects our mood.
-影片|老師給我們播放了一段影片。|The teacher played us a video.
+影片|老師給我們播放了一段影片。|The teacher played us a video.|老師給我們播放了一段視頻。
 可憐|這隻小狗很可憐。|This puppy is so pitiful.
 可憐蟲|那個可憐蟲又被人欺負了。|That poor wretch got bullied again.
 同病相憐|我們兩個都感冒了，真是同病相憐。|We both have colds – fellow sufferers.

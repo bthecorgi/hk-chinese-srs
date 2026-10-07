@@ -233,7 +233,7 @@
 排擠|他在公司裏被同事排擠。|His colleagues froze him out at work.
 襲擊|士兵在晚上襲擊敵人。|The soldiers attacked the enemy at night.
 打擊|失敗對他是很大的打擊。|Failing was a big blow to him.
-檔案|請把這個檔案存好。|Please save this file.
+檔案|請把這個檔案存好。|Please save this file.|請把這個文件存好。
 搭檔|他是我的好搭檔。|He's a great partner to work with.
 高檔|這是一家高檔餐廳。|This is an upmarket restaurant.
 波濤|海上波濤洶湧。|The sea is rough with huge waves.

@@ -193,7 +193,16 @@ export function taiwanReadingOf(w, py, taiwanPr, charTable) {
   const syl = py.split(' ');
   const chars = [...w];
   if (syl.length !== chars.length) return null;
-  const tw = syl.map((s, i) => (charTable[chars[i]]?.[0] === s ? charTable[chars[i]][1] : s)).join(' ');
+  // Taiwan keeps the full tone where the mainland uses a neutral one (消息 xiāo xi ->
+  // xiāo xí, 頭髮 tóu fa -> tóu fǎ), except in doubled words like 叔叔.
+  const neutral = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').normalize('NFC');
+  const tw = syl.map((s, i) => {
+    const t = charTable[chars[i]];
+    if (!t) return s;
+    if (t[0] === s) return t[1];
+    if (s === neutral(t[0]) && chars[i] !== chars[i - 1]) return t[1];
+    return s;
+  }).join(' ');
   return tw === py ? null : tw;
 }
 
