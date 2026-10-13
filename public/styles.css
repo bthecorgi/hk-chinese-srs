@@ -258,14 +258,13 @@ body.studying { padding-bottom: 0; }
 .plain .tone-1, .plain .tone-2, .plain .tone-3, .plain .tone-4, .plain .tone-5, .plain .tone-6 { color: inherit; }
 
 .actions { padding: 12px 0 calc(8px + env(safe-area-inset-bottom)); position: sticky; bottom: 0; background: var(--bg); }
-.ratings { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.ratings { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .ratings button {
-  border: 0; border-radius: 12px; padding: 10px 2px 8px; font-weight: 700; font-size: 15px;
+  border: 0; border-radius: 12px; padding: 12px 2px 10px; font-weight: 700; font-size: 17px;
   color: #fff; display: flex; flex-direction: column; align-items: center; gap: 1px;
 }
 .ratings button small { font-weight: 500; font-size: 12px; opacity: .9; }
-.ratings .r1 { background: var(--again); } .ratings .r2 { background: var(--hard); }
-.ratings .r3 { background: var(--good); } .ratings .r4 { background: var(--easy); }
+.ratings .wrong { background: var(--again); } .ratings .right { background: var(--good); }
 @media (prefers-color-scheme: dark) { .ratings button { color: #111; } }
 .done { text-align: center; padding: 40px 10px; }
 .done .big { font-size: 64px; }

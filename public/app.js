@@ -1,6 +1,6 @@
 import {
   newCard, schedule, previewIntervals, dayKey, isMature, formatDelay,
-  AGAIN, HARD, GOOD, EASY, LEARN_AHEAD, DAY,
+  WRONG, RIGHT, LEARN_AHEAD, DAY,
 } from './srs.js';
 
 const STORE_KEY = 'hk-srs-v1';
@@ -237,7 +237,7 @@ function nextCard(now = Date.now()) {
   if (fresh) return fresh;
 
   // Nothing else to do: study learning cards a little early, but never the card just
-  // answered — showing it again straight away defeats the point of Again/Hard.
+  // answered — showing it again straight away defeats the point of marking it wrong.
   const ahead = learning.find(([k, c]) => c.due <= now + LEARN_AHEAD && k !== session?.last);
   return ahead ? ahead[0] : null;
 }
@@ -667,10 +667,8 @@ function renderStudy(v) {
   const prev = previewIntervals(card, Date.now());
   const actions = session.revealed
     ? `<div class="ratings">
-        <button class="r1" data-rate="${AGAIN}">Again<small>${prev[AGAIN]}</small></button>
-        <button class="r2" data-rate="${HARD}">Hard<small>${prev[HARD]}</small></button>
-        <button class="r3" data-rate="${GOOD}">Good<small>${prev[GOOD]}</small></button>
-        <button class="r4" data-rate="${EASY}">Easy<small>${prev[EASY]}</small></button></div>`
+        <button class="wrong" data-rate="${WRONG}">✗ Wrong<small>${prev[WRONG]}</small></button>
+        <button class="right" data-rate="${RIGHT}">✓ Right<small>${prev[RIGHT]}</small></button></div>`
     : '<button class="btn primary block" id="reveal">Show answer</button>';
 
   v.innerHTML = `<div class="study">${head}
@@ -730,8 +728,8 @@ function rate(r) {
 document.addEventListener('keydown', (e) => {
   if (route.name !== 'study' || !session?.current || e.target.matches('input, select, textarea')) return;
   if (!session.revealed && (e.key === ' ' || e.key === 'Enter')) { e.preventDefault(); doReveal(); }
-  else if (session.revealed && ['1', '2', '3', '4'].includes(e.key)) rate(Number(e.key));
-  else if (session.revealed && e.key === ' ') { e.preventDefault(); rate(GOOD); }
+  else if (session.revealed && ['1', 'ArrowLeft'].includes(e.key)) rate(WRONG);
+  else if (session.revealed && ['2', 'ArrowRight', ' '].includes(e.key)) { e.preventDefault(); rate(RIGHT); }
 });
 
 // ---------- settings ----------

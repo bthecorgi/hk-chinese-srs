@@ -1,5 +1,5 @@
 // Offline cache. Bump VERSION whenever any shell file or the data changes.
-const VERSION = 'v13';
+const VERSION = 'v14';
 const CACHE = `hk-srs-${VERSION}`;
 const SHELL = [
   './',
