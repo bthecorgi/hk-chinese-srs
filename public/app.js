@@ -1,6 +1,6 @@
 import {
   newCard, schedule, previewIntervals, dayKey, isMature, formatDelay,
-  WRONG, RIGHT, LEARN_AHEAD, DAY,
+  WRONG, RIGHT, FAST, SLOW, classifySpeed, recordThink, LEARN_AHEAD, DAY,
 } from './srs.js';
 
 const STORE_KEY = 'hk-srs-v1';
@@ -38,6 +38,7 @@ function loadStore() {
   return {
     cards: s.cards || {},
     days: s.days || {},
+    think: s.think || {}, // recent think times (ms) per card type, to judge recall speed
     settings: { ...DEFAULT_SETTINGS, ...(s.settings || {}) },
   };
 }
@@ -611,6 +612,8 @@ function renderStudy(v) {
   if (!session.current) {
     session.current = nextCard();
     session.revealed = false;
+    session.shownAt = Date.now();
+    session.speed = null;
     if (session.current && S().front === 'listen') speech.say(session.current, 'yue');
   }
   const c = counts();
@@ -664,11 +667,14 @@ function renderStudy(v) {
       <div class="prompt small">${isNew ? '✨ New character' : 'How do you say it? What does it mean?'}</div>`;
   }
 
-  const prev = previewIntervals(card, Date.now());
+  const prev = previewIntervals(card, Date.now(), session.speed);
+  // Recall speed only changes the interval of review cards; say so when it did.
+  const hint = card.state === 'review' && session.revealed
+    ? { [FAST]: ' · quick', [SLOW]: ' · slow' }[session.speed] || '' : '';
   const actions = session.revealed
     ? `<div class="ratings">
         <button class="wrong" data-rate="${WRONG}">✗ Wrong<small>${prev[WRONG]}</small></button>
-        <button class="right" data-rate="${RIGHT}">✓ Right<small>${prev[RIGHT]}</small></button></div>`
+        <button class="right" data-rate="${RIGHT}">✓ Right<small>${prev[RIGHT]}${hint}</small></button></div>`
     : '<button class="btn primary block" id="reveal">Show answer</button>';
 
   v.innerHTML = `<div class="study">${head}
@@ -690,7 +696,7 @@ function bindUndo() {
   const u = $('#undo');
   if (!u) return;
   u.onclick = () => {
-    const { c, prevCard, prevDay, prevSinceNew } = session.undo;
+    const { c, prevCard, prevDay, prevSinceNew, speed } = session.undo;
     if (prevCard) store.cards[c] = prevCard; else delete store.cards[c];
     store.days[dayKey(Date.now())] = prevDay;
     session.sinceNew = prevSinceNew;
@@ -698,12 +704,21 @@ function bindUndo() {
     session.undo = null;
     session.current = c;
     session.revealed = true;
+    session.speed = speed;
     save();
     render();
   };
 }
 
 function doReveal() {
+  if (session.revealed) return;
+  // Time from showing the question to asking for the answer, judged against this card type's usual time.
+  if (session.shownAt) {
+    const ms = Date.now() - session.shownAt;
+    const mode = S().front;
+    session.speed = classifySpeed(ms, store.think[mode]);
+    store.think[mode] = recordThink(store.think[mode], ms);
+  }
   session.revealed = true;
   render();
   if (S().front !== 'listen') speech.auto(session.current);
@@ -714,16 +729,21 @@ function rate(r) {
   const prevCard = store.cards[c];
   const card = prevCard || newCard();
   const day = today();
-  session.undo = { c, prevCard, prevDay: { ...day }, prevSinceNew: session.sinceNew };
+  session.undo = { c, prevCard, prevDay: { ...day }, prevSinceNew: session.sinceNew, speed: session.speed };
   if (card.state === 'new') { day.new++; session.sinceNew = 0; } else session.sinceNew++;
   day.rev++;
-  store.cards[c] = schedule(card, r, Date.now());
+  store.cards[c] = schedule(card, r, Date.now(), Math.random, session.speed);
   save();
   session.done++;
   session.last = c;
   session.current = null;
   render();
 }
+
+// Time spent in another app says nothing about recall, so drop that card's timing.
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && session && !session.revealed) session.shownAt = null;
+});
 
 document.addEventListener('keydown', (e) => {
   if (route.name !== 'study' || !session?.current || e.target.matches('input, select, textarea')) return;
@@ -835,7 +855,7 @@ async function importBackup(e) {
     const data = JSON.parse(await f.text());
     if (data.app !== 'hk-srs' || typeof data.cards !== 'object') throw new Error('not a backup file');
     if (!confirm(`Replace current progress with this backup (${Object.keys(data.cards).length} cards)?`)) return;
-    store = { cards: data.cards, days: data.days || {}, settings: { ...DEFAULT_SETTINGS, ...(data.settings || {}) } };
+    store = { cards: data.cards, days: data.days || {}, think: data.think || {}, settings: { ...DEFAULT_SETTINGS, ...(data.settings || {}) } };
     save();
     toast('Backup restored');
     render();

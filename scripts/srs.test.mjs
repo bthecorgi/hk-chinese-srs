@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   newCard, schedule, previewIntervals, dayStart, dayKey,
   WRONG, RIGHT, MIN, DAY, LEARN_STEPS, MIN_EASE, MAX_EASE, KNOWN_IVL, GRADUATING_IVL,
+  FAST, SLOW, classifySpeed, recordThink, MAX_THINK, MAX_SAMPLES,
 } from '../public/srs.js';
 import fs from 'node:fs';
 import {
@@ -63,6 +64,38 @@ test('ease climbs only up to the cap', () => {
 test('a late review that is still right earns credit for the extra days', () => {
   const c = { ...newCard(), state: 'review', ivl: 10, ease: 2.5, due: NOW - 4 * DAY };
   assert.equal(schedule(c, RIGHT, NOW, fixed).ivl, 30); // (10 + 4/2) * 2.5
+});
+
+test('recall speed is judged against the learner\'s usual time', () => {
+  const usual = Array(10).fill(6000);
+  assert.equal(classifySpeed(2000, usual), FAST);
+  assert.equal(classifySpeed(6000, usual), null);
+  assert.equal(classifySpeed(15000, usual), SLOW);
+  assert.equal(classifySpeed(2000, usual.slice(1)), null, 'not enough history yet');
+  assert.equal(classifySpeed(MAX_THINK + 1, usual), null, 'distracted');
+  assert.equal(classifySpeed(2000, undefined), null);
+});
+
+test('think times are kept within limits', () => {
+  assert.deepEqual(recordThink(undefined, 1234.4), [1234]);
+  assert.deepEqual(recordThink([1], MAX_THINK + 1), [1]);
+  const full = recordThink(Array(MAX_SAMPLES).fill(1), 5);
+  assert.equal(full.length, MAX_SAMPLES);
+  assert.equal(full.at(-1), 5);
+});
+
+test('quick right answers stretch the interval, slow ones shrink it', () => {
+  const c = { ...newCard(), state: 'review', ivl: 10, ease: 2.5, due: NOW };
+  const quick = schedule(c, RIGHT, NOW, fixed, FAST);
+  assert.equal(quick.ivl, 29); // 10 * 2.5 * 1.15
+  assert.equal(quick.ease, 2.6);
+  const slow = schedule(c, RIGHT, NOW, fixed, SLOW);
+  assert.equal(slow.ivl, 12);
+  assert.equal(slow.ease, 2.35);
+  assert.equal(schedule(c, WRONG, NOW, fixed, FAST).ivl, 5, 'speed does not soften a miss');
+  const learning = schedule(newCard(), RIGHT, NOW, fixed, SLOW);
+  assert.equal(learning.due, NOW + LEARN_STEPS[1], 'speed does not change learning steps');
+  assert.equal(previewIntervals(c, NOW, SLOW)[RIGHT], '12d');
 });
 
 test('only right or wrong is accepted', () => {

@@ -1,7 +1,7 @@
 // Spaced-repetition scheduler (SM-2 family, Anki-style learning steps).
 // The learner only says whether they got the card right or wrong; the scheduler works out
 // how easy the card is from its history (misses while learning, lapses, how late a review
-// was and still remembered) and adjusts each card's ease on its own.
+// was and still remembered, how quickly it was recalled) and adjusts each card's ease on its own.
 // Pure functions only, so it can be unit-tested in Node.
 
 export const MIN = 60 * 1000;
@@ -22,6 +22,41 @@ export const LEARN_AHEAD = 20 * MIN;
 
 export const WRONG = 1;
 export const RIGHT = 2;
+
+// Recall speed: how long the learner looked at the question before showing the answer,
+// compared with their own usual time for that card type. A quick right answer is treated
+// like Anki's Easy, a slow one like Hard.
+export const FAST = 'fast';
+export const SLOW = 'slow';
+export const FAST_RATIO = 0.5; // under half the usual time
+export const SLOW_RATIO = 2; // over twice the usual time
+export const MAX_THINK = 60 * 1000; // longer than this, assume they got distracted
+export const MIN_SAMPLES = 10; // timings needed before speed counts
+export const MAX_SAMPLES = 100;
+export const FAST_BONUS = 1.15;
+export const SLOW_FACTOR = 1.2;
+export const EASE_SLOW = 0.15;
+
+function median(xs) {
+  const s = [...xs].sort((a, b) => a - b);
+  const m = s.length >> 1;
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
+
+// FAST, SLOW or null (normal, distracted, or not enough history yet).
+export function classifySpeed(ms, history) {
+  if (!(ms > 0) || ms > MAX_THINK || !history || history.length < MIN_SAMPLES) return null;
+  const m = median(history);
+  if (ms < m * FAST_RATIO) return FAST;
+  if (ms > m * SLOW_RATIO) return SLOW;
+  return null;
+}
+
+// Adds a timing to a history list, keeping only the most recent ones. Returns a new array.
+export function recordThink(history, ms) {
+  if (!(ms > 0) || ms > MAX_THINK) return history || [];
+  return [...(history || []), Math.round(ms)].slice(-MAX_SAMPLES);
+}
 
 // Start of the study day containing `ts` (local time, 04:00 rollover).
 export function dayStart(ts) {
@@ -65,8 +100,9 @@ function daysLate(card, now) {
   return Math.max(0, Math.round((dayStart(now) - dayStart(card.due)) / DAY));
 }
 
-// Returns a new card object; does not mutate `card`. `answer` is RIGHT or WRONG.
-export function schedule(card, answer, now, rng = Math.random) {
+// Returns a new card object; does not mutate `card`. `answer` is RIGHT or WRONG; `speed` is
+// FAST, SLOW or null and only matters for a right answer on a review card.
+export function schedule(card, answer, now, rng = Math.random, speed = null) {
   if (answer !== RIGHT && answer !== WRONG) throw new Error(`bad answer ${answer}`);
   const right = answer === RIGHT;
   const c = { ...card, reps: card.reps + 1, last: now };
@@ -100,8 +136,14 @@ export function schedule(card, answer, now, rng = Math.random) {
   }
   // Remembered even though it was late: give half the extra days as credit.
   const base = c.ivl + daysLate(c, now) / 2;
-  const ease = c.ease < MAX_EASE ? Math.min(MAX_EASE, c.ease + EASE_UP) : c.ease;
-  return graduate({ ...c, ease }, Math.max(c.ivl + 1, base * c.ease), now, rng);
+  if (speed === SLOW) {
+    return graduate({ ...c, ease: Math.max(MIN_EASE, c.ease - EASE_SLOW) }, Math.max(c.ivl + 1, base * SLOW_FACTOR), now, rng);
+  }
+  const fast = speed === FAST;
+  const up = fast ? EASE_UP * 2 : EASE_UP;
+  const ease = c.ease < MAX_EASE ? Math.min(MAX_EASE, c.ease + up) : c.ease;
+  const ivl = fast ? Math.max(c.ivl + 2, base * c.ease * FAST_BONUS) : Math.max(c.ivl + 1, base * c.ease);
+  return graduate({ ...c, ease }, ivl, now, rng);
 }
 
 export function formatDelay(ms) {
@@ -114,11 +156,11 @@ export function formatDelay(ms) {
 }
 
 // Labels shown under the answer buttons, e.g. { 1: '1m', 2: '10m' }.
-export function previewIntervals(card, now) {
+export function previewIntervals(card, now, speed = null) {
   const noFuzz = () => 0.5;
   const out = {};
   for (const r of [WRONG, RIGHT]) {
-    const next = schedule(card, r, now, noFuzz);
+    const next = schedule(card, r, now, noFuzz, speed);
     // Review intervals are whole days; show those rather than hours-until-04:00.
     out[r] = formatDelay(next.state === 'review' ? next.ivl * DAY : next.due - now);
   }
