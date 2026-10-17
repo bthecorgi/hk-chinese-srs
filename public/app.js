@@ -4,6 +4,8 @@ import {
 } from './srs.js';
 
 const STORE_KEY = 'hk-srs-v1';
+// GoatCounter site code (the "xyz" in xyz.goatcounter.com). Empty turns usage counting off.
+const GOATCOUNTER = '';
 const LEVELS = [1, 2, 3, 4, 5, 6];
 const LEVEL_ZH = ['', '小一', '小二', '小三', '小四', '小五', '小六'];
 const DEFAULT_SETTINGS = {
@@ -62,6 +64,15 @@ const today = () => {
 
 const $ = (sel, el = document) => el.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+
+// Anonymous usage counter: sends only an event name, never cards or progress. The service worker
+// serves the app from cache, so page views undercount; these events fire on every launch instead.
+// Offline launches simply aren't counted.
+function track(event) {
+  if (!GOATCOUNTER || location.protocol !== 'https:' || /^(localhost|127\.)/.test(location.hostname)) return;
+  const q = new URLSearchParams({ p: event, t: event, e: 'true', rnd: Math.random().toString(36).slice(2) });
+  fetch(`https://${GOATCOUNTER}.goatcounter.com/count?${q}`, { mode: 'no-cors', keepalive: true }).catch(() => {});
+}
 
 function toast(msg) {
   const t = $('#toast');
@@ -602,6 +613,7 @@ $('#sheet').addEventListener('close', unlockScroll);
 
 function startStudy() {
   session = { current: null, revealed: false, sinceNew: 0, done: 0, undo: null };
+  track('study-start');
   go('study');
 }
 
@@ -640,6 +652,10 @@ function renderStudy(v) {
   }
 
   if (!session.current) {
+    if (session.done && !session.tracked) {
+      session.tracked = true;
+      track('study-done');
+    }
     v.innerHTML = `<div class="study">${head}<div class="done"><div class="big">🎉</div>
       <h2>All caught up</h2><p class="muted">You studied ${session.done} card${session.done === 1 ? '' : 's'}. Come back later for more reviews, or add another level / raise the daily limit for more new characters.</p>
       <button class="btn primary" id="home">Back to Today</button></div></div>`;
@@ -883,6 +899,7 @@ async function boot() {
   }
   BY_CHAR = new Map(DATA.chars.map((x) => [x.c, x]));
   render();
+  track(matchMedia('(display-mode: standalone)').matches || navigator.standalone ? 'open-app' : 'open-browser');
   // Sentences are optional extras: load them after the first render, and re-render once they arrive.
   fetch('data/sentences.json').then((r) => (r.ok ? r.json() : {})).then((s) => {
     SENT = s;

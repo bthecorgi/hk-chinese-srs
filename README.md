@@ -46,6 +46,18 @@ You need to host `public/` over **HTTPS**. The workflow `.github/workflows/pages
 
 Open the URL in Safari, tap **Share → Add to Home Screen**, and launch it from the home screen icon.
 
+## Usage counts
+
+GitHub Pages has no visitor analytics, so the app can send anonymous events to [GoatCounter](https://www.goatcounter.com). To turn it on, create a free GoatCounter site and set `GOATCOUNTER` at the top of `public/app.js` to its code (the `xyz` in `xyz.goatcounter.com`). It stays off while that is empty, and it never counts on localhost.
+
+Events (they show in the GoatCounter dashboard as paths):
+
+- `open-app` / `open-browser`: the app was launched from the home screen icon or opened in a browser tab. This fires on every launch, including launches served from the offline cache, which page views would miss.
+- `study-start`: a study session was started.
+- `study-done`: a session reached "All caught up" after at least one card.
+
+Only the event name is sent. Cards, progress and settings stay on the device. GoatCounter doesn't use cookies, and it counts unique visitors from a daily hash of IP and browser. Launches with no connection aren't counted.
+
 ## Rebuilding the data
 
 ```sh
