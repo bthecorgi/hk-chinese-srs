@@ -143,6 +143,11 @@ const speech = {
       || (kind === 'cmn' && list.find((v) => this.norm(v).startsWith('zh-cn')))
       || list[0] || null;
   },
+  // Since iOS 27, web speech is muted while the ring/silent switch is on. The 'playback' audio
+  // session (what music and video apps use) plays through it, as speech did before.
+  playThroughSilent() {
+    try { if (navigator.audioSession && navigator.audioSession.type !== 'playback') navigator.audioSession.type = 'playback'; } catch { /* older Safari */ }
+  },
   // onEnd callbacks of utterances that haven't finished; a cancel runs them so play indicators clear.
   pending: new Set(),
   say(text, kind, { queue = false, onStart, onEnd } = {}) {
@@ -166,6 +171,7 @@ const speech = {
       this.pending.add(done);
       u.onend = u.onerror = done;
     }
+    this.playThroughSilent();
     speechSynthesis.speak(u);
   },
   auto(text) {
@@ -176,6 +182,7 @@ const speech = {
   },
 };
 if ('speechSynthesis' in window) {
+  speech.playThroughSilent();
   speech.load();
   speechSynthesis.addEventListener?.('voiceschanged', () => {
     speech.load();
