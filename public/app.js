@@ -143,21 +143,10 @@ const speech = {
       || (kind === 'cmn' && list.find((v) => this.norm(v).startsWith('zh-cn')))
       || list[0] || null;
   },
-  // Since iOS 27, web speech is muted while the ring/silent switch is on, but media the page plays
-  // isn't. So a silent track loops while speaking: the page then counts as playing media, and the
-  // voice comes through as it did before. It stops a moment after the speech ends.
+  // Since iOS 27, web speech is muted while the ring/silent switch is on. The 'playback' audio
+  // session (what music and video apps use) plays through it, as speech did before.
   playThroughSilent() {
     try { if (navigator.audioSession && navigator.audioSession.type !== 'playback') navigator.audioSession.type = 'playback'; } catch { /* older Safari */ }
-    clearTimeout(this.keepTimer);
-    this.keep ||= Object.assign(new Audio(silentWav()), { loop: true, playsInline: true });
-    this.keep.play().catch(() => {});
-  },
-  // Lets the silent track stop once nothing is left to say.
-  releaseSilent() {
-    clearTimeout(this.keepTimer);
-    this.keepTimer = setTimeout(() => {
-      if (!speechSynthesis.speaking && !speechSynthesis.pending) this.keep?.pause();
-    }, 1500);
   },
   // onEnd callbacks of utterances that haven't finished; a cancel runs them so play indicators clear.
   pending: new Set(),
@@ -182,8 +171,6 @@ const speech = {
       this.pending.add(done);
       u.onend = u.onerror = done;
     }
-    u.addEventListener('end', () => this.releaseSilent());
-    u.addEventListener('error', () => this.releaseSilent());
     this.playThroughSilent();
     speechSynthesis.speak(u);
   },
@@ -194,20 +181,8 @@ const speech = {
     this.say(text, a);
   },
 };
-// One second of 8 kHz silence as a WAV, for speech.playThroughSilent.
-function silentWav(rate = 8000) {
-  const v = new DataView(new ArrayBuffer(44 + rate));
-  const str = (at, text) => [...text].forEach((c, i) => v.setUint8(at + i, c.charCodeAt(0)));
-  str(0, 'RIFF'); v.setUint32(4, 36 + rate, true); str(8, 'WAVE');
-  str(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
-  v.setUint32(24, rate, true); v.setUint32(28, rate, true); v.setUint16(32, 1, true); v.setUint16(34, 8, true);
-  str(36, 'data'); v.setUint32(40, rate, true);
-  for (let i = 44; i < 44 + rate; i++) v.setUint8(i, 128); // 8-bit PCM silence is the midpoint
-  return URL.createObjectURL(new Blob([v.buffer], { type: 'audio/wav' }));
-}
-
 if ('speechSynthesis' in window) {
-  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch { /* older Safari */ }
+  speech.playThroughSilent();
   speech.load();
   speechSynthesis.addEventListener?.('voiceschanged', () => {
     speech.load();
