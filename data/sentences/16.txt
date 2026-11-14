@@ -238,7 +238,7 @@
 盛宴|這頓晚餐是一場盛宴。|This dinner is a feast.
 通宵|他通宵溫習。|He revised all night.|他通宵复习。|他通宵複習。
 宵禁|戰爭時城市實行宵禁。|The city had a curfew during the war.
-夜宵|晚上肚子餓，我們去吃夜宵。|We were hungry at night, so we went for a late-night snack.
+夜宵|晚上肚子餓，我們去吃夜宵。|We were hungry at night, so we went for a late-night snack.||晚上肚子餓，我們去吃宵夜。
 出席|所有同學都出席了典禮。|All the students attended the ceremony.
 主席|他是學生會的主席。|He is chairman of the student union.
 首席|她是樂團的首席小提琴手。|She is the orchestra's leader (first violin).

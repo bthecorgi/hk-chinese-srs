@@ -455,7 +455,7 @@ const REGIONS = [['hk', '港', 'Hong Kong', 'zh-Hant-HK'], ['cn', '陸', 'Mainla
 const regionKind = (r) => (r === 'tw' ? 'tw' : r === 'hk' && S().showJyutping ? 'yue' : 'cmn');
 const PLAY_ICON = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z" fill="currentColor"/></svg>';
 
-function sentenceHtml(w, alt) {
+function sentenceHtml(w) {
   const s = SENT[w];
   if (!s) return '';
   const [hk, en, cn, tw, diff, twReadings = []] = s;
@@ -469,8 +469,9 @@ function sentenceHtml(w, alt) {
     const html = esc(text[r]).replace('⟦', '<b>').replace('⟧', '</b>');
     return `<span class="sl sl-${r}" lang="${lang}" data-text="${esc(plain)}"><span class="rl" aria-hidden="true">${zh}</span>${html}${differs[r] ? `<span class="wd" title="Wording differs from Hong Kong">${zh}用詞</span>` : ''}${r === 'tw' ? readingNote : ''}</span>`;
   }).join('');
-  // Offer the three-way comparison only where the wording or a reading actually differs.
-  const compare = differs.cn || differs.tw || twReadings.length || alt?.cn || alt?.tw;
+  // Offer the three-way comparison only where the wording actually differs; a
+  // Taiwan-only reading is already noted on the Taiwan line.
+  const compare = differs.cn || differs.tw;
   return `<div class="sent" data-sent data-differs-cn="${differs.cn}"><span class="st">${lines}<span class="se">${esc(en)}</span></span>
     <span class="sbtns"><button class="play" aria-label="Play sentence">${PLAY_ICON}</button>${compare ? '<button class="cmp" data-compare aria-label="Compare Hong Kong, mainland and Taiwan">三地</button>' : ''}</span></div>`;
 }
@@ -529,7 +530,7 @@ function answerHtml(x, { revealedChar = true } = {}) {
   const examples = x.e.map(([w, jp, py, en, alt]) => `
     <li data-say="${esc(w)}" data-kind="${rowKind}"><span class="w" lang="zh-Hant-HK">${[...w].map((ch) => ch === x.c ? `<mark>${ch}</mark>` : ch).join('')}</span>
       <span class="grow"><span class="r">${st.showJyutping ? `<span data-say="${esc(w)}" data-kind="yue">${jyutHtml(jp)}</span>` : ''}${st.showJyutping && st.showPinyin ? ' · ' : ''}${st.showPinyin ? `<span data-say="${esc(w)}" data-kind="cmn">${pinyinHtml(py)}</span>` : ''}</span><br><span class="e">${esc(en)}</span>${st.showPinyin ? regionalHtml(w, alt, st.showTaiwan) : ''}</span>
-      ${st.showJyutping ? speakBtn(w, 'yue', true) : ''}${st.showPinyin ? speakBtn(mandarinWord(w, alt), 'cmn', true) : ''}${sentences ? sentenceHtml(w, alt) : ''}</li>`).join('');
+      ${st.showJyutping ? speakBtn(w, 'yue', true) : ''}${st.showPinyin ? speakBtn(mandarinWord(w, alt), 'cmn', true) : ''}${sentences ? sentenceHtml(w) : ''}</li>`).join('');
   return `
     ${revealedChar ? `<div class="hanzi${st.serif ? ' serif' : ''}" lang="zh-Hant-HK">${x.c}</div>` : ''}
     <div class="answer${plain}">
