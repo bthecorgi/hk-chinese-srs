@@ -8,6 +8,8 @@
     "build:data": "node scripts/build-data.mjs",
     "build:sentences": "node scripts/build-sentences.mjs",
     "build:icons": "node scripts/make-icons.mjs",
+    "build:ja": "node scripts/build-ja.mjs",
+    "build:ja-icons": "node scripts/make-icons.mjs --ja",
     "serve": "http-server public -p 8080 -c-1",
     "test": "node --test scripts/*.test.mjs"
   },

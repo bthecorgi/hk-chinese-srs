@@ -8,7 +8,11 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = path.join(ROOT, 'public', 'icons');
+// --ja renders the Japanese app's icons (あ on indigo) into public/ja/icons.
+const JA = process.argv.includes('--ja');
+const OUT = path.join(ROOT, 'public', ...(JA ? ['ja'] : []), 'icons');
+const GLYPH = JA ? 'あ' : '字';
+const BG = JA ? 'linear-gradient(160deg,#4a5bc4,#283593)' : 'linear-gradient(160deg,#c8352b,#9c1f18)';
 
 // glyphScale: share of the canvas the glyph occupies. Maskable icons keep it
 // inside the central 80% safe zone.
@@ -21,11 +25,11 @@ const ICONS = [
 
 const html = ({ size, glyphScale, rounded }) => `<!doctype html><html><body style="margin:0;background:transparent">
 <div style="width:${size}px;height:${size}px;border-radius:${rounded ? size * 0.22 : 0}px;
-  background:linear-gradient(160deg,#c8352b,#9c1f18);display:grid;place-items:center;position:relative;overflow:hidden">
+  background:${BG};display:grid;place-items:center;position:relative;overflow:hidden">
   <div style="position:absolute;inset:${size * 0.09}px;border:${Math.max(2, size * 0.012)}px solid rgba(255,255,255,.28);border-radius:${size * 0.08}px"></div>
   <div style="position:absolute;left:50%;top:9%;bottom:9%;border-left:${Math.max(1, size * 0.006)}px dashed rgba(255,255,255,.22)"></div>
   <div style="position:absolute;top:50%;left:9%;right:9%;border-top:${Math.max(1, size * 0.006)}px dashed rgba(255,255,255,.22)"></div>
-  <span style="position:relative;color:#fff;font:${size * glyphScale}px/1 'WenQuanYi Zen Hei','Noto Sans CJK TC','PingFang HK',sans-serif">字</span>
+  <span style="position:relative;color:#fff;font:${size * glyphScale}px/1 'WenQuanYi Zen Hei','Noto Sans CJK TC','PingFang HK',sans-serif">${GLYPH}</span>
 </div></body></html>`;
 
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });

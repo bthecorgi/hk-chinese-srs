@@ -88,3 +88,21 @@ Write the Hong Kong sentence in standard written Chinese (not colloquial Cantone
 - Example word corrections: `data/example-overrides.json` is a hand-checked list applied at build time. `fix` corrects the Pinyin, Jyutping or English of a word (CC-CEDICT often lists one written word under several readings, e.g. 結果 jiē guǒ "to bear fruit" vs jié guǒ "result", and the build can't tell which is meant). `exclude` drops words that mean something different in Cantonese and Mandarin (窩心, 薄餅), Hong Kong-only or dialect words that Mandarin doesn't use (侍應, 警署, 阿爸), and words not suitable for primary pupils. The next-ranked word replaces anything excluded. `regional` gives the mainland (`cn`) and Taiwan (`tw`) Mandarin forms for words that differ, such as Hong Kong words (侍應, 恤衫, 地盤) and mainland/Taiwan pairs (軟件/軟體, 地鐵/捷運). Taiwan pronunciations come from CC-CEDICT's "Taiwan pr." notes on words, plus the hand-checked `taiwanChars` table (期 qí, 危 wéi, 髮 fǎ, …) for words it doesn't annotate.
 
 Readings come from automatic sources, so check any doubtful polyphonic characters (e.g. 長, 行, 重) against a dictionary.
+
+## Japanese phrases app (`public/ja/`)
+
+A second, separate app at **https://bthecorgi.github.io/hk-chinese-srs/ja/** for the words and phrases of **Pimsleur Japanese 1**. It uses the same scheduler (`public/srs.js`) and base styles (`public/styles.css`), with its own progress, settings, service worker and home-screen icon.
+
+- 328 phrases from the Reading Booklet (Lessons 1–20) and the Culture Notes. The booklet itself is hiragana only. The kanji form and English meanings were added by hand, and the romaji is generated from the kana. Single-kana drills and fragments are left out.
+- Every phrase shows the Japanese (kanji & kana, or the booklet's hiragana), the hiragana reading, romaji and English, and is read aloud with the device's Japanese voice.
+- Each phrase is tested in up to three directions, each scheduled separately: **Japanese → English**, **English → Japanese** and **Listen → English** (off by default). A phrase's other directions are only introduced after its first card has graduated.
+- Turn lessons on or off, browse and search them (Japanese, romaji with or without macrons, or English).
+
+The phrase list is `data/japanese/pimsleur-ja1.txt`, one phrase per line: `kana | Japanese | English`, plus optional `r=` (romaji override), `s=` (what the voice reads, for ambiguous kanji like 日) and `n=` (note). Write particles は/へ/を in the kana as separate words so they come out as wa/e/o. Then:
+
+```sh
+npm run build:ja        # writes public/ja/data/phrases.json
+npm run build:ja-icons  # optional; needs Playwright + a CJK font
+```
+
+After changing anything the Japanese app loads, including the shared `srs.js` and `styles.css`, bump `VERSION` in `public/ja/sw.js` (and in `public/sw.js` for the shared files).

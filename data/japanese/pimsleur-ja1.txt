@@ -1,0 +1,383 @@
+# Pimsleur Japanese 1: words and phrases from the Reading Booklet (Lessons 1–20)
+# and the Culture Notes.
+#
+# One phrase per line:   kana | Japanese | English [| key=value ...]
+#   kana      hiragana reading as in the booklet, spaces between words; particles は/へ/を
+#             written as their own word so the romaji comes out as wa/e/o
+#   Japanese  the natural written form (kanji, katakana for loanwords)
+#   English   meaning
+# Options:
+#   r=...  romaji, when the automatic one is wrong (e.g. は inside a word read as "wa")
+#   s=...  what the voice should read, when the written form is ambiguous (日 → にち)
+#   n=...  a short note shown with the answer
+# "## N Title" starts a lesson. Single-kana drills and fragments are left out.
+
+## 1 Lesson 1
+はい | はい | yes
+いいえ | いいえ | no
+いえ | 家 | house | s=いえ
+はこ | 箱 | box
+えいご | 英語 | English (language)
+にほん | 日本 | Japan
+にほんご | 日本語 | Japanese (language)
+ほん | 本 | book
+いんこ | インコ | parakeet
+えほん | 絵本 | picture book
+えん | 円 | yen
+
+## 2 Lesson 2
+こい | 鯉 | carp (fish) | n=Also 恋, "love".
+こえ | 声 | voice
+はんこ | はんこ | personal name seal | n=Used instead of a signature on documents.
+はえ | ハエ | fly (insect)
+にわ | 庭 | garden
+わに | ワニ | crocodile
+かわ | 川 | river
+かに | カニ | crab
+りか | 理科 | science (school subject)
+ごますり | ごますり | flattery, brown-nosing | n=Literally "grinding sesame".
+わかります。 | 分かります。 | I understand.
+わかりますか。 | 分かりますか。 | Do you understand?
+りんご | りんご | apple
+いか | イカ | squid
+
+## 3 Lesson 3
+ごはん | ご飯 | rice; a meal
+かります。 | 借ります。 | I'll borrow (it).
+にほんご が わかります。 | 日本語が分かります。 | I understand Japanese.
+がんこ | 頑固 | stubborn
+りす が います。 | リスがいます。 | There's a squirrel.
+せんせい | 先生 | teacher
+わかりません。 | 分かりません。 | I don't understand.
+すみません。 | すみません。 | Excuse me. / I'm sorry. | n=Also used to say thank you, or to get someone's attention.
+のみます。 | 飲みます。 | I'll drink (it).
+すこし | 少し | a little
+えいが | 映画 | movie
+わかい | 若い | young
+
+## 4 Lesson 4
+のります。 | 乗ります。 | I'll get on / ride.
+いい みせ | いい店 | a good shop
+はなします。 | 話します。 | I speak.
+はなしません。 | 話しません。 | I don't speak.
+わたし | 私 | I, me
+にほんじん | 日本人 | Japanese person
+わたし は にほんじん です。 | 私は日本人です。 | I'm Japanese.
+てほん | 手本 | model, example to copy
+こわす | 壊す | to break (something)
+なにか | 何か | something
+そして | そして | and then, and also
+
+## 5 Lesson 5
+あいます。 | 会います。 | I'll meet (someone).
+とり | 鳥 | bird
+うま | 馬 | horse
+ありがとう。 | ありがとう。 | Thanks.
+たなかさん | 田中さん | Mr./Ms. Tanaka
+たなかさん に あいます。 | 田中さんに会います。 | I'll meet Mr./Ms. Tanaka.
+ありがとう ございます。 | ありがとうございます。 | Thank you very much.
+にち | 日 | day; sun | s=にち
+こんにちは。 | こんにちは。 | Hello. / Good afternoon.
+いち、に、さん、し、ご | 一、二、三、四、五 | one, two, three, four, five | s=いち、に、さん、し、ご
+はなぢ | 鼻血 | nosebleed
+
+## 6 Lesson 6
+おてんき | お天気 | the weather
+いい おてんき です。 | いいお天気です。 | It's nice weather.
+おはよう。 | おはよう。 | Morning! (casual)
+おはよう ございます。 | おはようございます。 | Good morning.
+ところ | 所 | place
+わたし の ところ で | 私の所で | at my place
+よろしく | よろしく | best regards; please treat me well
+あと | 後 | after, later | s=あと
+どこ で | どこで | where (at what place)
+どこ に すんで います か。 | どこに住んでいますか。 | Where do you live?
+ここ に すんで います。 | ここに住んでいます。 | I live here.
+どこ で のみます か。 | どこで飲みますか。 | Where shall we have a drink?
+
+## 7 Lesson 7
+くろい | 黒い | black
+きおん | 気温 | air temperature
+どうぞ | どうぞ | please; go ahead
+どうぞ よろしく。 | どうぞよろしく。 | Pleased to meet you.
+わかる | 分かる | to understand
+おきる | 起きる | to get up
+ひる | 昼 | noon, daytime
+ひるごはん | 昼ご飯 | lunch
+あさごはん | 朝ご飯 | breakfast
+ばんごはん | 晩ご飯 | dinner
+こんばん | 今晩 | tonight, this evening
+へた | 下手 | bad at, unskilled
+へんじ | 返事 | reply, answer
+たべます。 | 食べます。 | I'll eat.
+
+## 8 Lesson 8
+ろく、しち、はち | 六、七、八 | six, seven, eight | s=ろく、しち、はち
+ほん を かいます。 | 本を買います。 | I'll buy a book.
+にほんご を はなします。 | 日本語を話します。 | I speak Japanese.
+だれ | 誰 | who
+きれい | きれい | pretty; clean
+いい です ね。 | いいですね。 | That's nice, isn't it? / Sounds good.
+おねがい します。 | お願いします。 | Please. (making a request)
+あちら | あちら | over there; that way
+たべられません。 | 食べられません。 | I can't eat (it).
+さかな が たべられません。 | 魚が食べられません。 | I can't eat fish.
+あなた も | あなたも | you too
+どうも すみません。 | どうもすみません。 | I'm very sorry. / Thank you very much.
+いつも | いつも | always
+しつれい しました。 | 失礼しました。 | Excuse me (for what I did). / Sorry to have bothered you.
+
+## 9 Lesson 9
+いく つもり です。 | 行くつもりです。 | I intend to go.
+へや | 部屋 | room
+はやすぎます。 | 早すぎます。 | It's too early.
+ゆき | 雪 | snow
+ゆき が すき です。 | 雪が好きです。 | I like snow.
+ふゆ | 冬 | winter
+ふゆ に ゆき が ふります。 | 冬に雪が降ります。 | It snows in winter.
+あめ | 雨 | rain
+なつ に あめ が ふります。 | 夏に雨が降ります。 | It rains in summer.
+ぬるい | ぬるい | lukewarm
+ぬれる | 濡れる | to get wet
+あるいて いけます。 | 歩いて行けます。 | You can walk there.
+でんわ を かけたい です。 | 電話をかけたいです。 | I'd like to make a phone call.
+
+## 10 Lesson 10
+ぬいめ | 縫い目 | seam
+われめ | 割れ目 | crack, split
+ねこ と いぬ | 猫と犬 | cat and dog
+ねほりはほり | 根掘り葉掘り | (asking) in every detail | n=Literally "digging up roots and leaves".
+あおい | 青い | blue
+むすめ | 娘 | (my) daughter
+むすこさん | 息子さん | (your) son
+むずかしい | 難しい | difficult
+みかづき | 三日月 | crescent moon
+こづかい | 小遣い | pocket money
+おみやげ | お土産 | souvenir, gift from a trip
+ぜんぜん | 全然 | (not) at all
+ぜひ いきたい です。 | ぜひ行きたいです。 | I'd really like to go.
+ください。 | ください。 | Please (give me).
+
+## 11 Lesson 11
+ただ | ただ | free (of charge); just
+すず | 鈴 | small bell
+こづつみ | 小包 | parcel
+さむい です。 | 寒いです。 | It's cold.
+あそび | 遊び | play, fun
+ひび | 日々 | day after day, daily life
+たぶん | 多分 | probably
+ぜんぶ で | 全部で | altogether, in total
+ぼんさい | 盆栽 | bonsai
+はり | 針 | needle
+かんぱい | 乾杯 | cheers! (a toast)
+ひろい | 広い | spacious, wide
+ぴあの | ピアノ | piano
+
+## 12 Lesson 12
+ゆうびん | 郵便 | mail, post
+ぜんぶ で いくら です か。 | 全部でいくらですか。 | How much is it altogether?
+ぼんさい を かいました。 | 盆栽を買いました。 | I bought a bonsai.
+かんぱい を します。 | 乾杯をします。 | We'll make a toast.
+ぴあの が あります。 | ピアノがあります。 | There's a piano.
+ふな | フナ | crucian carp (fish)
+ぶな | ブナ | beech tree
+てんぷら | 天ぷら | tempura
+てんぷら を たべました。 | 天ぷらを食べました。 | I ate tempura.
+べんり | 便利 | convenient
+ぺん | ペン | pen
+ほぼ | ほぼ | almost, nearly
+たんぽぽ | たんぽぽ | dandelion
+さんぽ します。 | 散歩します。 | I'll go for a walk.
+きゃく | 客 | guest, customer
+おきゃくさま | お客様 | customer, guest (honorific)
+
+## 13 Lesson 13
+てんぷら を おねがい します。 | 天ぷらをお願いします。 | Tempura, please.
+ぴんぽん を します。 | ピンポンをします。 | I'll play ping-pong.
+ぺんぎん を みました。 | ペンギンを見ました。 | I saw a penguin.
+きゃくま | 客間 | guest room
+きゅう | 九 | nine | s=きゅう
+きゅうこう | 急行 | express (train)
+ゆうびんきょく | 郵便局 | post office
+しゃしん | 写真 | photo
+じてんしゃ | 自転車 | bicycle
+しゅみ | 趣味 | hobby
+こんしゅう | 今週 | this week
+しょくじ | 食事 | meal
+しましょう。 | しましょう。 | Let's do it.
+しゅしょう | 首相 | prime minister
+しゃかいしゅぎ | 社会主義 | socialism
+
+## 14 Lesson 14
+きゅうけい | 休憩 | break, rest
+きょう、ゆうびんきょく に いきます。 | 今日、郵便局に行きます。 | Today I'm going to the post office.
+せんしゅう、しゃしん を とりました。 | 先週、写真を撮りました。 | Last week I took photos.
+しょくじ を しましょう。 | 食事をしましょう。 | Let's have a meal.
+おちゃ | お茶 | (green) tea
+おちゃ を のみましょう。 | お茶を飲みましょう。 | Let's have some tea.
+ちゅうごく | 中国 | China
+ちゅうがく | 中学 | junior high school
+ちょきん | 貯金 | savings
+まつもと せいちょう | 松本清張 | Matsumoto Seichō | n=A famous Japanese mystery writer.
+ちゃいろ | 茶色 | brown
+こんにゃく | こんにゃく | konjac (a jelly-like food)
+にゃあにゃあ | にゃあにゃあ | meow meow
+にゅうこく | 入国 | entering a country, immigration
+めにゅう | メニュー | menu
+
+## 15 Lesson 15
+おもちゃ の くるま | おもちゃの車 | toy car
+ちゅうごくご の べんきょう | 中国語の勉強 | studying Chinese
+まつもと せいちょう の ほん | 松本清張の本 | a book by Matsumoto Seichō
+めにゅう を どうぞ。 | メニューをどうぞ。 | Here's the menu.
+こんにゃく が すき です。 | こんにゃくが好きです。 | I like konjac.
+にょらい | 如来 | Buddha (Tathagata)
+にょじつ に | 如実に | vividly, realistically
+ひゃく | 百 | hundred
+よんひゃくさん | 四百三 | four hundred and three | s=よんひゃくさん
+ひゅうず | ヒューズ | fuse
+ひょう | 表 | table, chart | s=ひょう
+ひょうき | 表記 | writing, notation
+みゃく | 脈 | pulse
+さんみゃく | 山脈 | mountain range
+みゃくらく | 脈絡 | context, logical connection
+
+## 16 Lesson 16
+しゃかにょらい | 釈迦如来 | Shakyamuni Buddha
+ごひゃく | 五百 | five hundred
+しゅうまつ | 週末 | weekend
+みゃくはく | 脈拍 | pulse rate
+ひょうしき | 標識 | sign, road sign
+びょうき | 病気 | illness; sick
+みゅうじっく | ミュージック | music
+きって | 切手 | postage stamp
+ちょっと | ちょっと | a little; just a moment | n=Often a soft way of saying no.
+みょうじ | 名字 | family name, surname
+みょうにち | 明日 | tomorrow (formal) | s=みょうにち | n=The same kanji are usually read あした.
+りゃくご | 略語 | abbreviation
+りゅうがく | 留学 | studying abroad
+りょかん | 旅館 | traditional Japanese inn
+
+## 17 Lesson 17
+びょう | 秒 | second (of time)
+とって | 取っ手 | handle
+みょう | 妙 | strange, odd
+りゃくじ | 略字 | simplified character
+ぐらい | ぐらい | about, approximately
+ぎゃんぐ | ギャング | gangster
+ぎゅうにく | 牛肉 | beef
+ぎゅうにゅう | 牛乳 | milk
+ぎょみん | 漁民 | fishermen
+ぎょぎょう | 漁業 | fishing industry
+じゃあ | じゃあ | well then
+じゃあ また。 | じゃあまた。 | See you.
+じゃあ また あした。 | じゃあまた明日。 | See you tomorrow.
+
+## 18 Lesson 18
+ぎゃく | 逆 | the opposite, reverse
+きゅうか | 休暇 | vacation, time off
+めんきょ | 免許 | license
+しんじゃ | 信者 | believer, follower
+じゅう | 十 | ten
+びじゅつかん | 美術館 | art museum
+じょうず | 上手 | skillful, good at
+さんびゃく | 三百 | three hundred
+はっぴゃく | 八百 | eight hundred
+ぴゅうま | ピューマ | puma
+はっぴょう | 発表 | presentation, announcement
+
+## 19 Lesson 19: Conversation
+すみません。えいご が わかります か。 | すみません。英語が分かりますか。 | Excuse me. Do you understand English?
+いいえ、わかりません。 | いいえ、分かりません。 | No, I don't.
+にほんご が わかります か。 | 日本語が分かりますか。 | Do you understand Japanese?
+はい、すこし わかります。 | はい、少し分かります。 | Yes, I understand a little.
+あなた は あめりかじん です か。 | あなたはアメリカ人ですか。 | Are you American?
+はい、わたし は あめりかじん です。 | はい、私はアメリカ人です。 | Yes, I'm American.
+すみすさん、もう かまくら を みました か。 | スミスさん、もう鎌倉を見ましたか。 | Mr. Smith, have you seen Kamakura yet?
+かまくら？まだ みて いません。 | 鎌倉？まだ見ていません。 | Kamakura? I haven't seen it yet.
+かまくら は どこ です か。 | 鎌倉はどこですか。 | Where is Kamakura?
+ここ から あまり とおく ありません。 | ここからあまり遠くありません。 | It's not very far from here.
+とても きれいな ところ です よ。 | とてもきれいな所ですよ。 | It's a really beautiful place.
+そう です か。よこはま は みました。 | そうですか。横浜は見ました。 | Really? I've seen Yokohama.
+でも かまくら は まだ みて いません。 | でも鎌倉はまだ見ていません。 | But I haven't seen Kamakura yet.
+じゃあ、あした いっしょ に かまくら へ いきません か。 | じゃあ、明日一緒に鎌倉へ行きませんか。 | Then why don't we go to Kamakura together tomorrow?
+いい です ね。でも あした の あさ は しごと が あります。 | いいですね。でも明日の朝は仕事があります。 | Sounds good. But I have work tomorrow morning.
+じゃあ、いつ が いい です か。 | じゃあ、いつがいいですか。 | Then when is good for you?
+あさって は？ | あさっては？ | How about the day after tomorrow?
+ええ、けっこう です。 | ええ、結構です。 | Yes, that's fine.
+
+## 20 Lesson 20: Story
+むかし むかし… | 昔々… | Once upon a time…
+ひとり の おとこ が いました。 | 一人の男がいました。 | There was a man.
+おとこ の しごと は こっとうや でした。 | 男の仕事は骨董屋でした。 | The man was an antique dealer.
+ある ひ ちゃみせ に いきました。 | ある日茶店に行きました。 | One day he went to a teahouse. | s=あるひ、ちゃみせにいきました。
+そこ に ねこ が いました。 | そこに猫がいました。 | There was a cat there.
+ねこ は とても うつくしい さら で えさ を たべて いました。 | 猫はとても美しい皿で餌を食べていました。 | The cat was eating its food from a very beautiful plate.
+おとこ は さら が ほしい と おもいました。 | 男は皿が欲しいと思いました。 | The man thought, "I want that plate."
+ねこ が ほしいん です が。 | 猫が欲しいんですが。 | I'd like the cat…
+いくら です か。 | いくらですか。 | How much is it?
+おとこ は たくさん の おかね を はらいました。 | 男はたくさんのお金を払いました。 | The man paid a lot of money.
+ごしゅじん は いいました。 | ご主人は言いました。 | The owner said…
+じゃあ、ねこ を どうぞ。 | じゃあ、猫をどうぞ。 | Well then, here's the cat.
+ありがとう。じゃあ、さら も ください ね。 | ありがとう。じゃあ、皿もくださいね。 | Thanks. Then I'll have the plate too, OK?
+いいえ、ねこ だけ です。 | いいえ、猫だけです。 | No, just the cat.
+え、じつ は さら だけ ほしかったん です。 | え、実は皿だけ欲しかったんです。 | What? Actually, I only wanted the plate!
+でも ねこ に たくさん おかね を はらいました！ | でも猫にたくさんお金を払いました！ | But I paid a lot of money for the cat!
+
+## 21 Culture Notes
+にほんご が わかります ね。 | 日本語が分かりますね。 | You understand Japanese, don't you? | n=ね asks the listener to agree, like "isn't it?"
+どうも ありがとう ございます。 | どうもありがとうございます。 | Thank you very much.
+なにか つめたい のみもの | 何か冷たい飲み物 | something cold to drink
+にほんご が じょうず です。 | 日本語が上手です。 | (Your) Japanese is good.
+あなた の ところ で | あなたの所で | at your place
+にじ に | 二時に | at two o'clock
+あなた と たべたい です。 | あなたと食べたいです。 | I want to eat with you.
+あなた の にほんご | あなたの日本語 | your Japanese
+れすとらん | レストラン | restaurant
+びいる | ビール | beer
+ぱそこん | パソコン | personal computer
+てれび | テレビ | television
+いっぽん | 一本 | one (bottle, long thing) | n=本 counts long things: bottles, pens, trees.
+にほん | 二本 | two (bottles, long things) | s=にほん
+さんぼん | 三本 | three (bottles, long things)
+ろっぽん | 六本 | six (bottles, long things)
+ひとり | 一人 | one person
+ふたり | 二人 | two people
+さんにん | 三人 | three people
+に、さん にん | 二、三人 | a few people | s=にさんにん | n=Literally "two or three", but used loosely.
+なんじ です か。 | 何時ですか。 | What time is it?
+わかった。 | 分かった。 | Got it. (casual)
+わかりました。 | 分かりました。 | I understand. / Understood.
+もう ちょっと | もうちょっと | a little more
+わたし と ひるごはん を たべません か。 | 私と昼ご飯を食べませんか。 | Would you like to have lunch with me? | n=Asking in the negative (…ませんか) is the polite way to invite.
+さようなら。 | さようなら。 | Goodbye.
+じゃあ、あと で。 | じゃあ、後で。 | See you later (today). | s=じゃあ、あとで。
+わたし は にほんご を すこし はなします。 | 私は日本語を少し話します。 | I speak a little Japanese.
+わたし は おかね を すこし もって います。 | 私はお金を少し持っています。 | I have a little money.
+わたし は おかね を たくさん もって います。 | 私はお金をたくさん持っています。 | I have a lot of money.
+すこし ほしい です。 | 少し欲しいです。 | I want a little.
+いって きます。 | 行ってきます。 | I'm off! (said when leaving home)
+いって らっしゃい。 | 行ってらっしゃい。 | See you! (said to someone leaving)
+ただいま。 | ただいま。 | I'm home!
+おかえりなさい。 | お帰りなさい。 | Welcome back.
+ほしいん です が。 | 欲しいんですが。 | I'd like… (polite)
+きょう は なに を します か。 | 今日は何をしますか。 | What will you do today?
+かない です。 | 家内です。 | This is my wife. | n=Humble; only for your own wife. Many people now say 妻 (つま).
+しゅじん です。 | 主人です。 | This is my husband. | n=Humble; only for your own husband. Many people now say 夫 (おっと).
+ごしゅじん | ご主人 | (your) husband
+おくさん | 奥さん | (your) wife
+はじめまして。 | はじめまして。 | Nice to meet you. | n=Literally "for the first time".
+おとこ の こ | 男の子 | boy
+おんな の こ | 女の子 | girl
+おおきい おとこ の こ | 大きい男の子 | a big boy
+ちいさい おんな の こ | 小さい女の子 | a little girl
+おてあらい | お手洗い | restroom | n=Literally "place to wash hands".
+といれ | トイレ | toilet
+ああ、そう です か。 | ああ、そうですか。 | Oh, I see.
+こども | 子供 | (my) child
+こどもさん | 子供さん | (your) child
+おおけい | オーケー | OK
+たくしい | タクシー | taxi
+びいる を のみます か。 | ビールを飲みますか。 | Will you have a beer?
+いいえ、のみません。 | いいえ、飲みません。 | No, I won't.
+じゃあ、おさけ を のみます か。 | じゃあ、お酒を飲みますか。 | Then will you have some sake?

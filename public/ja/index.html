@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Japanese 1 Phrases</title>
+  <meta name="description" content="Spaced-repetition flashcards for the words and phrases of Pimsleur Japanese 1, with kana, romaji, English and audio, tested in both directions.">
+  <meta name="theme-color" content="#3949ab">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="日本語">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="ja.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1 id="title">日本語</h1>
+  </header>
+
+  <main id="view" aria-live="polite">
+    <p class="loading">Loading…</p>
+  </main>
+
+  <nav class="tabbar" aria-label="Sections">
+    <button data-tab="home" class="active"><span class="ico">⌂</span><span>Today</span></button>
+    <button data-tab="lessons"><span class="ico">あ</span><span>Lessons</span></button>
+    <button data-tab="settings"><span class="ico">⚙︎</span><span>Settings</span></button>
+  </nav>
+
+  <dialog id="sheet"></dialog>
+  <div id="toast" role="status"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
